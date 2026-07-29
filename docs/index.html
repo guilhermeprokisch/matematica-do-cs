@@ -664,6 +664,15 @@
     𝔼[tiros] = <span class="fr"><span class="nu"><i>N</i></span><span class="de"><i>p</i></span></span>
     &ensp;⇒&ensp; 𝔼[TTK] ≈ <span style="font-size:135%">(</span><span class="fr"><span class="nu"><i>N</i></span><span class="de"><i>p</i></span></span> − 1<span style="font-size:135%">)</span> · τ
   </div>
+  <p>
+    Uma palavra sobre o relógio do modelo. Os tiros saem no ciclo da arma
+    até o pente acabar; então entra a <strong>recarga</strong> — usamos o
+    tempo "fire ready" da planilha, o intervalo até poder atirar de novo — e
+    a imprecisão acumulada do spray volta ao repouso, porque o dedo saiu do
+    gatilho. O modelo concede até três pentes dentro do teto de 12 s. É por
+    isso que, em situações de p baixo, a distribuição abaixo exibe um buraco
+    característico: ninguém morre durante a recarga.
+  </p>
   <div class="lab">
     <div class="legend" id="l7-leg"></div>
     <div class="ctr">
@@ -675,7 +684,22 @@
     </div>
     <svg id="l7-svg" class="chart" role="img" aria-label="distribuição exata do tempo até matar"></svg>
     <div class="readout" id="l7-read"></div>
-    <div class="labnote">As barras mostram a distribuição exata sob spray contínuo, incluindo a recarga; o contorno é a aproximação de p constante, usando o p do primeiro tiro. De perto, as duas coincidem; de longe, o spray degrada p e a aproximação se torna otimista — a cauda verdadeira é bem mais pesada.</div>
+    <div class="labnote">As barras mostram a distribuição exata sob spray contínuo, incluindo a recarga; o contorno é a aproximação de p constante, usando o p do primeiro tiro. De perto, as duas coincidem; de longe, o spray degrada p e a aproximação se torna otimista — a cauda verdadeira é bem mais pesada. Experimente a Glock a 25 m e procure o vazio na distribuição perto de 3 s: é o pente de 20 balas acabando e a recarga de 2,27 s passando em claro.</div>
+  </div>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> O modelo
+    atravessa a recarga porque o "jogador" dele só tem uma arma — mas você
+    carrega duas. Com os tempos da planilha (sacar uma pistola custa de 1,0
+    a 1,2 s; recarregar custa 2,43 s na AK e 3,67 s na AWP), formule a regra
+    de decisão para o pente que esvazia no meio de um duelo.</span>
+    <details><summary>ver resposta</summary><p>
+      Trocar é sempre mais rápido do que recarregar: a pistola chega em
+      cerca de 1 s, contra 2,4 a 3,7 s de recarga — a troca antecipa o seu
+      próximo tiro em 1,4 a 2,7 s, mais do que o TTK inteiro de muitos
+      duelos. A regra, portanto: pente vazio no meio da troca de tiros,
+      saque a pistola; recarregue apenas atrás de cobertura, com o duelo
+      interrompido. Note que o modelo do livro, de arma única, superestima
+      levemente o TTK de quem joga da maneira certa.
+    </p></details>
   </div>
 </section>
 
@@ -745,7 +769,7 @@
     &emsp;&emsp;<i>p</i>(σ) = 𝔼<sub><i>A</i></sub>[ sobreposição(<i>R</i>, <i>r</i><sub><i>k</i></sub>, |<i>A</i>|) ]
   </div>
   <p>
-    Aqui mora uma decisão estatística que muda tudo: o erro <i>A</i> é sorteado <strong>por tiro</strong> ou <strong>por rajada</strong>? Se ele é um tremor independente a cada disparo, os erros se diluem na média. Se é um flick — um deslocamento persistente durante a rajada inteira —, então ou tudo tende a acertar, ou tudo tende a errar. Os marginais por tiro são idênticos nos dois casos, mas as distribuições de TTK são completamente diferentes. É a mesma matemática da MAG-7 do capítulo 11: um sorteio compartilhado somado a ruídos individuais. A realidade, em que você corrige a mira em 200 a 300 ms, vive entre os dois extremos — e o laboratório mostra ambos.
+    Há uma decisão de modelagem aqui que muda completamente o resultado, e ela é de natureza estatística: o erro <i>A</i> é sorteado <strong>a cada tiro</strong> ou <strong>uma vez por rajada</strong>? No primeiro caso, o erro é um tremor. A cada disparo a mão desvia para um lado diferente, e os desvios tendem a se compensar — o tiro que saiu à esquerda não diz nada sobre o próximo. No segundo caso, o erro é o flick: a mira chegou ligeiramente fora do alvo e permanece fora durante a rajada inteira, de modo que os tiros acertam ou erram todos juntos. A sutileza está em que, olhando um tiro isolado, a probabilidade de acerto é exatamente a mesma nas duas versões; o que muda é a dependência entre os tiros — e, com ela, a distribuição do tempo até matar. Essa estrutura já apareceu no livro: é a da MAG-7 no capítulo 11, em que um sorteio compartilhado (a direção do cartucho) se soma a ruídos individuais (os projéteis). O jogador real fica entre os dois extremos, porque corrige a mira em algo como 200 a 300 ms depois de ver onde os tiros caem — e o laboratório mostra os dois casos lado a lado.
   </p>
   <div class="lab">
     <div class="legend" id="l12-leg"></div>
@@ -814,7 +838,7 @@
     <svg id="l13-svg" class="chart" role="img"
          aria-label="Probabilidade de atravessar o vão vivo, com e sem tagging, por largura do vão"></svg>
     <div class="readout" id="l13-read"></div>
-    <div class="labnote">O corredor tem colete e 100 de vida; o atirador reage em 0,25 s e spraya na cadência da arma; a velocidade se recupera com τ = 0,7 s. MP9 e UMP-45 têm o campo de flinch vazio na configuração — dado faltante, e não imunidade — e por isso ficaram fora do laboratório.</div>
+    <div class="labnote">O corredor tem colete e 100 de vida; o atirador reage em 0,25 s e spraya na cadência da arma, recarregando quando o pente esvazia; a velocidade se recupera com τ = 0,7 s. MP9 e UMP-45 têm o campo de flinch vazio na configuração — dado faltante, e não imunidade — e por isso ficaram fora do laboratório.</div>
   </div>
   <p>
     Há três leituras a fazer. <strong>Rifles negam espaço sem precisar matar</strong>: um vão coberto por uma AK custa cerca de duas vezes o tempo de travessia depois do primeiro acerto, e é em boa parte por isso que os mapas competitivos se jogam em volta dos vãos. <strong>Para armas de um tiro, o tagging é discurso vazio</strong>: a AWP tem o flinch mais pesado do jogo (35%) e nunca o usa no peito — quem ela acerta não fica lento, fica morto; o flinch dela só importa nos acertos que não matam, como perna ou através de fumaça, fora deste modelo. E <strong>o p fixo é conservador</strong>: um alvo desacelerado é mais fácil de acompanhar, então o p real do atirador sobe depois do primeiro acerto — o efeito verdadeiro é ainda maior que o simulado.
@@ -1066,17 +1090,18 @@
 "use strict";
 var UNIT = 0.0254;
 var W = {
-  glock:  {name:"Glock-18",     dmg:30,  ap:0.47,  rm:0.85, cyc:0.15,  mag:20, rel:2.27, base:7.6,  fire:56,    lam:0.3341, sc:0, pel:1},
-  deagle: {name:"Desert Eagle", dmg:53,  ap:0.932, rm:0.85, cyc:0.225, mag:7,  rel:2.2,  base:6.2,  fire:72.23, lam:0.528,  sc:0, pel:1},
-  mp9:    {name:"MP9",          dmg:26,  ap:0.6,   rm:0.87, cyc:0.07,  mag:30, rel:2.13, base:9.6,  fire:3.7,   lam:0.5353, sc:0, pel:1},
-  famas:  {name:"FAMAS",        dmg:30,  ap:0.7,   rm:0.96, cyc:0.09,  mag:25, rel:3.3,  base:8.19, fire:6.05,  lam:0.6347, sc:0, pel:1},
-  ak:     {name:"AK-47",        dmg:36,  ap:0.775, rm:0.98, cyc:0.1,   mag:30, rel:2.43, base:7.01, fire:7.8,   lam:0.6245, sc:0, pel:1},
-  m4s:    {name:"M4A1-S",       dmg:38,  ap:0.7,   rm:0.94, cyc:0.1,   mag:20, rel:3.07, base:5.4,  fire:12,    lam:0.4537, sc:0, pel:1},
-  sg:     {name:"SG 553",       dmg:30,  ap:1.0,   rm:0.98, cyc:0.11,  mag:30, rel:2.77, base:6.41, fire:7.95,  lam:0.5716, sc:0, pel:1},
-  ssg:    {name:"SSG 08 (mira)",dmg:88,  ap:0.85,  rm:0.98, cyc:1.25,  mag:10, rel:3.7,  base:3.23, fire:22.92, lam:0,      sc:1, pel:1},
-  awp:    {name:"AWP (mira)",   dmg:115, ap:0.975, rm:0.99, cyc:1.455, mag:5,  rel:3.67, base:2.2,  fire:53.85, lam:0,      sc:1, pel:1},
-  mag7:   {name:"MAG-7",        dmg:30,  ap:0.75,  rm:0.45, cyc:0.85,  mag:5,  rel:2.47, base:47,   fire:11.19, lam:0.0075, sc:0, pel:8, spr:40},
-  nova:   {name:"Nova",         dmg:26,  ap:0.5,   rm:0.7,  cyc:0.88,  mag:8,  rel:4.74, base:47,   fire:9.72,  lam:0.0123, sc:0, pel:9, spr:40}
+  glock:  {name:"Glock-18",        dmg:30,  ap:0.47,  rm:0.85, hs:4,     cyc:0.15,  mag:20,  rel:2.27, base:7.6,   fire:56,    lam:0.3341, sc:0, pel:1},
+  deagle: {name:"Desert Eagle",    dmg:53,  ap:0.932, rm:0.85, hs:3.9,   cyc:0.225, mag:7,   rel:2.2,  base:6.2,   fire:72.23, lam:0.528,  sc:0, pel:1},
+  mp9:    {name:"MP9",             dmg:26,  ap:0.6,   rm:0.87, hs:4,     cyc:0.07,  mag:30,  rel:2.13, base:9.6,   fire:3.7,   lam:0.5353, sc:0, pel:1},
+  famas:  {name:"FAMAS",           dmg:30,  ap:0.7,   rm:0.96, hs:4,     cyc:0.09,  mag:25,  rel:3.3,  base:8.19,  fire:6.05,  lam:0.6347, sc:0, pel:1},
+  ak:     {name:"AK-47",           dmg:36,  ap:0.775, rm:0.98, hs:4,     cyc:0.1,   mag:30,  rel:2.43, base:7.01,  fire:7.8,   lam:0.6245, sc:0, pel:1},
+  m4s:    {name:"M4A1-S",          dmg:38,  ap:0.7,   rm:0.94, hs:3.475, cyc:0.1,   mag:20,  rel:3.07, base:5.4,   fire:12,    lam:0.4537, sc:0, pel:1},
+  sg:     {name:"SG 553",          dmg:30,  ap:1.0,   rm:0.98, hs:4,     cyc:0.11,  mag:30,  rel:2.77, base:6.41,  fire:7.95,  lam:0.5716, sc:0, pel:1},
+  negev:  {name:"Negev",           dmg:35,  ap:0.71,  rm:0.97, hs:4,     cyc:0.075, mag:150, rel:5.7,  base:12.17, fire:30,    lam:0.5623, sc:0, pel:1},
+  ssg:    {name:"SSG 08 (mira)",   dmg:88,  ap:0.85,  rm:0.98, hs:4,     cyc:1.25,  mag:10,  rel:3.7,  base:3.23,  fire:22.92, lam:0,      sc:1, pel:1},
+  awp:    {name:"AWP (mira)",      dmg:115, ap:0.975, rm:0.99, hs:4,     cyc:1.455, mag:5,   rel:3.67, base:2.2,   fire:53.85, lam:0,      sc:1, pel:1},
+  mag7:   {name:"MAG-7",           dmg:30,  ap:0.75,  rm:0.45, hs:4,     cyc:0.85,  mag:5,   rel:2.47, base:47,    fire:11.19, lam:0.0075, sc:0, pel:8, spr:40},
+  nova:   {name:"Nova",            dmg:26,  ap:0.5,   rm:0.7,  hs:4,     cyc:0.88,  mag:8,   rel:4.74, base:47,    fire:9.72,  lam:0.0123, sc:0, pel:9, spr:40}
 };
 function fmt(v, dg) {
   return v.toLocaleString("pt-BR", {minimumFractionDigits: dg, maximumFractionDigits: dg});
@@ -1939,11 +1964,13 @@ var S1 = "var(--s1)", S2 = "var(--s2)", S3 = "var(--s3)";
     var dmg = dmgAt(w, dShoot, true);
     var r = rng(seed), surv = 0, hitsTot = 0, timeTot = 0;
     for (var i = 0; i < TRIALS; i++) {
-      var hp = 100, v = VMAX, x = 0, t = 0, next = REACT, hits = 0, alive = true;
+      var hp = 100, v = VMAX, x = 0, t = 0, next = REACT, hits = 0, shots = 0, alive = true;
       for (var guard = 0; guard < 500; guard++) {
         var a = advance(x, v, next - t);
         if (a[0] >= L) { timeTot += t + crossTime(x, v, L); break; }
-        x = a[0]; v = a[1]; t = next; next += w.cyc;
+        x = a[0]; v = a[1]; t = next;
+        shots++;
+        next += (shots % w.mag === 0) ? w.rel : w.cyc;
         if (r() < p) {
           hits++; hp -= dmg;
           if (hp <= 0) { alive = false; break; }
