@@ -1,0 +1,1987 @@
+<meta charset="utf-8">
+<title>A matemática do Counter-Strike — livro interativo</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7; --surface: #fcfcfb; --surface2: #f3f2ee;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+    --s4: #eda100; --s5: #e87ba4;
+    --accent: #2a78d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface: #1a1a19; --surface2: #232322;
+      --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+      --s4: #c98500; --s5: #d55181;
+      --accent: #3987e5;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface2: #232322;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+    --s4: #c98500; --s5: #d55181;
+    --accent: #3987e5;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --page: #f9f9f7; --surface: #fcfcfb; --surface2: #f3f2ee;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+    --s4: #eda100; --s5: #e87ba4;
+    --accent: #2a78d6;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 15.5px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 22px 90px; }
+  .eyebrow {
+    font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  h1 {
+    font-size: clamp(27px, 4.4vw, 36px); line-height: 1.12;
+    margin: 10px 0 10px; letter-spacing: -0.015em; text-wrap: balance;
+  }
+  .lede { color: var(--ink-2); max-width: 66ch; margin: 0; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  nav.toc {
+    margin: 26px 0 0; padding: 14px 18px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  nav.toc .tgrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px 30px; margin-top: 12px;
+  }
+  nav.toc .tpt {
+    font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-2); margin-bottom: 7px;
+  }
+  nav.toc ul { margin: 0; padding: 0; list-style: none; }
+  nav.toc li { margin: 3px 0; font-size: 13.5px; }
+  nav.toc li .n {
+    font: 500 11.5px/1 ui-monospace, Menlo, monospace; color: var(--muted);
+    display: inline-block; min-width: 26px;
+  }
+  nav.toc li.todo { color: var(--muted); }
+  nav.toc .toc-note { margin-top: 12px; font-size: 11.5px; color: var(--muted); }
+
+  .part {
+    margin-top: 88px; padding-top: 20px; border-top: 2px solid var(--baseline);
+  }
+  .part .pt-label {
+    font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .part .pt-title { font-size: 24px; font-weight: 600; letter-spacing: -0.01em;
+    margin-top: 6px; }
+  .part + section.cap { margin-top: 44px; }
+
+  .stub {
+    margin-top: 40px; font: 500 12px/1.5 ui-monospace, Menlo, monospace;
+    color: var(--muted);
+  }
+  .stub .n { letter-spacing: 0.1em; text-transform: uppercase; margin-right: 10px; }
+  nav.toc a { color: var(--ink-2); text-decoration: none; }
+  nav.toc a:hover { color: var(--accent); }
+  nav.toc .toc-t { font-size: 12px; color: var(--muted); }
+
+  section.cap { margin-top: 64px; scroll-margin-top: 24px; }
+  section.cap h2 {
+    font-size: 21px; margin: 8px 0 10px; letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  section.cap p { color: var(--ink-2); max-width: 68ch; margin: 0 0 12px; }
+  section.cap p strong { color: var(--ink); font-weight: 600; }
+  code {
+    font: 13px ui-monospace, Menlo, monospace; background: var(--surface2);
+    padding: 1px 5px; border-radius: 5px;
+  }
+
+  .eq {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; margin: 16px 0;
+    font: 17.5px/1.5 Georgia, "Times New Roman", serif;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .eq .lbl {
+    font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); display: block;
+    margin-bottom: 8px; white-space: normal;
+  }
+  .eq i { font-style: italic; }
+  .eq sub, .eq sup { font-size: 70%; }
+  .fr { display: inline-flex; flex-direction: column; vertical-align: middle;
+        text-align: center; margin: 0 3px; }
+  .fr .nu { padding: 0 5px; }
+  .fr .de { padding: 0 5px; border-top: 1px solid var(--ink); }
+  .ceil { font-size: 135%; vertical-align: -6%; font-family: Georgia, serif; }
+
+  .lab {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px 14px; margin: 18px 0 0;
+  }
+  .lab .ctr {
+    display: flex; flex-wrap: wrap; gap: 12px 26px; align-items: center;
+    margin-bottom: 14px; font-size: 13px; color: var(--ink-2);
+  }
+  .lab .ctr > span { display: inline-flex; align-items: center; gap: 8px; }
+  .lab select {
+    font-size: 13px; padding: 4px 8px; border: 1px solid var(--baseline);
+    border-radius: 8px; background: var(--surface); color: var(--ink);
+  }
+  .lab input[type=range] { accent-color: var(--accent); width: 150px; }
+  .lab input[type=checkbox], .lab input[type=radio] { accent-color: var(--accent); }
+  .lab .rv {
+    font: 500 13px/1 ui-monospace, Menlo, monospace; color: var(--ink);
+    font-variant-numeric: tabular-nums; min-width: 52px;
+  }
+  .lab .readout {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;
+  }
+  .lab .stat {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 12px; min-width: 120px;
+  }
+  .lab .stat .l { font-size: 11.5px; color: var(--muted); }
+  .lab .stat .v {
+    font-size: 19px; font-weight: 500; font-variant-numeric: tabular-nums;
+  }
+  .lab .stat .s { font-size: 11.5px; color: var(--muted); }
+  .lab figcaption, .labnote {
+    color: var(--muted); font-size: 12.5px; margin-top: 10px; max-width: 70ch;
+  }
+  svg.chart { display: block; width: 100%; height: auto; }
+  svg.chart text { font: 11px ui-monospace, Menlo, monospace; fill: var(--muted); }
+  svg.chart text.dl { font-weight: 600; fill: var(--ink-2); font-size: 11.5px; }
+  svg.chart .gl { stroke: var(--grid); stroke-width: 1; }
+  svg.chart .ax { stroke: var(--baseline); stroke-width: 1; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 10px;
+            font-size: 12.5px; color: var(--ink-2); }
+  .legend .key { display: inline-flex; align-items: center; gap: 7px; }
+  .legend .sw { width: 16px; height: 3px; border-radius: 1.5px; }
+
+  table.const { border-collapse: collapse; width: 100%; font-size: 13px; }
+  table.const th {
+    text-align: left; font: 600 10.5px/1.3 ui-monospace, Menlo, monospace;
+    letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+    padding: 6px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap;
+  }
+  table.const th.num { text-align: right; }
+  table.const td {
+    padding: 6px 10px; border-bottom: 1px solid var(--grid);
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+  table.const td:first-child { font-weight: 600; }
+  table.const td.num { text-align: right; }
+  table.const tr:last-child td { border-bottom: none; }
+  .tblwrap { overflow-x: auto; }
+  .flab-t { font-size: 13px; color: var(--ink-2); font-weight: 600; margin-bottom: 10px; }
+
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+          margin: 16px 0; font-size: 13px; }
+  .flow .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 12px; color: var(--ink-2);
+  }
+  .flow .step b { color: var(--ink); font-weight: 600; display: block; font-size: 13.5px; }
+  .flow .arr { color: var(--muted); }
+
+  .tip {
+    border-left: 2px solid var(--accent); padding: 2px 0 2px 14px;
+    color: var(--ink-2); font-size: 13.5px; max-width: 68ch; margin: 14px 0 0;
+  }
+  .ex {
+    border: 1px dashed var(--baseline); border-radius: 10px;
+    padding: 12px 16px; margin: 16px 0 0; font-size: 13.5px;
+    color: var(--ink-2); max-width: 72ch;
+  }
+  .ex .exq strong { color: var(--ink); font-weight: 600; }
+  .ex details { margin-top: 8px; }
+  .ex details summary {
+    cursor: pointer; color: var(--muted);
+    font: 500 12px/1 ui-monospace, Menlo, monospace;
+  }
+  .ex details summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .ex details p { margin: 8px 0 0; }
+  footer { margin-top: 72px; color: var(--muted); font-size: 12.5px; max-width: 70ch; }
+  footer a { color: var(--ink-2); }
+  button.preset {
+    font: 500 12px/1 ui-monospace, Menlo, monospace; color: var(--ink-2);
+    background: var(--surface2); border: 1px solid var(--baseline);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer;
+  }
+  button.preset:hover { border-color: var(--accent); color: var(--ink); }
+  button.preset:focus-visible, .lab input:focus-visible, .lab select:focus-visible,
+  nav.toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">CS2 · livro interativo · dados da engine</div>
+  <h1>A matemática do Counter-Strike</h1>
+  <p class="lede">
+    Este é um livro em quatro partes para quem está começando a jogar Counter-Strike, mas já se sente em casa com estatística. Cada capítulo isola um conceito do jogo, apresenta a fórmula que o governa e oferece um <strong>laboratório interativo</strong> alimentado pelos parâmetros reais das armas, extraídos da planilha de BlackRetina e SlothSquadron (patch 2026-03-18, domínio público). A escala cresce parte a parte — do tiro ao duelo, do duelo ao round, do round à partida — e a numeração dos capítulos é definitiva: os que aparecem em cinza no sumário ainda estão em preparação.
+  </p>
+  <nav class="toc" aria-label="sumário">
+    <span class="toc-t">sumário</span>
+    <div class="tgrid">
+      <div class="tgrp">
+        <div class="tpt">Parte I · O tiro</div>
+        <ul>
+          <li><a href="#c1"><span class="n">1</span>Como o jogo funciona</a></li>
+          <li><a href="#c2"><span class="n">2</span>Dano cai com a distância</a></li>
+          <li><a href="#c3"><span class="n">3</span>O teto: balas necessárias</a></li>
+          <li><a href="#c4"><span class="n">4</span>TTK determinístico</a></li>
+          <li><a href="#c5"><span class="n">5</span>Dispersão: por que você erra</a></li>
+          <li><a href="#c5b"><span class="n">6</span>O vetor de estados</a></li>
+          <li><a href="#c6"><span class="n">7</span>Spray: a recorrência AR(1)</a></li>
+          <li><a href="#cap8"><span class="n">8</span>Recuo ≠ imprecisão</a></li>
+        </ul>
+      </div>
+      <div class="tgrp">
+        <div class="tpt">Parte II · O duelo</div>
+        <ul>
+          <li><a href="#c7"><span class="n">9</span>TTK como variável aleatória</a></li>
+          <li><a href="#c8"><span class="n">10</span>Cadência ótima</a></li>
+          <li><a href="#c9"><span class="n">11</span>O duelo: distribuições</a></li>
+          <li><a href="#cap12"><span class="n">12</span>Erro de mira: o jogador entra</a></li>
+          <li><a href="#cap13"><span class="n">13</span>Tagging: o custo do acerto</a></li>
+          <li class="todo"><span class="n">14</span>Peeker's advantage</li>
+        </ul>
+      </div>
+      <div class="tgrp">
+        <div class="tpt">Parte III · O round</div>
+        <ul>
+          <li class="todo"><span class="n">15</span>Trocas e 2v1: estatística de ordem</li>
+          <li class="todo"><span class="n">16</span>Do duelo ao round: agregação</li>
+        </ul>
+      </div>
+      <div class="tgrp">
+        <div class="tpt">Parte IV · A partida</div>
+        <ul>
+          <li><a href="#c11"><span class="n">17</span>A economia como MDP</a></li>
+          <li class="todo"><span class="n">18</span>Validação: os seus demos</li>
+          <li><a href="#c10"><span class="n">—</span>Posfácio: limites e hábitos</a></li>
+          <li><a href="#apx"><span class="n">A</span>Apêndice: constantes das armas</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="toc-note">capítulos em cinza: em preparação — a numeração já é a definitiva</div>
+  </nav>
+</header>
+
+<div class="part" id="parte1">
+  <div class="pt-label">Parte I</div>
+  <div class="pt-title">O tiro</div>
+</div>
+
+<section class="cap" id="c1">
+  <div class="eyebrow">capítulo 1</div>
+  <h2>Como o jogo funciona</h2>
+  <p>
+    Uma partida de Counter-Strike se joga em até 24 rounds, e vence quem primeiro ganhar 13. Em cada round, cinco terroristas tentam plantar uma bomba enquanto cinco counter-terrorists tentam impedi-los; o round também termina quando todos os jogadores de um dos lados são eliminados. Cada jogador começa com 100 pontos de vida e, uma vez eliminado, só volta a jogar no round seguinte.
+  </p>
+  <div class="flow" role="img" aria-label="ciclo de um round">
+    <span class="step"><b>fase de compra</b>gasta $ em arma, colete, granadas</span>
+    <span class="arr">→</span>
+    <span class="step"><b>o round</b>duelos, bomba, informação</span>
+    <span class="arr">→</span>
+    <span class="step"><b>recompensas</b>abates, objetivo, bônus de derrota</span>
+    <span class="arr">→</span>
+    <span class="step"><b>próximo round</b>o dinheiro persiste</span>
+  </div>
+  <p>
+    O fato de o dinheiro persistir de um round para o outro é o que acopla as decisões no tempo. As três posturas de compra — <code>eco</code> (guardar), <code>force</code> (comprar o que der, mesmo com pouco dinheiro) e <code>full-buy</code> (rifle, colete e granadas) — são, na prática, estados de um problema de controle com orçamento, e é assim que vamos tratá-las na Parte IV. Dentro do round, a unidade fundamental de análise é o <strong>duelo</strong>: dois jogadores se veem, cada um dispara a sua sequência de tiros, e vence quem primeiro acumular 100 de dano no adversário. Quase tudo neste livro se constrói para responder a uma única pergunta: qual é a distribuição do tempo que cada lado leva para conseguir isso?
+  </p>
+</section>
+
+<section class="cap" id="c2">
+  <div class="eyebrow">capítulo 2</div>
+  <h2>Dano cai com a distância</h2>
+  <p>
+    Cada bala carrega um dano base <i>D</i><sub>0</sub> que decai exponencialmente com a distância percorrida. O RangeModifier (<i>RM</i>) é a fração do dano que sobrevive a cada 12,7 m: nos rifles ele fica em torno de 0,98, o que torna a curva quase plana; nas escopetas fica entre 0,45 e 0,70, e o dano despenca. Quando o alvo veste colete, multiplica-se ainda o resultado pelo fator de penetração da arma. Observe no laboratório como essas três forças — dano base, decaimento e colete — se combinam em cada arma — e consulte no apêndice, ao fim do livro, as constantes de todas as armas.
+  </p>
+  <div class="eq"><span class="lbl">dano por distância</span>
+    <i>D</i>(<i>d</i>) = <i>D</i><sub>0</sub> · <i>AP</i><sup>[colete]</sup> · <i>RM</i><sup>&thinsp;<i>d</i>/12,7&thinsp;m</sup>
+  </div>
+  <div class="lab">
+    <div class="legend" id="l2-leg"></div>
+    <div class="ctr">
+      <span><label for="l2-d">distância</label>
+        <input type="range" id="l2-d" min="1" max="50" value="15" step="1">
+        <span class="rv" id="l2-dv">15 m</span></span>
+      <span><label><input type="checkbox" id="l2-kev" checked> alvo de colete</label></span>
+    </div>
+    <svg id="l2-svg" class="chart" role="img" aria-label="curvas de dano por distância"></svg>
+    <div class="readout" id="l2-read"></div>
+    <div class="labnote">A curva da Nova está expressa por projétil: ela dispara nove de uma vez, e cada um segue essa curva individualmente. Guarde esse detalhe — ele será importante no capítulo 11.</div>
+  </div>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> A AWP causa
+    ~112 no peito com colete à queima-roupa, e mata com 1 tiro enquanto o
+    dano ≥ 100. Antes de mexer no slider: a que distância ela <em>deixa</em>
+    de matar o peito com um tiro? (RM = 0,99)</span>
+    <details><summary>ver resposta</summary><p>
+      Resolva 112 · 0,99<sup>d/12,7</sup> = 100 → d ≈ 145 m. Linhas de visão
+      em mapas competitivos raramente passam de ~50 m: na prática, a AWP
+      one-shota o peito <em>em qualquer lugar</em>. O decaimento de 1% por
+      12,7 m é cosmético — o que limita a AWP não é distância, é o capítulo 5.
+    </p></details>
+  </div>
+</section>
+
+<section class="cap" id="c3">
+  <div class="eyebrow">capítulo 3</div>
+  <h2>O teto: balas necessárias e breakpoints</h2>
+  <p>
+    A vida é 100 e o dano é uma quantidade contínua, mas balas são inteiras: o número de acertos necessários para matar passa por uma função teto. É ela, e não o dano em si, que governa a meta do jogo — variações contínuas de <i>D</i> não mudam absolutamente nada até que se cruze um <strong>breakpoint</strong>, o ponto em que <i>N</i> salta um degrau inteiro.
+  </p>
+  <div class="eq"><span class="lbl">balas necessárias</span>
+    <i>N</i>(<i>d</i>) = <span class="ceil">⌈</span><span class="fr"><span class="nu">100</span><span class="de"><i>D</i>(<i>d</i>)</span></span><span class="ceil">⌉</span>
+  </div>
+  <p>
+    O exemplo canônico é a AK-47. De perto, ela causa 36 de dano no peito de um alvo sem colete, o que exige 3 balas para matar. Contra um alvo com colete, o dano cai para 27,9, e passam a ser necessárias 4. Em outras palavras, os $650 do colete compram exatamente uma bala a mais de sobrevivência — cerca de 100 ms extras na corrida do duelo. Como veremos nos próximos capítulos, poucas compras no jogo têm uma razão custo-benefício tão boa.
+  </p>
+  <div class="lab">
+    <div class="legend" id="l3-leg"></div>
+    <div class="ctr">
+      <span><label for="l3-w">arma</label><select id="l3-w"></select></span>
+      <span><label for="l3-d">distância</label>
+        <input type="range" id="l3-d" min="1" max="50" value="10" step="1">
+        <span class="rv" id="l3-dv">10 m</span></span>
+    </div>
+    <svg id="l3-svg" class="chart" role="img" aria-label="degraus de balas necessárias por distância"></svg>
+    <div class="readout" id="l3-read"></div>
+    <div class="labnote">Os degraus do gráfico são os breakpoints. Nas regiões em que as duas curvas divergem, o colete está literalmente comprando balas para quem o veste.</div>
+  </div>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> Contra colete,
+    a AK precisa de 4 balas de perto (27,9 de dano). Antes de arrastar o
+    slider: em que distância ela passa a precisar de 5? E a M4A1-S
+    (26,6 de dano, RM = 0,94)?</span>
+    <details><summary>ver resposta</summary><p>
+      AK: 27,9 · 0,98<sup>d/12,7</sup> &lt; 25 exige d &gt; ~69 m —
+      <em>nunca dentro de um mapa</em>. A AK é 4 balas em qualquer distância;
+      é isso que "RM 0,98" compra. Já a M4A1-S cruza 25 em ~13 m: o quinto
+      tiro chega cedo. São dois rifles parecidos no papel, mas com breakpoints em mundos diferentes.
+    </p></details>
+  </div>
+</section>
+
+<section class="cap" id="c4">
+  <div class="eyebrow">capítulo 4</div>
+  <h2>TTK determinístico — e um fencepost</h2>
+  <p>
+    Se toda bala acertasse, o tempo até matar (o <em>time-to-kill</em>, TTK) dependeria apenas do ritmo da arma: <i>N</i> tiros espaçados de τ segundos, o <em>cycle time</em>. Como o primeiro tiro sai em <i>t</i> = 0, o que se espera são <i>N</i> − 1 intervalos — o clássico problema da cerca, em que contamos os postes, e não os vãos.
+  </p>
+  <div class="eq"><span class="lbl">ttk com mira perfeita</span>
+    TTK = (<i>N</i> − 1) · τ
+  </div>
+  <div class="lab">
+    <div class="ctr">
+      <span><label for="l4-n">N</label>
+        <input type="range" id="l4-n" min="1" max="9" value="4" step="1">
+        <span class="rv" id="l4-nv">4</span></span>
+      <span><label for="l4-t">τ</label>
+        <input type="range" id="l4-t" min="50" max="500" value="100" step="10">
+        <span class="rv" id="l4-tv">100 ms</span></span>
+    </div>
+    <svg id="l4-svg" class="chart" role="img" aria-label="linha do tempo dos tiros"></svg>
+    <div class="readout" id="l4-read"></div>
+    <div class="labnote">Para calibrar a intuição: τ = 100 ms corresponde à AK-47, 70 ms à MP9 e 1.455 ms à AWP. Repare que, com N = 1, o TTK é zero — é por isso que armas capazes de matar com um único tiro dominam qualquer corrida que consigam terminar no primeiro disparo.</div>
+  </div>
+</section>
+
+<section class="cap" id="c5">
+  <div class="eyebrow">capítulo 5</div>
+  <h2>Dispersão: por que você erra parado</h2>
+  <p>
+    Mesmo com o jogador parado e a mira cravada no alvo, o tiro não sai
+    exatamente na direção apontada: ele sai dentro de um
+    <strong>cone</strong> em volta da linha de mira. Chame de θ o
+    semi-ângulo de abertura desse cone. A seção do cone a <i>d</i> metros de
+    distância é um círculo cujo raio a trigonometria entrega de imediato:
+    <i>r</i> = <i>d</i>·tan&thinsp;θ e, como θ é pequeno,
+    <i>r</i> ≈ θ·<i>d</i>, com θ em radianos. Repare que o crescimento
+    linear do raio com a distância não depende de nada do jogo — é a
+    geometria de qualquer cone.
+  </p>
+  <p>
+    Falta saber o θ de cada arma. A engine não publica um ângulo: publica um
+    número <i>I</i> numa escala própria (a imprecisão que você encontra nas
+    tabelas do apêndice). A escala, porém, pode ser descoberta com a própria
+    planilha. Ela define o "accurate range" como a distância em que os tiros
+    ainda cabem num círculo de 1 pé de diâmetro — raio de 0,1524 m — e os
+    valores que publica obedecem exatamente a accurate range =
+    152,4/<i>I</i>. Basta substituir na geometria: se <i>r</i> = θ·<i>d</i>
+    deve valer 0,1524 m quando <i>d</i> = 152,4/<i>I</i>, então θ =
+    0,1524·<i>I</i>/152,4 = <i>I</i>/1000 radianos. Esse é o único papel do
+    1000 na fórmula: ele diz que <i>I</i> está medido em milésimos de
+    radiano — unidade que tem nome, o <strong>milirradiano</strong> (mrad),
+    e uma leitura prática excelente: 1 mrad corresponde a 1 mm de raio por
+    metro de distância. A AK-47 parada, com <i>I</i> = 7,01 no primeiro tiro
+    (um cone de cerca de 0,4°), abre portanto 7 mm por metro: 7 cm a 10 m,
+    14 cm a 20 m, 21 cm a 30 m.
+  </p>
+  <div class="lab">
+    <div class="ctr">
+      <span><label for="l5c-w">arma</label><select id="l5c-w"></select></span>
+      <span><label for="l5c-d">distância</label>
+        <input type="range" id="l5c-d" min="1" max="50" value="20" step="1">
+        <span class="rv" id="l5c-dv">20 m</span></span>
+      <span><label><input type="radio" name="l5c-aim" value="0.17" checked> peito (R = 17 cm)</label>
+      <label><input type="radio" name="l5c-aim" value="0.10"> cabeça (R = 10 cm)</label></span>
+    </div>
+    <svg id="l5c-svg" class="chart" role="img"
+         aria-label="Vista lateral do cone de dispersão e vista frontal do disco sobre o alvo, controladas pelos seletores"></svg>
+    <div class="readout" id="l5c-read"></div>
+    <div class="labnote">A vista lateral está com a vertical exagerada — o
+      cone real, de meio grau, seria invisível. Arraste a distância e
+      observe as duas vistas ao mesmo tempo: enquanto o disco tracejado
+      couber dentro do alvo, todo tiro acerta; a partir da distância crítica
+      d*, marcada na vista lateral, ele transborda, e a probabilidade de
+      acerto passa a ser a razão entre as áreas. Troque de arma para ver o
+      cone abrir e fechar — e o d* ir junto.</div>
+  </div>
+  <div class="eq"><span class="lbl">dispersão, acerto e distância crítica</span>
+    <i>r</i>(<i>d</i>) = <span class="fr"><span class="nu"><i>I</i></span><span class="de">1000</span></span> · <i>d</i>&emsp;&emsp;
+    <i>p</i> ≈ min<span style="font-size:135%">(</span>1, (<i>R</i>/<i>r</i>)<sup>2</sup><span style="font-size:135%">)</span>&emsp;&emsp;
+    <i>d</i><sup>*</sup> = <span class="fr"><span class="nu">1000 · <i>R</i></span><span class="de"><i>I</i></span></span>
+  </div>
+  <p>
+    Considere agora um alvo circular de raio <i>R</i> centrado na mira — usamos <i>R</i> ≈ 0,17 m para o peito e <i>R</i> ≈ 0,10 m para a cabeça. Se o ponto de impacto é uniforme no disco de dispersão, há dois casos. Quando <i>r</i> ≤ <i>R</i>, o disco cabe inteiro no alvo e todo tiro acerta. Quando <i>r</i> &gt; <i>R</i>, a probabilidade de acerto é a razão entre as áreas, (<i>R</i>/<i>r</i>)². Disso nasce a <strong>distância crítica</strong> <i>d</i><sup>*</sup> = 1000·<i>R</i>/<i>I</i>: até ela o acerto é garantido, e a partir dela <i>p</i> decai com 1/<i>d</i>². Para a AK mirando no peito, <i>d</i><sup>*</sup> ≈ 24 m; mirando na cabeça, ≈ 14 m.
+  </p>
+  <p>
+    O laboratório abaixo sorteia 500 tiros e compara a fração empírica de acertos com o valor analítico. É o estimador de Monte Carlo convergindo diante dos seus olhos — com direito a um detalhe de implementação que você vai reconhecer: para amostrar uniformemente num disco, o raio deve ser proporcional a √U, por causa do jacobiano 2ρ&thinsp;dρ das coordenadas polares.
+  </p>
+  <div class="lab">
+    <div class="ctr">
+      <span><label for="l5-w">arma (1º tiro, parado)</label><select id="l5-w"></select></span>
+      <span><label for="l5-d">distância</label>
+        <input type="range" id="l5-d" min="2" max="45" value="20" step="1">
+        <span class="rv" id="l5-dv">20 m</span></span>
+      <span><label><input type="radio" name="l5-aim" value="0.17" checked> peito</label>
+      <label><input type="radio" name="l5-aim" value="0.10"> cabeça</label></span>
+      <span><button class="preset" id="l5-re">sortear de novo</button></span>
+    </div>
+    <svg id="l5-svg" class="chart" role="img" aria-label="simulação de dispersão de tiros sobre o alvo"></svg>
+    <div class="readout" id="l5-read"></div>
+    <div class="labnote">O círculo tracejado é o disco de dispersão; o cheio, o alvo. Os pontos são 500 tiros sorteados uniformemente no disco.</div>
+  </div>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> A AWP na mira
+    tem I = 2,2. Sem calculadora: qual é a distância crítica d* dela no
+    peito? E na cabeça? O que isso diz sobre "a AWP é sempre precisa"?</span>
+    <details><summary>ver resposta</summary><p>
+      d* = 1000·R/I → peito: 1000·0,17/2,2 ≈ <strong>77 m</strong>; cabeça:
+      ≈ 45 m. Ambos maiores que qualquer linha de visão do jogo — a AWP
+      mirada nunca sai do regime p = 100%. Quando a comunidade diz que a AWP é "sempre precisa", não está exagerando: o d* dela é maior do que qualquer mapa.
+    </p></details>
+  </div>
+  <p class="tip">
+    Três ressalvas de modelagem merecem registro. Primeira: o uniforme-no-disco é o modelo deste livro; a engine, na verdade, soma dois sorteios — a imprecisão acumulada e o spread fixo —, o que concentra massa no centro, de modo que os nossos valores de <i>p</i> são levemente conservadores. Segunda: um alvo centrado na mira embute pontaria perfeita; o erro humano entrará no modelo apenas no capítulo 12, como um termo a mais na convolução. Terceira: o peito não é um disco de 17 cm — é uma simplificação do hitbox que deixa a conta fechada. Mudar <i>R</i> desloca as curvas, mas não altera a estrutura do argumento.
+  </p>
+</section>
+
+<section class="cap" id="c5b">
+  <div class="eyebrow">capítulo 6</div>
+  <h2>O vetor de estados: parado é um privilégio</h2>
+  <p>
+    O <i>I</i> do capítulo anterior é um valor de referência: primeiro tiro, jogador parado, em pé. Ele não é uma constante da arma. O que a engine guarda para cada arma é um <strong>vetor</strong> de componentes de imprecisão — e uma segunda cópia inteira desse vetor para o modo com mira. O <i>I</i> efetivo do seu próximo tiro é a soma do que o seu corpo está fazendo naquele instante:
+  </p>
+  <div class="eq"><span class="lbl">composição do I efetivo (aditiva)</span>
+    <i>I</i> = Spread + <i>I</i><sub>postura</sub> + <i>I</i><sub>mov</sub> · <i>f</i>(<i>v</i>/<i>v</i><sub>max</sub>) + <i>I</i><sub>spray</sub>(histórico)
+  </div>
+  <p>
+    em que <i>f</i> cresce de 0 (parado) até 1 (velocidade máxima). A composição pode ser auditada na própria planilha: a aba legível lista a "Running Inaccuracy" da Desert Eagle como 54,3 — exatamente a soma de 48,1 (componente de movimento), 4,2 (parado) e 2,0 (spread) da aba de valores brutos.
+  </p>
+  <div class="lab">
+    <svg class="chart" viewBox="0 0 820 600" role="img"
+         aria-label="Imprecisão por estado do jogador para cinco armas">
+      <text x="16" y="20">imprecisão por estado (1º tiro, sem spray) — valores brutos da engine</text>
+      <text x="16" y="52" class="dl">AK-47</text>
+      <rect x="150" y="40" width="15" height="13" rx="2" style="fill:var(--s1)"/><text x="171" y="51">agachado · 4,8</text>
+      <rect x="150" y="58" width="20" height="13" rx="2" style="fill:var(--s2)"/><text x="176" y="69">parado · 6,4</text>
+      <rect x="150" y="76" width="543" height="13" rx="2" style="fill:var(--s3)"/><text x="699" y="87" class="dl">correndo · 175,1</text>
+      <rect x="150" y="94" width="436" height="13" rx="2" style="fill:var(--s4)"/><text x="592" y="105">pulando · 140,8</text>
+      <text x="16" y="152" class="dl">M4A1-S</text>
+      <rect x="150" y="140" width="13" height="13" rx="2" style="fill:var(--s1)"/><text x="169" y="151">agachado · 4,1</text>
+      <rect x="150" y="158" width="15" height="13" rx="2" style="fill:var(--s2)"/><text x="171" y="169">parado · 4,9</text>
+      <rect x="150" y="176" width="288" height="13" rx="2" style="fill:var(--s3)"/><text x="444" y="187">correndo · 92,9</text>
+      <rect x="150" y="194" width="309" height="13" rx="2" style="fill:var(--s4)"/><text x="465" y="205">pulando · 99,7</text>
+      <text x="16" y="252" class="dl">MP9</text>
+      <rect x="150" y="240" width="25" height="13" rx="2" style="fill:var(--s1)"/><text x="181" y="251">agachado · 8,0</text>
+      <rect x="150" y="258" width="28" height="13" rx="2" style="fill:var(--s2)"/><text x="184" y="269">parado · 9,0</text>
+      <rect x="150" y="276" width="90" height="13" rx="2" style="fill:var(--s3)"/><text x="246" y="287" class="dl">correndo · 29,0</text>
+      <rect x="150" y="294" width="155" height="13" rx="2" style="fill:var(--s4)"/><text x="311" y="305">pulando · 50,0</text>
+      <text x="16" y="352" class="dl">AWP</text>
+      <text x="16" y="366">(sem mira)</text>
+      <rect x="150" y="340" width="188" height="13" rx="2" style="fill:var(--s1)"/><text x="344" y="351">agachado · 60,6</text>
+      <rect x="150" y="358" width="250" height="13" rx="2" style="fill:var(--s2)"/><text x="406" y="369">parado · 80,8</text>
+      <rect x="150" y="376" width="547" height="13" rx="2" style="fill:var(--s3)"/><text x="703" y="387">correndo · 176,5</text>
+      <rect x="150" y="394" width="415" height="13" rx="2" style="fill:var(--s4)"/><text x="571" y="405">pulando · 133,8</text>
+      <rect x="150" y="412" width="7" height="13" rx="2" style="fill:var(--s5)"/><text x="163" y="423" class="dl">parado, na mira · 2,2</text>
+      <text x="16" y="470" class="dl">SSG 08</text>
+      <text x="16" y="484">(sem mira)</text>
+      <rect x="150" y="458" width="74" height="13" rx="2" style="fill:var(--s1)"/><text x="230" y="469">agachado · 23,8</text>
+      <rect x="150" y="476" width="98" height="13" rx="2" style="fill:var(--s2)"/><text x="254" y="487">parado · 31,7</text>
+      <rect x="150" y="494" width="383" height="13" rx="2" style="fill:var(--s3)"/><text x="539" y="505">correndo · 123,5</text>
+      <rect x="150" y="512" width="18" height="13" rx="2" style="fill:var(--s4)"/><text x="174" y="523" class="dl">pulando · 5,7</text>
+      <text x="150" y="551">↑ a única arma do jogo precisa no ar — a lendária "jumping Scout"</text>
+    </svg>
+    <div class="labnote">Fonte: colunas InaccuracyCrouch, Stand, Move e Jump da aba Raw Values da planilha (os mesmos valores estão em data/weapons.csv no projeto). Lembre a regra de bolso do capítulo 5: a 20 m, o raio do disco em centímetros é aproximadamente 2×I — correndo com a AK, isso significa um disco de 3,5 m de raio.</div>
+  </div>
+  <p>
+    Esses números escondem quatro decisões de design do jogo. A MP9 é <strong>seis vezes menos punida</strong> que a AK por atirar em movimento — o papel das SMGs como armas de mobilidade está codificado nesse parâmetro, e não apenas no preço. A AWP sem mira (80,8) e com mira (2,2) são, na prática, duas armas diferentes. A SSG 08 é a única arma do jogo que fica <em>precisa no ar</em>. E agachar melhora a base em cerca de 20 a 25%, ao custo de transformar você num alvo parado exatamente na altura ideal de headshot.
+  </p>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> A 20 m, parado,
+    a AK acerta o peito com p = 100% (capítulo 5). Correndo a toda
+    velocidade, o I efetivo soma para ~182. Estime p antes de conferir.</span>
+    <details><summary>ver resposta</summary><p>
+      r = 182 · 20/1000 = <strong>3,6 m de raio</strong> →
+      p = (0,17/3,64)² ≈ <strong>0,2%</strong>. De certeza para 1-em-500 só
+      pelo estado das pernas. É o maior gradiente de probabilidade do jogo —
+      e está inteiro sob seu controle, de graça, via counter-strafe.
+    </p></details>
+  </div>
+  <p class="tip">
+    A técnica que decorre disso tudo é o <em>counter-strafe</em>. A penalidade de movimento escala com a sua velocidade atual, e abaixo de aproximadamente um terço da velocidade máxima a arma recupera a precisão de parado — esse limiar, registre-se, foi medido pela comunidade e não é um campo da planilha. Como soltar as teclas de movimento (ou tocar por um instante a direção oposta) zera a velocidade em cerca de 100 ms, a regra prática "pare antes de atirar" significa, literalmente: solte o A ou o D, conte um décimo de segundo e atire. Andar segurando shift não resolve — ainda é cerca de metade da velocidade máxima.
+  </p>
+</section>
+
+<section class="cap" id="c6">
+  <div class="eyebrow">capítulo 7</div>
+  <h2>Spray: a recorrência AR(1)</h2>
+  <p>
+    Segurar o gatilho degrada a mira: cada tiro adiciona uma quantidade <i>fire</i> à imprecisão, e esse excesso decai exponencialmente de volta ao repouso com fator λ por ciclo. Trata-se de uma recorrência autorregressiva de primeira ordem com ponto fixo — a rajada, portanto, não diverge: ela converge para um patamar ruim. E a <em>base</em> dessa recorrência é o I da postura em que você está, o vetor do capítulo 6 entrando na dinâmica deste: o laboratório permite trocá-la entre parado, agachado e correndo.
+  </p>
+  <div class="eq"><span class="lbl">acúmulo de imprecisão</span>
+    <i>I</i><sub><i>k</i>+1</sub> = base + (<i>I</i><sub><i>k</i></sub> − base + fire) · λ
+    &emsp;&emsp;<span style="color:var(--muted)">ponto fixo:</span>&ensp;
+    <i>I</i><sub>∞</sub> = base + <span class="fr"><span class="nu">fire · λ</span><span class="de">1 − λ</span></span>
+  </div>
+  <div class="lab">
+    <div class="legend" id="l6-leg"></div>
+    <div class="ctr">
+      <span><label for="l6-d">distância p/ converter em acerto</label>
+        <input type="range" id="l6-d" min="2" max="45" value="20" step="1">
+        <span class="rv" id="l6-dv">20 m</span></span>
+      <span><label><input type="radio" name="l6-st" value="stand" checked> parado</label>
+      <label><input type="radio" name="l6-st" value="crouch"> agachado</label>
+      <label><input type="radio" name="l6-st" value="run"> correndo</label></span>
+    </div>
+    <svg id="l6-svg" class="chart" role="img" aria-label="curvas de imprecisão acumulada por tiro"></svg>
+    <div class="readout" id="l6-read"></div>
+    <div class="labnote">Parado, note os perfis distintos: a M4A1-S começa
+      mais precisa que a AK, mas degrada mais ao spraiar; a MP9 começa pior
+      e quase não degrada, porque o seu <i>fire</i> é baixo. Agachado, tudo
+      melhora duas vezes — a base cai e o λ também (agachado recupera mais
+      rápido; o ajuste é próprio, feito sobre as curvas de agachado da
+      planilha). Agora troque para "correndo" e leve a distância para 5 m:
+      é aqui que a identidade das SMGs aparece — a MP9 em movimento ainda
+      acerta a maioria dos tiros, enquanto a AK não acerta quase nenhum.
+      Para o caso em movimento reutilizamos o λ de pé, uma aproximação
+      declarada: a planilha só publica tempos de recuperação parado e
+      agachado.</div>
+  </div>
+</section>
+
+<section class="cap" id="cap8">
+  <div class="eyebrow">capítulo 8</div>
+  <h2>Recuo ≠ imprecisão: o que a prática compra</h2>
+  <p>
+    Dois mecanismos diferentes tiram a sua bala do lugar, e até aqui o livro modelou apenas um deles. A <strong>imprecisão</strong> dos capítulos 5 a 7 sorteia a bala num disco em volta da mira: é ruído puro, e nenhuma habilidade a remove. O <strong>recuo</strong> é outra coisa: ele move a própria mira. A cada tiro, o ponto de mira salta segundo um padrão característico da arma. A distinção que importa é estatística: recuo é <strong>viés</strong> — um deslocamento que pode ser conhecido e subtraído —, enquanto imprecisão é <strong>variância</strong>, irredutível por definição.
+  </p>
+  <div class="eq"><span class="lbl">decomposição do desvio no tiro k</span>
+    desvio(<i>k</i>) = (1 − <i>c</i>) · <i>R</i>(<i>k</i>) + ε(<i>k</i>)
+    &emsp;&emsp;<span style="color:var(--muted)"><i>R</i> = padrão de recuo (subtraível) · <i>c</i> = sua compensação · ε = capítulos 5–7</span>
+  </div>
+  <p>
+    Aqui a planilha guarda um fato notável: para praticamente todas as armas automáticas, o padrão de recuo é <strong>fixo</strong> ("Set Pattern") — a mesma tabela de saltos em toda rajada, para todo jogador, em qualquer servidor. A AK-47 tem variância de magnitude igual a zero: o spray dela é idêntico e reproduzível, tiro a tiro. A engine, por assim dizer, publica o gabarito. "Spray control" é o nome da habilidade de subtrair <i>R</i>(<i>k</i>) em tempo real, e levar <i>c</i> até 1 é questão de treino. As exceções são as armas de recuo <strong>aleatório</strong> — Desert Eagle e AWP —, nas quais apenas o caminho médio pode ser subtraído: o restante é sorteado a cada disparo, e nenhum treino o remove.
+  </p>
+  <div class="lab">
+    <div class="ctr">
+      <span><label for="l8b-w">arma</label><select id="l8b-w"></select></span>
+      <span><label for="l8b-c">compensação c</label>
+        <input type="range" id="l8b-c" min="0" max="100" value="0" step="5">
+        <span class="rv" id="l8b-cv">0%</span></span>
+      <span><button class="preset" id="l8b-re">atirar 5 rajadas de novo</button></span>
+    </div>
+    <svg id="l8b-svg" class="chart" role="img"
+         aria-label="Trajetória do ponto de mira ao longo de uma rajada, com e sem compensação"></svg>
+    <div class="readout" id="l8b-read"></div>
+    <div class="labnote">O gráfico mostra o caminho do ponto de mira ao longo de 12 tiros, em 5 rajadas sorteadas. O padrão é estilizado: nós o geramos a partir da magnitude e das variâncias da planilha, porque o formato exato da tabela real de cada arma não consta nela. As unidades são as de recuo da engine e não se convertem em milirradianos — leia formas e razões, não metros. Nas armas de padrão fixo, as cinco rajadas caem sobre o mesmo caminho; na Desert Eagle e na AWP, são cinco caminhos diferentes. Arraste o controle de compensação e observe o que o treino pode remover — e o que não pode.</div>
+  </div>
+  <p>
+    Os números contam quatro histórias. A AK tem o maior chute por tiro entre os rifles (30, contra 25 da M4A1-S e 20 da FAMAS): o padrão é aprendível, mas os degraus a subtrair são maiores — exatamente a reputação que ela carrega. A Negev tem variância de ângulo zero, ou seja, um recuo em linha reta para cima, trivialmente compensável; some isso à imprecisão que <em>cai</em> durante o fogo contínuo (capítulo 7) e a metralhadora-laser fica explicada por completo. A Desert Eagle randomiza 60° de ângulo e ±18 de magnitude por tiro — controlar o spray dela não é difícil, é impossível por construção, e é por isso que o capítulo 10 recomenda o tap. Por fim, a AWP tem o maior chute do jogo (78), e aleatório — o que na prática não importa, porque na cadência dela, de um tiro a cada 1,5 s, o recuo decai por inteiro entre um disparo e outro.
+  </p>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> Sem olhar o
+    laboratório: por que a combinação "variância de ângulo 0 no recuo" +
+    "imprecisão decrescente no spray" (Negev) é mais valiosa a 25 m do que
+    "padrão fixo aprendível" + "imprecisão crescente" (AK)? E por que isso
+    não aparece no ranking de compra do capítulo 17?</span>
+    <details><summary>ver resposta</summary><p>
+      Porque na Negev os dois canais de erro <em>melhoram</em> com a rajada
+      longa (recuo reto já compensado + ε caindo para o regime laser),
+      enquanto na AK ambos pioram (degraus de 30 para subtrair + ε subindo
+      via AR(1)) — a Negev sustenta p alto onde a AK precisa tapar. Não
+      domina a compra porque paga em tudo que está fora do duelo parado:
+      mobilidade, tempo de saque, recarga de 5,7 s e preço de força ($1.700)
+      sem a versatilidade de um rifle.
+    </p></details>
+  </div>
+  <p class="tip">
+    Cartão do modelo. O livro inteiro assume <i>c</i> = 1, o recuo perfeitamente compensado, e este capítulo é a justificativa: como o padrão dos rifles é fixo e aprendível, <i>c</i> = 1 é um teto de habilidade atingível, não uma fantasia. O que a hipótese esconde: jogadores reais têm <i>c</i> &lt; 1, e o resíduo (1−<i>c</i>)·<i>R</i>(<i>k</i>) cresce ao longo da rajada, empilhando-se sobre o crescimento AR(1) da imprecisão. Os dois canais punem o gatilho preso, e a cadência do capítulo 10 administra ambos de uma só vez — tapar zera o padrão e recupera ε. O capítulo 12 absorverá o resíduo humano num único parâmetro σ.
+  </p>
+</section>
+
+<div class="part" id="parte2">
+  <div class="pt-label">Parte II</div>
+  <div class="pt-title">O duelo</div>
+</div>
+
+<section class="cap" id="c7">
+  <div class="eyebrow">capítulo 9</div>
+  <h2>TTK como variável aleatória</h2>
+  <p>
+    Chegou a hora de juntar os capítulos. Cada tiro <i>k</i> acerta com probabilidade <i>p</i><sub><i>k</i></sub> — que, como vimos, cai ao longo da rajada — e são necessários <i>N</i> acertos para matar. O TTK é, portanto, o tempo do <i>N</i>-ésimo sucesso numa sequência de ensaios de Bernoulli não homogêneos. Ele pode ser computado exatamente por programação dinâmica sobre o número de acertos acumulados — um problema de primeira passagem. E, se <i>p</i> fosse constante, o número de tiros seguiria uma binomial negativa, com esperança em forma fechada:
+  </p>
+  <div class="eq"><span class="lbl">aproximação de p constante</span>
+    𝔼[tiros] = <span class="fr"><span class="nu"><i>N</i></span><span class="de"><i>p</i></span></span>
+    &ensp;⇒&ensp; 𝔼[TTK] ≈ <span style="font-size:135%">(</span><span class="fr"><span class="nu"><i>N</i></span><span class="de"><i>p</i></span></span> − 1<span style="font-size:135%">)</span> · τ
+  </div>
+  <div class="lab">
+    <div class="legend" id="l7-leg"></div>
+    <div class="ctr">
+      <span><label for="l7-w">arma</label><select id="l7-w"></select></span>
+      <span><label for="l7-d">distância</label>
+        <input type="range" id="l7-d" min="2" max="45" value="20" step="1">
+        <span class="rv" id="l7-dv">20 m</span></span>
+      <span><label><input type="checkbox" id="l7-nb" checked> sobrepor binomial negativa (p = p₁)</label></span>
+    </div>
+    <svg id="l7-svg" class="chart" role="img" aria-label="distribuição exata do tempo até matar"></svg>
+    <div class="readout" id="l7-read"></div>
+    <div class="labnote">As barras mostram a distribuição exata sob spray contínuo, incluindo a recarga; o contorno é a aproximação de p constante, usando o p do primeiro tiro. De perto, as duas coincidem; de longe, o spray degrada p e a aproximação se torna otimista — a cauda verdadeira é bem mais pesada.</div>
+  </div>
+</section>
+
+<section class="cap" id="c8">
+  <div class="eyebrow">capítulo 10</div>
+  <h2>Cadência ótima: spray, burst e tap</h2>
+  <p>
+    Atirar mais devagar deixa a imprecisão se recuperar — o fator λ é elevado ao múltiplo do intervalo —, e disso nasce um tradeoff limpo: taxa de tentativas contra qualidade de cada tentativa. O ponto ótimo depende da distância, e reproduz, sem que ninguém o tenha programado, a técnica que os jogadores aprendem na prática: spray de perto, rajadas curtas na média distância, tiros espaçados de longe.
+  </p>
+  <div class="eq"><span class="lbl">cadência ótima</span>
+    <i>T</i><sup>*</sup> = arg min<sub><i>T</i></sub>&ensp; 𝔼[TTK](<i>T</i>)
+    &emsp;&emsp;<span style="color:var(--muted)">heurística:</span>&ensp;
+    <i>T</i> · <span class="fr"><span class="nu"><i>N</i></span><span class="de"><i>p</i>(<i>T</i>)</span></span>
+  </div>
+  <div class="lab">
+    <div class="ctr">
+      <span><label for="l8-w">arma</label><select id="l8-w"></select></span>
+      <span><label for="l8-d">distância</label>
+        <input type="range" id="l8-d" min="2" max="45" value="25" step="1">
+        <span class="rv" id="l8-dv">25 m</span></span>
+    </div>
+    <svg id="l8-svg" class="chart" role="img" aria-label="tempo esperado até matar por cadência de tiro"></svg>
+    <div class="readout" id="l8-read"></div>
+    <div class="labnote">Arraste a distância e observe o mínimo da curva migrar: até 5–10 m o ótimo é 1× (spray); por volta de 20 m, cerca de 2× (burst); de 30 m em diante, 3–4× (tap). Você está vendo uma política ótima mudar de regime conforme a geometria.</div>
+  </div>
+</section>
+
+<section class="cap" id="c9">
+  <div class="eyebrow">capítulo 11</div>
+  <h2>O duelo: distribuições, não médias</h2>
+  <p>
+    O duelo compara as duas distribuições inteiras, par a par: vence quem para primeiro, e médias não bastam. Uma arma pode ter 𝔼[TTK] melhor que a outra e ainda assim perder a maioria das corridas — basta que o seu tempo mínimo seja pior, de modo que ela perca a disputa típica e se recupere apenas na cauda. A variância também tem lado: o favorito quer consistência, o azarão quer dispersão. Uma escopeta barata, com massa de probabilidade em "matou com o primeiro cartucho", rouba duelos que a média diz que ela não deveria ganhar.
+  </p>
+  <div class="eq"><span class="lbl">probabilidade de vitória</span>
+    P(vitória) = P(<i>T</i><sub>A</sub> &lt; <i>T</i><sub>B</sub>) + ½&thinsp;P(<i>T</i><sub>A</sub> = <i>T</i><sub>B</sub>)
+  </div>
+  <div class="lab">
+    <div class="ctr">
+      <span><label for="l9-a">arma A</label><select id="l9-a"></select></span>
+      <span><label for="l9-b">arma B</label><select id="l9-b"></select></span>
+      <span><label for="l9-d">distância</label>
+        <input type="range" id="l9-d" min="2" max="45" value="12" step="1">
+        <span class="rv" id="l9-dv">12 m</span></span>
+    </div>
+    <div class="ctr">
+      <span style="color:var(--muted);font-size:12px">presets:</span>
+      <button class="preset" id="l9-p1">paradoxo SG 553 × AK-47</button>
+      <button class="preset" id="l9-p2">azarão MAG-7 × AK-47 a 5 m</button>
+      <button class="preset" id="l9-p3">AWP × AK-47 a 30 m</button>
+    </div>
+    <div class="legend" id="l9-leg"></div>
+    <svg id="l9-svg" class="chart" role="img" aria-label="distribuições de tempo até matar das duas armas"></svg>
+    <div class="readout" id="l9-read"></div>
+    <div class="labnote">Ambos os jogadores estão parados, pré-mirados no peito de um alvo com colete, e atiram a partir de t = 0, cada um na sua cadência ótima. A MAG-7 dispara 8 projéteis por cartucho; os acertos por disparo seguem uma binomial correlacionada pelo sorteio compartilhado do cartucho.</div>
+  </div>
+</section>
+
+<section class="cap" id="cap12">
+  <div class="eyebrow">capítulo 12</div>
+  <h2>Erro de mira: o jogador entra no modelo</h2>
+  <p>
+    Até aqui a mira esteve pregada no centro do alvo: o livro modelou a arma, e não você. Neste capítulo, o resíduo humano — o flick que não caiu exato, o tremor, a compensação imperfeita do capítulo 8 — entra como um único parâmetro: <strong>σ</strong>, o desvio angular da sua mira, medido em milirradianos. É a mesma unidade do <i>I</i> das armas, de modo que os dois erros escalam juntos com a distância. O ponto de impacto passa a ser a soma de duas fontes independentes, e o acerto vira uma convolução:
+  </p>
+  <div class="eq"><span class="lbl">o tiro com jogador</span>
+    <i>Z</i><sub><i>k</i></sub> = <i>A</i> + <i>W</i><sub><i>k</i></sub>
+    &emsp;&emsp;<i>A</i> ~ N₂(0, σ²) ⟹ |<i>A</i>| ~ Rayleigh(σ)
+    &emsp;&emsp;<i>p</i>(σ) = 𝔼<sub><i>A</i></sub>[ sobreposição(<i>R</i>, <i>r</i><sub><i>k</i></sub>, |<i>A</i>|) ]
+  </div>
+  <p>
+    Aqui mora uma decisão estatística que muda tudo: o erro <i>A</i> é sorteado <strong>por tiro</strong> ou <strong>por rajada</strong>? Se ele é um tremor independente a cada disparo, os erros se diluem na média. Se é um flick — um deslocamento persistente durante a rajada inteira —, então ou tudo tende a acertar, ou tudo tende a errar. Os marginais por tiro são idênticos nos dois casos, mas as distribuições de TTK são completamente diferentes. É a mesma matemática da MAG-7 do capítulo 11: um sorteio compartilhado somado a ruídos individuais. A realidade, em que você corrige a mira em 200 a 300 ms, vive entre os dois extremos — e o laboratório mostra ambos.
+  </p>
+  <div class="lab">
+    <div class="legend" id="l12-leg"></div>
+    <div class="ctr">
+      <span><label for="l12-w">arma</label><select id="l12-w"></select></span>
+      <span><label for="l12-d">distância</label>
+        <input type="range" id="l12-d" min="2" max="45" value="15" step="1">
+        <span class="rv" id="l12-dv">15 m</span></span>
+      <span><label for="l12-s">σ do jogador</label>
+        <input type="range" id="l12-s" min="0" max="10" value="3" step="0.5">
+        <span class="rv" id="l12-sv">3 mrad</span></span>
+      <span><label><input type="radio" name="l12-aim" value="peito" checked> peito</label>
+      <label><input type="radio" name="l12-aim" value="cabeca"> cabeça</label></span>
+    </div>
+    <svg id="l12-svg" class="chart" role="img"
+         aria-label="Distribuições do tempo até matar com erro de mira persistente versus re-sorteado por tiro"></svg>
+    <div class="readout" id="l12-read"></div>
+    <div class="labnote">Spray contínuo contra um alvo de colete; peito com R = 17 cm, cabeça com R = 10 cm. Com σ = 0, o laboratório reproduz o capítulo 9. Para calibrar o slider: a probabilidade de um flick cair numa cabeça a 20 m é de 96% com σ = 2 mrad (aim de profissional), 39% com σ = 5 e 17% com σ = 8. O σ é o único parâmetro do livro que não vem da planilha — ele é você.</div>
+  </div>
+  <p>
+    Esses resultados merecem quatro leituras. Primeira: <strong>σ derrete o platô</strong> — o <i>d</i><sup>*</sup> do capítulo 5 era o teto da arma, e com σ &gt; 0 não existe mais acerto garantido em distância alguma, apenas decaimentos mais ou menos rápidos. Segunda: <strong>as armas perdoam σ de maneiras diferentes</strong> — quem precisa de muitos acertos com tremor independente dilui o erro na média, enquanto os one-taps viram tudo-ou-nada no flick; os "100% da AWP" do capítulo 11 eram a hipótese σ = 0 falando, e agora dá para medir quanto custa cada milirradiano seu. Terceira: <strong>a escolha entre cabeça e peito vira uma função de σ</strong> — para algumas combinações de arma e distância existe um σ* de crossover, mas para outras, como a AK a 15 m, a cabeça domina a faixa inteira; o laboratório decide caso a caso, e o resultado surpreende com frequência. Quarta: <strong>a correlação engorda a cauda</strong> — o modo persistente é o famoso "whiffei a rajada inteira", com a mesma média por tiro e muito mais variância no desfecho.
+  </p>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> Seu flick tem
+    σ = 3 mrad e o alvo está a 20 m. Qual a probabilidade de o flick cair
+    dentro de um círculo de cabeça (R = 10 cm)? Dica: |A| é Rayleigh, então
+    P(|A| ≤ R) = 1 − exp(−R²/2s²), com s = σ·d/1000.</span>
+    <details><summary>ver resposta</summary><p>
+      s = 3 · 20/1000 = 0,06 m → R²/(2s²) = 0,01/0,0072 ≈ 1,39 →
+      P = 1 − e<sup>−1,39</sup> ≈ <strong>75%</strong>. Três em cada quatro
+      flicks seus caem na cabeça a 20 m — e o quarto é exatamente o caso em
+      que o modo persistente pune: a rajada inteira nasce fora do alvo.
+    </p></details>
+  </div>
+  <p class="tip">
+    Cartão do modelo. O σ é gaussiano, isotrópico e angular — o controle motor humano em tarefas de apontar é aproximadamente assim —, e as âncoras de calibração da legenda são interpretativas, não medidas da planilha: σ é o único parâmetro do livro que não vem dela. Os dois modos de sorteio são os extremos da dinâmica real de correção. O resíduo de recuo (1−<i>c</i>)·<i>R</i>(<i>k</i>) do capítulo 8 está absorvido dentro do σ. A cadência ficou fixa em spray para isolar o efeito — o acoplamento entre σ e cadência ótima fica como exercício mental (uma dica: σ alto favorece cadências que re-sorteiam o flick). As escopetas ficaram fora do laboratório: empilhar dois sorteios compartilhados é imediato, mas não acrescenta ideia nova.
+  </p>
+</section>
+<section class="cap" id="cap13">
+  <div class="eyebrow">capítulo 13</div>
+  <h2>Tagging: o primeiro acerto compra os próximos</h2>
+  <p>
+    Ser atingido no CS2 não custa apenas vida: custa <strong>velocidade</strong>. Cada bala que acerta multiplica a sua velocidade atual pelo FlinchVelocityModifier da arma do atirador — a AK corta você para 40% no primeiro acerto e para 55% nos seguintes; a AWP, para 35% — e a velocidade só se recupera aos poucos. Nasce daí o acoplamento mais cruel do jogo: mais lento, você fica mais tempo exposto; mais tempo exposto, surgem mais janelas de tiro; mais janelas, mais acertos. Na linguagem dos processos estocásticos, os acertos formam um processo <strong>auto-excitante</strong>: cada evento eleva a intensidade dos eventos futuros, sem que a pontaria do atirador tenha mudado.
+  </p>
+  <div class="eq"><span class="lbl">a fuga com tagging</span>
+    <i>v</i>(<i>t</i>) = <i>v</i><sub>max</sub> − (<i>v</i><sub>max</sub> − <i>v</i>₀)·e<sup>−<i>t</i>/τ</sup>
+    &emsp;&emsp;<span style="color:var(--muted)">no acerto:</span>&ensp;
+    <i>v</i> ← <i>f</i>·<i>v</i>,&ensp; hp ← hp − <i>D</i>(<i>d</i>)
+  </div>
+  <p>
+    O laboratório monta o cenário canônico: você atravessa um vão aberto de largura L, de faca na mão (6,35 m/s), enquanto um atirador parado, a <i>d</i> metros, spraya com probabilidade <i>p</i> de acerto por tiro. O <i>p</i> é um parâmetro do atirador — alvo em movimento e tracking não estão no nosso modelo de dispersão. A comparação que ensina é o contrafactual: a mesma travessia com o tagging <em>desligado</em> (f = 1). A diferença entre as duas curvas é o que o mecanismo, sozinho, mata.
+  </p>
+  <div class="lab">
+    <div class="legend" id="l13-leg"></div>
+    <div class="ctr">
+      <span><label for="l13-w">arma do atirador</label><select id="l13-w"></select></span>
+      <span><label for="l13-d">distância do atirador</label>
+        <input type="range" id="l13-d" min="10" max="40" value="20" step="1">
+        <span class="rv" id="l13-dv">20 m</span></span>
+      <span><label for="l13-l">largura do vão</label>
+        <input type="range" id="l13-l" min="1" max="15" value="6" step="0.5">
+        <span class="rv" id="l13-lv">6 m</span></span>
+      <span><label for="l13-p">p do atirador por tiro</label>
+        <input type="range" id="l13-p" min="10" max="90" value="40" step="5">
+        <span class="rv" id="l13-pv">40%</span></span>
+    </div>
+    <svg id="l13-svg" class="chart" role="img"
+         aria-label="Probabilidade de atravessar o vão vivo, com e sem tagging, por largura do vão"></svg>
+    <div class="readout" id="l13-read"></div>
+    <div class="labnote">O corredor tem colete e 100 de vida; o atirador reage em 0,25 s e spraya na cadência da arma; a velocidade se recupera com τ = 0,7 s. MP9 e UMP-45 têm o campo de flinch vazio na configuração — dado faltante, e não imunidade — e por isso ficaram fora do laboratório.</div>
+  </div>
+  <p>
+    Há três leituras a fazer. <strong>Rifles negam espaço sem precisar matar</strong>: um vão coberto por uma AK custa cerca de duas vezes o tempo de travessia depois do primeiro acerto, e é em boa parte por isso que os mapas competitivos se jogam em volta dos vãos. <strong>Para armas de um tiro, o tagging é discurso vazio</strong>: a AWP tem o flinch mais pesado do jogo (35%) e nunca o usa no peito — quem ela acerta não fica lento, fica morto; o flinch dela só importa nos acertos que não matam, como perna ou através de fumaça, fora deste modelo. E <strong>o p fixo é conservador</strong>: um alvo desacelerado é mais fácil de acompanhar, então o p real do atirador sobe depois do primeiro acerto — o efeito verdadeiro é ainda maior que o simulado.
+  </p>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> Vão de 6 m
+    (0,94 s de travessia livre), AK a 100 ms por tiro, reação de 0,25 s:
+    ~7 janelas de tiro, e com p = 40% a conta ingênua dá E[acertos] ≈ 2,8.
+    O laboratório mostra mais que isso com o tagging ligado — sem nenhuma
+    mudança em p. De onde vêm os acertos extras?</span>
+    <details><summary>ver resposta</summary><p>
+      Do próprio processo: cada acerto multiplica a velocidade por 0,4–0,55,
+      esticando o tempo restante de travessia — e portanto o número de
+      janelas futuras. A intensidade do processo de contagem depende do
+      histórico dele mesmo (auto-excitação, um Hawkes discreto): E[N] =
+      p·E[janelas(N)], com janelas crescendo em N. A conta ingênua assume as
+      janelas fixas; o tagging as torna endógenas.
+    </p></details>
+  </div>
+  <p class="tip">
+    Cartão do modelo. O τ de recuperação (0,7 s) e o tempo de reação (0,25 s) são constantes declaradas, e aplicar o modificador Large ao primeiro acerto e o Small aos demais é interpretação nossa dos nomes dos campos. O corredor não devolve fogo — o capítulo 6 explica por quê: correndo, a imprecisão dele é dez vezes maior. A morte usa o dano com colete do capítulo 2. Para o pesquisador: acertos como processo pontual auto-excitante são exatamente a família de Hawkes, aqui em tempo discreto e com uma marca (o dano) que absorve o processo quando hp ≤ 0.
+  </p>
+</section>
+<div class="stub"><span class="n">capítulo 14</span>Peeker's advantage: a corrida com handicap — em preparação</div>
+
+<div class="part" id="parte3">
+  <div class="pt-label">Parte III</div>
+  <div class="pt-title">O round</div>
+</div>
+
+<div class="stub"><span class="n">capítulo 15</span>Trocas e 2v1: estatística de ordem — em preparação</div>
+<div class="stub"><span class="n">capítulo 16</span>Do duelo ao round: agregação 5v5 — em preparação</div>
+
+<div class="part" id="parte4">
+  <div class="pt-label">Parte IV</div>
+  <div class="pt-title">A partida</div>
+</div>
+
+<section class="cap" id="c11">
+  <div class="eyebrow">capítulo 17</div>
+  <h2>A economia: quando ecoar é um problema de controle</h2>
+  <p>
+    Até aqui otimizamos um round isolado, mas o dinheiro persiste — e cada compra é, na verdade, uma decisão sequencial sob incerteza. Vamos formalizá-la como um processo de decisão markoviano (MDP). O <strong>estado</strong> é o par (dinheiro por jogador, nível do bônus de derrota); as <strong>ações</strong> são eco (não gastar), force (cerca de $2.000) e full-buy (cerca de $5.000); a <strong>transição</strong> soma o prêmio de vitória ou desce a escada de derrotas; e a <strong>recompensa</strong> é 1 por round vencido. Com horizonte finito — t rounds restantes no half —, a solução é a indução para trás:
+  </p>
+  <div class="eq"><span class="lbl">equação de Bellman (horizonte finito)</span>
+    <i>V</i><sub><i>t</i></sub>(<i>m</i>, <i>b</i>) = max<sub><i>a</i></sub> { <i>p</i><sub><i>a</i></sub>·[1 + <i>V</i><sub><i>t</i>−1</sub>(<i>m</i>′<sub>win</sub>, <i>b</i>−1)] + (1−<i>p</i><sub><i>a</i></sub>)·<i>V</i><sub><i>t</i>−1</sub>(<i>m</i>′<sub>loss</sub>, <i>b</i>+1) }
+  </div>
+  <p>
+    Os parâmetros do modelo são as probabilidades de vencer o round em cada tier de compra, sempre contra um oponente de full-buy: <i>p</i><sub>full</sub> = 50%, por simetria, e <i>p</i><sub>force</sub> e <i>p</i><sub>eco</sub> ajustáveis nos sliders. Mexa neles e observe a política inteira se reorganizar — cada célula do mapa é um estado, e a cor indica a ação ótima. Uma nota de arquitetura: por enquanto esses ps são parâmetros livres; o capítulo 16, na Parte III, vai derivá-los das distribuições de duelo da Parte II.
+  </p>
+  <div class="lab">
+    <div class="legend" id="l11-leg"></div>
+    <div class="ctr">
+      <span><label for="l11-t">rounds restantes</label>
+        <input type="range" id="l11-t" min="1" max="12" value="8" step="1">
+        <span class="rv" id="l11-tv">8</span></span>
+      <span><label for="l11-pf">P(win | force)</label>
+        <input type="range" id="l11-pf" min="15" max="40" value="22" step="1">
+        <span class="rv" id="l11-pfv">22%</span></span>
+      <span><label for="l11-pe">P(win | eco)</label>
+        <input type="range" id="l11-pe" min="4" max="20" value="10" step="1">
+        <span class="rv" id="l11-pev">10%</span></span>
+    </div>
+    <svg id="l11-svg" class="chart" role="img"
+         aria-label="Mapa da política ótima de compra por dinheiro e bônus de derrota"></svg>
+    <div class="readout" id="l11-read"></div>
+    <div class="labnote">Clique numa célula para ver o valor de cada ação naquele estado. Há três estruturas para procurar: a banda de poupança logo abaixo dos $5.000 (com $4.500, ecoar hoje para comprar full amanhã supera o force — o "quase-dinheiro" compra paciência); o último round, em que a banda desaparece porque poupar não tem futuro; e a fronteira eco/force se movendo conforme você ajusta os ps — acima de ~25% em P(win&nbsp;|&nbsp;force), a banda some. O critério implícito da banda é a pergunta: "depois de mais uma derrota, eu ainda compro full?"</div>
+  </div>
+  <div class="ex"><span class="exq"><strong>Desafio.</strong> Antes de
+    arrastar "rounds restantes" para 1: qual é a política ótima do último
+    round, para qualquer dinheiro e qualquer bônus? Por quê?</span>
+    <details><summary>ver resposta</summary><p>
+      Compre a maior probabilidade que o dinheiro pagar: full se ≥ $5.000,
+      senão force se ≥ $2.000, senão eco. No horizonte t = 1,
+      V<sub>0</sub> ≡ 0 — dinheiro que sobra não vale nada. A "banda de
+      poupança" é inteiramente uma criatura do futuro; sem futuro, ela
+      evapora. (É por isso que se força no round 12 e no round 24.)
+    </p></details>
+  </div>
+  <p class="tip">
+    Cartão do modelo. O oponente está sempre de full-buy (hipótese pessimista para você); o dinheiro é a média por jogador do time; a escada de derrotas foi arredondada para $1.500–3.500 em passos de $500 (no jogo real ela vai de $1.400 a $3.400, somando $500 por derrota consecutiva e caindo um nível a cada vitória — mecânica que o modelo reproduz); o prêmio de vitória é um valor médio de $3.500; e não há kill awards por arma, bônus de plant nem armas que sobrevivem ao round. O ponto de rigor: com o oponente também decidindo, o problema real é um <em>jogo</em> de Markov — fixar a política dele é o que o reduz a um MDP, e relaxar essa hipótese é o capítulo de teoria dos jogos que este livro ainda não tem.
+  </p>
+</section>
+
+<div class="stub"><span class="n">capítulo 18</span>Validação: os seus demos contra o modelo — em preparação</div>
+
+<section class="cap" id="c10">
+  <div class="eyebrow">posfácio</div>
+  <h2>Limites do modelo — e hábitos que caem da matemática</h2>
+  <p>
+    Salvo aviso em contrário, tudo neste livro assume dois jogadores parados, pré-mirados, com o recuo perfeitamente compensado e acertos apenas no peito (ou na cabeça, quando indicado). O jogo real acrescenta camadas: o movimento (andar multiplica a imprecisão por cerca de dez — pare antes de atirar), a vantagem de quem aparece primeiro na tela, o tagging, a mistura de hitboxes e todo o jogo de informação e utilitárias. Os capítulos em preparação das Partes II e III atacam exatamente essas lacunas, na ordem combinada: primeiro esgotar o 1v1, depois subir a escala. O modelo não é o jogo — é o esqueleto do jogo. Mas o esqueleto, como vimos, já explica quase toda a meta de compra.
+  </p>
+  <p>
+    Estes são os hábitos que caem diretamente da matemática: compre colete (capítulo 3); pare de andar antes de atirar (capítulos 5 e 6); mire na altura da cabeça (capítulos 3 e 5 — <i>N</i> menor vence corridas); controle a cadência pela distância (capítulo 10); e lute na distância em que a sua curva está acima da do oponente (capítulo 11).
+  </p>
+  <p class="tip">
+    Para reproduzir qualquer número do livro, execute <code>python run_analysis.py</code> em <code>cs2-buy-optimizer/</code> — o script reconstrói todas as tabelas a partir da planilha. E o sumário é um contrato: os capítulos em cinza chegarão na numeração prometida. É só pedir o próximo.
+  </p>
+</section>
+
+
+<section class="cap" id="apx">
+  <div class="eyebrow">apêndice</div>
+  <h2>As constantes das armas</h2>
+  <p>
+    Todas as constantes usadas nas fórmulas e nos laboratórios estão reunidas
+    aqui, extraídas da aba Raw Values da planilha (os mesmos valores estão em
+    <code>data/weapons.csv</code> no projeto). A tabela A alimenta os
+    capítulos 2 a 4; a tabela B, os capítulos 5 a 7 e 12; a tabela C, os
+    capítulos 8 e 13. Sobre as unidades: as imprecisões estão na escala da
+    engine, que o capítulo 5 mostrou equivaler a milirradianos; as magnitudes
+    de recuo estão em unidades próprias da engine, sem conversão conhecida
+    para ângulo (capítulo 8); e o λ é o fator de recuperação por ciclo que
+    ajustamos às curvas da planilha no capítulo 7.
+  </p>
+  <div class="lab"><div class="flab-t">Tabela A — dano e ritmo (capítulos 2 a 4)</div><div class="tblwrap"><table class="const"><tr><th>arma</th><th class="num">D₀</th><th class="num">AP</th><th class="num">RM</th><th class="num">τ (ms)</th><th class="num">pente</th><th class="num">recarga (s)</th><th class="num">mult. cabeça</th><th class="num">projéteis</th></tr><tr><td>Glock-18</td><td class="num">30</td><td class="num">0,47</td><td class="num">0,85</td><td class="num">150</td><td class="num">20</td><td class="num">2,27</td><td class="num">4</td><td class="num">1</td></tr><tr><td>Desert Eagle</td><td class="num">53</td><td class="num">0,932</td><td class="num">0,85</td><td class="num">225</td><td class="num">7</td><td class="num">2,20</td><td class="num">3,9</td><td class="num">1</td></tr><tr><td>MP9</td><td class="num">26</td><td class="num">0,6</td><td class="num">0,87</td><td class="num">70</td><td class="num">30</td><td class="num">2,13</td><td class="num">4</td><td class="num">1</td></tr><tr><td>FAMAS</td><td class="num">30</td><td class="num">0,7</td><td class="num">0,96</td><td class="num">90</td><td class="num">25</td><td class="num">3,30</td><td class="num">4</td><td class="num">1</td></tr><tr><td>AK-47</td><td class="num">36</td><td class="num">0,775</td><td class="num">0,98</td><td class="num">100</td><td class="num">30</td><td class="num">2,43</td><td class="num">4</td><td class="num">1</td></tr><tr><td>M4A1-S</td><td class="num">38</td><td class="num">0,7</td><td class="num">0,94</td><td class="num">100</td><td class="num">20</td><td class="num">3,07</td><td class="num">3,475</td><td class="num">1</td></tr><tr><td>SG 553</td><td class="num">30</td><td class="num">1</td><td class="num">0,98</td><td class="num">110</td><td class="num">30</td><td class="num">2,77</td><td class="num">4</td><td class="num">1</td></tr><tr><td>Negev</td><td class="num">35</td><td class="num">0,71</td><td class="num">0,97</td><td class="num">75</td><td class="num">150</td><td class="num">5,70</td><td class="num">4</td><td class="num">1</td></tr><tr><td>MAG-7</td><td class="num">30</td><td class="num">0,75</td><td class="num">0,45</td><td class="num">850</td><td class="num">5</td><td class="num">2,47</td><td class="num">4</td><td class="num">8</td></tr><tr><td>Nova</td><td class="num">26</td><td class="num">0,5</td><td class="num">0,7</td><td class="num">880</td><td class="num">8</td><td class="num">4,74</td><td class="num">4</td><td class="num">9</td></tr><tr><td>SSG 08</td><td class="num">88</td><td class="num">0,85</td><td class="num">0,98</td><td class="num">1250</td><td class="num">10</td><td class="num">3,70</td><td class="num">4</td><td class="num">1</td></tr><tr><td>AWP</td><td class="num">115</td><td class="num">0,975</td><td class="num">0,99</td><td class="num">1455</td><td class="num">5</td><td class="num">3,67</td><td class="num">4</td><td class="num">1</td></tr></table></div></div>
+  <div class="lab"><div class="flab-t">Tabela B — imprecisão, em ≈ mrad (capítulos 5 a 7 e 12)</div><div class="tblwrap"><table class="const"><tr><th>arma</th><th class="num">spread</th><th class="num">I parado</th><th class="num">I agachado</th><th class="num">I correndo</th><th class="num">I pulando</th><th class="num">fire</th><th class="num">λ</th><th class="num">I parado (mira)</th></tr><tr><td>Glock-18</td><td class="num">2</td><td class="num">5,6</td><td class="num">4,2</td><td class="num">10</td><td class="num">87,87</td><td class="num">56</td><td class="num">0,334</td><td class="num">—</td></tr><tr><td>Desert Eagle</td><td class="num">2</td><td class="num">4,2</td><td class="num">2,18</td><td class="num">48,1</td><td class="num">40,55</td><td class="num">72,23</td><td class="num">0,528</td><td class="num">—</td></tr><tr><td>MP9</td><td class="num">0,6</td><td class="num">9</td><td class="num">8</td><td class="num">29,04</td><td class="num">50</td><td class="num">3,7</td><td class="num">0,535</td><td class="num">—</td></tr><tr><td>FAMAS</td><td class="num">0,6</td><td class="num">7,59</td><td class="num">5,5</td><td class="num">99,34</td><td class="num">110,39</td><td class="num">6,05</td><td class="num">0,635</td><td class="num">—</td></tr><tr><td>AK-47</td><td class="num">0,6</td><td class="num">6,41</td><td class="num">4,81</td><td class="num">175,06</td><td class="num">140,76</td><td class="num">7,8</td><td class="num">0,624</td><td class="num">—</td></tr><tr><td>M4A1-S</td><td class="num">0,6</td><td class="num">4,9</td><td class="num">4,1</td><td class="num">92,88</td><td class="num">99,7</td><td class="num">12</td><td class="num">0,454</td><td class="num">—</td></tr><tr><td>SG 553</td><td class="num">0,6</td><td class="num">5,81</td><td class="num">3,81</td><td class="num">136,01</td><td class="num">109</td><td class="num">7,95</td><td class="num">0,572</td><td class="num">4,11</td></tr><tr><td>Negev</td><td class="num">2</td><td class="num">10,17</td><td class="num">7,63</td><td class="num">159,14</td><td class="num">292,23</td><td class="num">30</td><td class="num">0,562</td><td class="num">—</td></tr><tr><td>MAG-7</td><td class="num">40</td><td class="num">7</td><td class="num">5,25</td><td class="num">15,99</td><td class="num">50,09</td><td class="num">11,19</td><td class="num">0,007</td><td class="num">—</td></tr><tr><td>Nova</td><td class="num">40</td><td class="num">7</td><td class="num">5,25</td><td class="num">36,75</td><td class="num">126,31</td><td class="num">9,72</td><td class="num">0,012</td><td class="num">—</td></tr><tr><td>SSG 08</td><td class="num">0,28</td><td class="num">31,7</td><td class="num">23,78</td><td class="num">123,45</td><td class="num">5,72</td><td class="num">22,92</td><td class="num">0,000</td><td class="num">3,23</td></tr><tr><td>AWP</td><td class="num">0,2</td><td class="num">80,8</td><td class="num">60,6</td><td class="num">176,48</td><td class="num">133,83</td><td class="num">53,85</td><td class="num">0,000</td><td class="num">2,20</td></tr></table></div></div>
+  <div class="lab"><div class="flab-t">Tabela C — recuo e tagging (capítulos 8 e 13)</div><div class="tblwrap"><table class="const"><tr><th>arma</th><th class="num">chute/tiro</th><th class="num">var. magnitude</th><th class="num">var. ângulo</th><th class="num">padrão</th><th class="num">flinch 1º acerto</th><th class="num">flinch seguintes</th></tr><tr><td>Glock-18</td><td class="num">18</td><td class="num">0</td><td class="num">20</td><td class="num">aleatório</td><td class="num">0,5</td><td class="num">0,65</td></tr><tr><td>Desert Eagle</td><td class="num">48,2</td><td class="num">18</td><td class="num">60</td><td class="num">aleatório</td><td class="num">0,4</td><td class="num">0,55</td></tr><tr><td>MP9</td><td class="num">21</td><td class="num">1</td><td class="num">70</td><td class="num">fixo</td><td class="num">—</td><td class="num">—</td></tr><tr><td>FAMAS</td><td class="num">20</td><td class="num">1</td><td class="num">60</td><td class="num">fixo</td><td class="num">0,4</td><td class="num">0,55</td></tr><tr><td>AK-47</td><td class="num">30</td><td class="num">0</td><td class="num">70</td><td class="num">fixo</td><td class="num">0,4</td><td class="num">0,55</td></tr><tr><td>M4A1-S</td><td class="num">25</td><td class="num">3</td><td class="num">65</td><td class="num">fixo</td><td class="num">0,4</td><td class="num">0,4</td></tr><tr><td>SG 553</td><td class="num">28</td><td class="num">2</td><td class="num">60</td><td class="num">fixo</td><td class="num">0,4</td><td class="num">0,55</td></tr><tr><td>Negev</td><td class="num">20</td><td class="num">2</td><td class="num">0</td><td class="num">fixo</td><td class="num">0,4</td><td class="num">0,55</td></tr><tr><td>MAG-7</td><td class="num">165</td><td class="num">25</td><td class="num">20</td><td class="num">aleatório</td><td class="num">0,4</td><td class="num">0,45</td></tr><tr><td>Nova</td><td class="num">143</td><td class="num">22</td><td class="num">20</td><td class="num">aleatório</td><td class="num">0,4</td><td class="num">0,45</td></tr><tr><td>SSG 08</td><td class="num">33</td><td class="num">15</td><td class="num">20</td><td class="num">aleatório</td><td class="num">0,35</td><td class="num">0,4</td></tr><tr><td>AWP</td><td class="num">78</td><td class="num">15</td><td class="num">20</td><td class="num">aleatório</td><td class="num">0,35</td><td class="num">0,4</td></tr></table></div></div>
+  <div class="labnote">Notas: o flinch vazio de MP9 e UMP-45 é dado faltante
+    na configuração, e não imunidade (capítulo 13). O "I parado (mira)" só
+    existe para as armas com modo de mira. MAG-7 e Nova têm as imprecisões
+    dominadas pelo spread por projétil (40 dos 47 totais), como discutido no
+    capítulo 11.</div>
+</section>
+
+<footer>
+  Parâmetros: planilha de armas de CS2 de BlackRetina e SlothSquadron
+  (última atualização 2026-03-18; a planilha é de domínio público),
+  extraídos pelo projeto cs2-buy-optimizer. Os laboratórios usam
+  a aproximação de disco único para a dispersão e primeira passagem exata
+  (programação dinâmica) para as distribuições de TTK — o relatório completo
+  de otimização de compra usa o modelo de dois discos da engine.
+</footer>
+</div>
+
+<script>
+"use strict";
+var UNIT = 0.0254;
+var W = {
+  glock:  {name:"Glock-18",     dmg:30,  ap:0.47,  rm:0.85, cyc:0.15,  mag:20, rel:2.27, base:7.6,  fire:56,    lam:0.3341, sc:0, pel:1},
+  deagle: {name:"Desert Eagle", dmg:53,  ap:0.932, rm:0.85, cyc:0.225, mag:7,  rel:2.2,  base:6.2,  fire:72.23, lam:0.528,  sc:0, pel:1},
+  mp9:    {name:"MP9",          dmg:26,  ap:0.6,   rm:0.87, cyc:0.07,  mag:30, rel:2.13, base:9.6,  fire:3.7,   lam:0.5353, sc:0, pel:1},
+  famas:  {name:"FAMAS",        dmg:30,  ap:0.7,   rm:0.96, cyc:0.09,  mag:25, rel:3.3,  base:8.19, fire:6.05,  lam:0.6347, sc:0, pel:1},
+  ak:     {name:"AK-47",        dmg:36,  ap:0.775, rm:0.98, cyc:0.1,   mag:30, rel:2.43, base:7.01, fire:7.8,   lam:0.6245, sc:0, pel:1},
+  m4s:    {name:"M4A1-S",       dmg:38,  ap:0.7,   rm:0.94, cyc:0.1,   mag:20, rel:3.07, base:5.4,  fire:12,    lam:0.4537, sc:0, pel:1},
+  sg:     {name:"SG 553",       dmg:30,  ap:1.0,   rm:0.98, cyc:0.11,  mag:30, rel:2.77, base:6.41, fire:7.95,  lam:0.5716, sc:0, pel:1},
+  ssg:    {name:"SSG 08 (mira)",dmg:88,  ap:0.85,  rm:0.98, cyc:1.25,  mag:10, rel:3.7,  base:3.23, fire:22.92, lam:0,      sc:1, pel:1},
+  awp:    {name:"AWP (mira)",   dmg:115, ap:0.975, rm:0.99, cyc:1.455, mag:5,  rel:3.67, base:2.2,  fire:53.85, lam:0,      sc:1, pel:1},
+  mag7:   {name:"MAG-7",        dmg:30,  ap:0.75,  rm:0.45, cyc:0.85,  mag:5,  rel:2.47, base:47,   fire:11.19, lam:0.0075, sc:0, pel:8, spr:40},
+  nova:   {name:"Nova",         dmg:26,  ap:0.5,   rm:0.7,  cyc:0.88,  mag:8,  rel:4.74, base:47,   fire:9.72,  lam:0.0123, sc:0, pel:9, spr:40}
+};
+function fmt(v, dg) {
+  return v.toLocaleString("pt-BR", {minimumFractionDigits: dg, maximumFractionDigits: dg});
+}
+function xm(v) { return String(v).replace(".", ","); }
+function dmgAt(w, d, kev) {
+  return w.dmg * (kev ? w.ap : 1) * Math.pow(w.rm, (d / UNIT) / 500);
+}
+function el(tag, at, parent) {
+  var e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (var k in at) e.setAttribute(k, at[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function frame(svg, o) {
+  svg.textContent = "";
+  svg.setAttribute("viewBox", "0 0 " + o.W + " " + o.H);
+  var iw = o.W - o.M.l - o.M.r, ih = o.H - o.M.t - o.M.b;
+  var x = function(v){ return o.M.l + (v - o.xmin) / (o.xmax - o.xmin) * iw; };
+  var y = function(v){ return o.M.t + ih - (v - (o.ymin||0)) / (o.ymax - (o.ymin||0)) * ih; };
+  o.yticks.forEach(function(g){
+    el("line", {x1:o.M.l, x2:o.W-o.M.r, y1:y(g), y2:y(g), "class":"gl"}, svg);
+    var t = el("text", {x:o.M.l-8, y:y(g)+3.5, "text-anchor":"end"}, svg);
+    t.textContent = o.yfmt(g);
+  });
+  el("line", {x1:o.M.l, x2:o.W-o.M.r, y1:y(o.ymin||0), y2:y(o.ymin||0), "class":"ax"}, svg);
+  o.xticks.forEach(function(g, i){
+    var t = el("text", {x:x(g), y:o.H-o.M.b+17, "text-anchor":"middle"}, svg);
+    t.textContent = (i === o.xticks.length-1 && o.xunit) ? o.xfmt(g)+" "+o.xunit : o.xfmt(g);
+  });
+  if (o.yunit) { var u = el("text", {x:o.M.l-38, y:12}, svg); u.textContent = o.yunit; }
+  return {x:x, y:y, iw:iw, ih:ih};
+}
+function legend(id, items) {
+  var box = document.getElementById(id); box.textContent = "";
+  items.forEach(function(it){
+    var k = document.createElement("span"); k.className = "key";
+    var s = document.createElement("span"); s.className = "sw";
+    s.style.background = it.c; k.appendChild(s);
+    k.appendChild(document.createTextNode(it.n)); box.appendChild(k);
+  });
+}
+function stat(box, label, value, sub) {
+  var d = document.createElement("div"); d.className = "stat";
+  var l = document.createElement("div"); l.className = "l"; l.textContent = label;
+  var v = document.createElement("div"); v.className = "v"; v.textContent = value;
+  d.appendChild(l); d.appendChild(v);
+  if (sub) { var s = document.createElement("div"); s.className = "s"; s.textContent = sub; d.appendChild(s); }
+  box.appendChild(d);
+}
+function fillSelect(id, keys, def) {
+  var s = document.getElementById(id);
+  keys.forEach(function(k){
+    var o = document.createElement("option"); o.value = k; o.textContent = W[k].name;
+    s.appendChild(o);
+  });
+  s.value = def;
+  return s;
+}
+function schedule(w, mult, cap) {
+  var itv = w.cyc * mult, times = [], idx = [];
+  for (var j = 0; j < w.mag * 3; j++) {
+    var within = j % w.mag, mg = Math.floor(j / w.mag);
+    var t = (w.sc ? 0.3 : 0) + within * itv + mg * (w.mag * itv + w.rel);
+    if (t > cap) break;
+    times.push(t); idx.push(within);
+  }
+  return {times: times, idx: idx};
+}
+function pkSeq(w, d, mult, R, maxWithin) {
+  var lam = Math.pow(w.lam, mult), out = [], I = w.base;
+  for (var k = 0; k < maxWithin; k++) {
+    var r = I * d / 1000;
+    out.push(r <= R ? 1 : (R / r) * (R / r));
+    I = w.base + (I - w.base + w.fire) * lam;
+  }
+  return out;
+}
+function binPmf(n, p) {
+  var out = [], c = Math.pow(1 - p, n);
+  for (var k = 0; k <= n; k++) {
+    out.push(c);
+    c = c * (n - k) / (k + 1) * (p / (1 - p || 1e-12));
+  }
+  if (p >= 1) { out = out.map(function(_, i){ return i === n ? 1 : 0; }); }
+  return out;
+}
+function lensArea(R, r, dc) {
+  if (dc >= R + r) return 0;
+  var m = Math.min(R, r);
+  if (dc <= Math.abs(R - r)) return Math.PI * m * m;
+  var a = R * R, b = r * r;
+  var x = (dc * dc + a - b) / (2 * dc), y = dc - x;
+  return a * Math.acos(Math.max(-1, Math.min(1, x / R)))
+       - x * Math.sqrt(Math.max(0, a - x * x))
+       + b * Math.acos(Math.max(-1, Math.min(1, y / r)))
+       - y * Math.sqrt(Math.max(0, b - y * y));
+}
+function shellPmf(w, Itot, d, R) {
+  var rs = Math.max(w.spr * d / 1000, 1e-4);
+  var ri = Math.max((Itot - w.spr) * d / 1000, 0);
+  var out = new Array(w.pel + 1).fill(0), S = 24;
+  for (var s = 0; s < S; s++) {
+    var rho, wgt;
+    if (ri < 1e-6) { if (s > 0) break; rho = 0; wgt = 1; }
+    else { rho = ri * (s + 0.5) / S; wgt = (2 * s + 1) / (S * S); }
+    var p = Math.min(1, lensArea(R, rs, rho) / (Math.PI * rs * rs));
+    var b = binPmf(w.pel, p);
+    for (var k = 0; k <= w.pel; k++) out[k] += wgt * b[k];
+  }
+  return out;
+}
+function firstPassage(w, d, kev, mult, R, cap) {
+  cap = cap || 12;
+  var dmg = dmgAt(w, d, kev);
+  if (dmg < 0.5) return null;
+  var N = Math.ceil(100 / dmg);
+  var sch = schedule(w, mult, cap);
+  var pks = pkSeq(w, d, mult, R, w.mag);
+  var shells = null;
+  if (w.pel > 1) {
+    var lam2 = Math.pow(w.lam, mult), I2 = w.base;
+    shells = [];
+    for (var q = 0; q < w.mag; q++) {
+      shells.push(shellPmf(w, I2, d, R));
+      I2 = w.base + (I2 - w.base + w.fire) * lam2;
+    }
+  }
+  var v = new Array(N).fill(0); v[0] = 1;
+  var pmf = [], E = 0, PK = 0;
+  for (var j = 0; j < sch.times.length; j++) {
+    var p = pks[sch.idx[j]], kill = 0;
+    if (w.pel > 1) {
+      var b = shells[sch.idx[j]], nv = new Array(N).fill(0);
+      for (var h = 0; h < N; h++) {
+        if (!v[h]) continue;
+        for (var g = 0; g <= w.pel; g++) {
+          if (h + g >= N) { kill += v[h] * b[g]; }
+          else { nv[h + g] += v[h] * b[g]; }
+        }
+      }
+      v = nv;
+    } else {
+      kill = v[N - 1] * p;
+      for (var h2 = N - 1; h2 >= 1; h2--) v[h2] = v[h2] * (1 - p) + v[h2 - 1] * p;
+      v[0] *= (1 - p);
+    }
+    if (kill > 1e-12) pmf.push([sch.times[j], kill]);
+    E += kill * sch.times[j]; PK += kill;
+  }
+  E += (1 - PK) * cap;
+  return {N: N, dmg: dmg, E: E, PK: PK, pmf: pmf, p1: pks[0], perfect: sch.times[Math.min(N - 1, sch.times.length - 1)]};
+}
+var S1 = "var(--s1)", S2 = "var(--s2)", S3 = "var(--s3)";
+
+(function lab2() {
+  var series = [["ak", S1], ["mp9", S2], ["nova", S3]];
+  var awpLine = "var(--muted)";
+  legend("l2-leg", series.map(function(s){ return {n: W[s[0]].name, c: s[1]}; })
+    .concat([{n: "AWP", c: awpLine}]));
+  var dEl = document.getElementById("l2-d"), kEl = document.getElementById("l2-kev");
+  function draw() {
+    var kev = kEl.checked, dSel = +dEl.value;
+    document.getElementById("l2-dv").textContent = dSel + " m";
+    var svg = document.getElementById("l2-svg");
+    var f = frame(svg, {W: 820, H: 300, M: {l: 44, r: 88, t: 24, b: 32},
+      xmin: 0, xmax: 50, ymax: 120, yticks: [0, 25, 50, 75, 100, 120],
+      xticks: [0, 10, 20, 30, 40, 50], xfmt: String, yfmt: String,
+      xunit: "m", yunit: "dano"});
+    el("line", {x1: f.x(0), x2: f.x(50), y1: f.y(100), y2: f.y(100),
+      "class": "gl", "stroke-dasharray": "4 4"}, svg);
+    var t100 = el("text", {x: f.x(50) + 6, y: f.y(100) + 3}, svg);
+    t100.textContent = "100 hp";
+    var all = series.concat([["awp", awpLine]]);
+    all.forEach(function(s) {
+      var w = W[s[0]], pts = [];
+      for (var d = 0; d <= 50; d += 1) pts.push([f.x(d), f.y(Math.min(dmgAt(w, d, kev), 120))]);
+      el("path", {d: pts.map(function(p, i){ return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" "),
+        fill: "none", "stroke-width": 2, "stroke-linejoin": "round",
+        style: "stroke:" + s[1]}, svg);
+      var vd = Math.min(dmgAt(w, 50, kev), 120);
+      var lb = el("text", {x: f.x(50) + 6, y: f.y(vd) + 4, "class": "dl"}, svg);
+      lb.textContent = w.name.split(" ")[0];
+    });
+    el("line", {x1: f.x(dSel), x2: f.x(dSel), y1: f.y(0), y2: f.y(120), "class": "ax"}, svg);
+    var box = document.getElementById("l2-read"); box.textContent = "";
+    all.forEach(function(s) {
+      var v = dmgAt(W[s[0]], dSel, kev);
+      var ww = W[s[0]];
+      stat(box, ww.name + " @ " + dSel + " m", fmt(v, 1),
+        (kev ? "com colete · " : "sem colete · ") + "D\u2080 " + String(ww.dmg).replace(".", ",")
+        + " · AP " + String(ww.ap).replace(".", ",") + " · RM " + String(ww.rm).replace(".", ","));
+    });
+  }
+  [dEl, kEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+
+(function lab3() {
+  legend("l3-leg", [{n: "sem colete", c: S1}, {n: "com colete", c: S2}]);
+  var sel = fillSelect("l3-w", ["glock", "deagle", "mp9", "famas", "ak", "m4s", "sg", "ssg", "awp"], "ak");
+  var dEl = document.getElementById("l3-d");
+  function draw() {
+    var w = W[sel.value], dSel = +dEl.value;
+    document.getElementById("l3-dv").textContent = dSel + " m";
+    var svg = document.getElementById("l3-svg");
+    var f = frame(svg, {W: 820, H: 280, M: {l: 44, r: 30, t: 24, b: 32},
+      xmin: 0, xmax: 50, ymax: 9, yticks: [1, 3, 5, 7, 9],
+      xticks: [0, 10, 20, 30, 40, 50], xfmt: String, yfmt: String,
+      xunit: "m", yunit: "balas"});
+    [[false, S1], [true, S2]].forEach(function(cfg) {
+      var pts = [];
+      for (var d = 0; d <= 50; d += 0.5) {
+        var dm = dmgAt(w, d, cfg[0]);
+        pts.push([f.x(d), f.y(Math.min(dm < 0.5 ? 9 : Math.ceil(100 / dm), 9))]);
+      }
+      el("path", {d: pts.map(function(p, i){ return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" "),
+        fill: "none", "stroke-width": 2, style: "stroke:" + cfg[1]}, svg);
+    });
+    el("line", {x1: f.x(dSel), x2: f.x(dSel), y1: f.y(0), y2: f.y(9), "class": "ax"}, svg);
+    var box = document.getElementById("l3-read"); box.textContent = "";
+    var d0 = dmgAt(w, dSel, false), d1 = dmgAt(w, dSel, true);
+    stat(box, "dano sem / com colete", fmt(d0, 1) + " / " + fmt(d1, 1), "@ " + dSel + " m");
+    stat(box, "N sem colete", String(Math.ceil(100 / d0)), "⌈100/" + fmt(d0, 1) + "⌉");
+    stat(box, "N com colete", String(Math.ceil(100 / d1)), "⌈100/" + fmt(d1, 1) + "⌉");
+    var extra = Math.ceil(100 / d1) - Math.ceil(100 / d0);
+    stat(box, "balas que o colete compra", "+" + extra, extra > 0 ? "≈ +" + Math.round(extra * w.cyc * 1000) + " ms na corrida" : "nenhuma aqui");
+  }
+  [sel, dEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+
+(function lab4() {
+  var nEl = document.getElementById("l4-n"), tEl = document.getElementById("l4-t");
+  function draw() {
+    var N = +nEl.value, tau = +tEl.value;
+    document.getElementById("l4-nv").textContent = String(N);
+    document.getElementById("l4-tv").textContent = tau + " ms";
+    var svg = document.getElementById("l4-svg");
+    var xmax = Math.max(1000, N * tau * 1.15);
+    var f = frame(svg, {W: 820, H: 130, M: {l: 44, r: 30, t: 26, b: 32},
+      xmin: 0, xmax: xmax, ymax: 1, yticks: [],
+      xticks: [0, Math.round(xmax / 4), Math.round(xmax / 2), Math.round(3 * xmax / 4), Math.round(xmax)],
+      xfmt: function(v){ return fmt(v / 1000, 1); }, yfmt: String, xunit: "s"});
+    for (var k = 0; k < N; k++) {
+      var tx = f.x(k * tau);
+      el("line", {x1: tx, x2: tx, y1: f.y(0), y2: f.y(0.55), "class": "gl"}, svg);
+      el("circle", {cx: tx, cy: f.y(0.62), r: 6,
+        style: "fill:" + S1 + ";stroke:var(--surface);stroke-width:2"}, svg);
+      var lb = el("text", {x: tx, y: f.y(0.62) - 12, "text-anchor": "middle"}, svg);
+      lb.textContent = String(k + 1);
+    }
+    var last = f.x((N - 1) * tau);
+    var tl = el("text", {x: last, y: f.y(0) + 30, "text-anchor": "middle", "class": "dl"}, svg);
+    tl.textContent = "TTK = " + fmt((N - 1) * tau / 1000, 2) + " s";
+    var box = document.getElementById("l4-read"); box.textContent = "";
+    stat(box, "tiros", String(N), "");
+    stat(box, "intervalos", String(N - 1), "fencepost");
+    stat(box, "TTK", fmt((N - 1) * tau / 1000, 2) + " s", "(N−1) · τ");
+  }
+  [nEl, tEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+
+(function lab5() {
+  var sel = fillSelect("l5-w", ["awp", "ssg", "m4s", "ak", "famas", "mp9", "deagle", "glock", "mag7"], "ak");
+  var dEl = document.getElementById("l5-d");
+  var seed = 1;
+  function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+  function draw(reseed) {
+    if (reseed) seed = Math.floor(Math.random() * 2147483647) + 1;
+    var w = W[sel.value], d = +dEl.value;
+    var R = +document.querySelector("input[name=l5-aim]:checked").value;
+    document.getElementById("l5-dv").textContent = d + " m";
+    var r = Math.max(w.base * d / 1000, 0.004);
+    var svg = document.getElementById("l5-svg");
+    svg.textContent = "";
+    svg.setAttribute("viewBox", "0 0 820 320");
+    var cx = 410, cy = 160, scale = 140 / Math.max(r, R);
+    el("line", {x1: cx - 150, x2: cx + 150, y1: cy, y2: cy, "class": "gl"}, svg);
+    el("line", {x1: cx, x2: cx, y1: cy - 150, y2: cy + 150, "class": "gl"}, svg);
+    el("circle", {cx: cx, cy: cy, r: R * scale, fill: "none",
+      style: "stroke:" + S2, "stroke-width": 2}, svg);
+    el("circle", {cx: cx, cy: cy, r: r * scale, fill: "none",
+      style: "stroke:" + S1, "stroke-width": 1.5, "stroke-dasharray": "5 4"}, svg);
+    var hits = 0, TRIES = 500;
+    for (var i = 0; i < TRIES; i++) {
+      var rad = r * Math.sqrt(rnd()), th = rnd() * 2 * Math.PI;
+      var px = rad * Math.cos(th), py = rad * Math.sin(th);
+      var hit = (px * px + py * py) <= R * R;
+      if (hit) hits++;
+      el("circle", {cx: cx + px * scale, cy: cy + py * scale, r: 2,
+        style: "fill:" + (hit ? S2 : "var(--muted)") + ";opacity:" + (hit ? "0.8" : "0.45")}, svg);
+    }
+    var lbA = el("text", {x: cx + r * scale + 8, y: cy + 4, "class": "dl"}, svg);
+    lbA.textContent = "r = " + fmt(r * 100, 1) + " cm";
+    var lbB = el("text", {x: cx, y: cy - R * scale - 8, "text-anchor": "middle", "class": "dl"}, svg);
+    lbB.textContent = "alvo R = " + fmt(R * 100, 0) + " cm";
+    var pTheo = r <= R ? 1 : (R / r) * (R / r);
+    var box = document.getElementById("l5-read"); box.textContent = "";
+    stat(box, "p analítico", fmt(pTheo * 100, 1) + "%", "min(1, (R/r)²)");
+    stat(box, "p empírico (500 tiros)", fmt(hits / TRIES * 100, 1) + "%", "±" + fmt(Math.sqrt(pTheo * (1 - pTheo) / TRIES) * 196, 1) + " pp (IC 95%)");
+    stat(box, "imprecisão da arma", fmt(w.base, 2), "≈ " + fmt(w.base, 1) + " mrad · 1º tiro, parado");
+    stat(box, "distância crítica d*", fmt(1000 * R / w.base, 0) + " m", "p = 100% até aqui");
+  }
+  [sel, dEl].forEach(function(e){ e.addEventListener("input", function(){ draw(false); }); });
+  document.querySelectorAll("input[name=l5-aim]").forEach(function(e){ e.addEventListener("change", function(){ draw(false); }); });
+  document.getElementById("l5-re").addEventListener("click", function(){ draw(true); });
+  draw(false);
+})();
+
+(function lab6() {
+  var series = [["ak", S1], ["m4s", S2], ["mp9", S3]];
+  var ST = {
+    ak:  {stand: {b: 7.01, l: 0.6245}, crouch: {b: 5.41, l: 0.5670}, run: {b: 182.07, l: 0.6245}},
+    m4s: {stand: {b: 5.40, l: 0.4537}, crouch: {b: 4.60, l: 0.3488}, run: {b: 98.28,  l: 0.4537}},
+    mp9: {stand: {b: 9.60, l: 0.5353}, crouch: {b: 8.60, l: 0.4169}, run: {b: 38.64,  l: 0.5353}}
+  };
+  legend("l6-leg", series.map(function(s){ return {n: W[s[0]].name, c: s[1]}; }));
+  var dEl = document.getElementById("l6-d");
+  function draw() {
+    var d = +dEl.value;
+    var st = document.querySelector("input[name=l6-st]:checked").value;
+    document.getElementById("l6-dv").textContent = d + " m";
+    var svg = document.getElementById("l6-svg");
+    var K = 20;
+    var ymax = st === "run" ? 210 : 30;
+    var yt = st === "run" ? [0, 50, 100, 150, 200] : [0, 10, 20, 30];
+    var f = frame(svg, {W: 820, H: 280, M: {l: 44, r: 88, t: 24, b: 32},
+      xmin: 1, xmax: K, ymax: ymax, yticks: yt,
+      xticks: [1, 5, 10, 15, 20], xfmt: String, yfmt: String,
+      xunit: "º tiro", yunit: "imprecisão"});
+    series.forEach(function(s) {
+      var w = W[s[0]], q = ST[s[0]][st];
+      var I = q.b, pts = [];
+      for (var k = 1; k <= K; k++) {
+        pts.push([f.x(k), f.y(Math.min(I, ymax))]);
+        I = q.b + (I - q.b + w.fire) * q.l;
+      }
+      el("path", {d: pts.map(function(p, i){ return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" "),
+        fill: "none", "stroke-width": 2, style: "stroke:" + s[1]}, svg);
+      var fix = q.b + w.fire * q.l / (1 - q.l);
+      var lb = el("text", {x: f.x(K) + 8, y: f.y(Math.min(fix, ymax)) + 4, "class": "dl"}, svg);
+      lb.textContent = "I∞ = " + fmt(fix, 1);
+    });
+    var box = document.getElementById("l6-read"); box.textContent = "";
+    series.forEach(function(s) {
+      var w = W[s[0]], q = ST[s[0]][st];
+      var fix = q.b + w.fire * q.l / (1 - q.l);
+      var p1 = Math.min(1, Math.pow(0.17 / (q.b * d / 1000), 2));
+      var pInf = Math.min(1, Math.pow(0.17 / (fix * d / 1000), 2));
+      stat(box, w.name + " @ " + d + " m", fmt(p1 * 100, 0) + "% → " + fmt(pInf * 100, 0) + "%",
+        "p no 1º tiro → p no regime");
+    });
+  }
+  dEl.addEventListener("input", draw);
+  document.querySelectorAll("input[name=l6-st]").forEach(function(e){ e.addEventListener("change", draw); });
+  draw();
+})();
+
+(function lab7() {
+  legend("l7-leg", [{n: "distribuição exata", c: S1}, {n: "binomial negativa (p = p₁)", c: S2}]);
+  var sel = fillSelect("l7-w", ["ak", "m4s", "mp9", "famas", "sg", "deagle", "glock", "awp", "ssg"], "ak");
+  var dEl = document.getElementById("l7-d"), nbEl = document.getElementById("l7-nb");
+  function draw() {
+    var w = W[sel.value], d = +dEl.value;
+    document.getElementById("l7-dv").textContent = d + " m";
+    var res = firstPassage(w, d, true, 1, 0.17);
+    var svg = document.getElementById("l7-svg");
+    var box = document.getElementById("l7-read"); box.textContent = "";
+    if (!res) { svg.textContent = ""; stat(box, "fora de alcance", "—", ""); return; }
+    var xmax = Math.max(2, Math.min(8, (res.E * 2.2) || 2));
+    var f = frame(svg, {W: 820, H: 300, M: {l: 50, r: 24, t: 24, b: 32},
+      xmin: 0, xmax: xmax, ymax: 1,
+      yticks: [0, 0.25, 0.5, 0.75, 1],
+      xticks: [0, xmax / 4, xmax / 2, 3 * xmax / 4, xmax].map(function(v){ return Math.round(v * 10) / 10; }),
+      xfmt: function(v){ return fmt(v, 1); }, yfmt: function(v){ return fmt(v, 2); },
+      xunit: "s", yunit: "P(TTK = t) norm."});
+    var pmax = res.pmf.reduce(function(m, q){ return Math.max(m, q[1]); }, 1e-9);
+    var bw = Math.max(3, f.iw / Math.max(res.pmf.length, 40) - 2);
+    res.pmf.forEach(function(q) {
+      if (q[0] > xmax) return;
+      var h = q[1] / pmax * f.ih;
+      el("rect", {x: f.x(q[0]) - bw / 2, y: f.y(0) - h, width: bw, height: h,
+        rx: 2, style: "fill:" + S1 + ";opacity:0.85"}, svg);
+    });
+    if (nbEl.checked && res.p1 > 1e-6) {
+      var N = res.N, p = res.p1, q = 1 - p, pts = [];
+      var probK = Math.pow(p, N);
+      for (var s = N; s <= 400; s++) {
+        var t = (s - 1) * w.cyc + (w.sc ? 0.3 : 0);
+        if (t > xmax) break;
+        pts.push([f.x(t), f.y(0) - (probK / pmax) * f.ih]);
+        probK = probK * (s / (s - N + 1)) * q;
+      }
+      if (pts.length > 1) {
+        el("path", {d: pts.map(function(pp, i){ return (i ? "L" : "M") + pp[0].toFixed(1) + " " + Math.max(pp[1], f.y(1)).toFixed(1); }).join(" "),
+          fill: "none", "stroke-width": 2, style: "stroke:" + S2}, svg);
+      }
+    }
+    el("line", {x1: f.x(Math.min(res.E, xmax)), x2: f.x(Math.min(res.E, xmax)),
+      y1: f.y(0), y2: f.y(1), "class": "ax", "stroke-dasharray": "4 4"}, svg);
+    var lb = el("text", {x: f.x(Math.min(res.E, xmax)) + 6, y: f.y(1) + 12, "class": "dl"}, svg);
+    lb.textContent = "E[TTK] = " + fmt(res.E, 2) + " s";
+    stat(box, "N necessário", String(res.N), fmt(res.dmg, 1) + " de dano/bala");
+    stat(box, "p do 1º tiro", fmt(res.p1 * 100, 0) + "%", "");
+    stat(box, "E[TTK] exato", fmt(res.E, 2) + " s", res.PK > 0.995 ? "" : "mata em " + fmt(res.PK * 100, 0) + "% até 12 s");
+    var nbE = res.p1 > 1e-6 ? (res.N / res.p1 - 1) * w.cyc + (w.sc ? 0.3 : 0) : Infinity;
+    stat(box, "E[TTK] binomial neg.", isFinite(nbE) ? fmt(nbE, 2) + " s" : "∞", "(N/p₁ − 1)·τ");
+  }
+  [sel, dEl, nbEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+
+(function lab8() {
+  var MULTS = [1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8];
+  var sel = fillSelect("l8-w", ["ak", "m4s", "famas", "sg", "mp9", "glock"], "ak");
+  var dEl = document.getElementById("l8-d");
+  function draw() {
+    var w = W[sel.value], d = +dEl.value;
+    document.getElementById("l8-dv").textContent = d + " m";
+    var pts = MULTS.map(function(m){
+      var r = firstPassage(w, d, true, m, 0.17);
+      return [m, r ? r.E : 12];
+    });
+    var ymax = Math.min(8, Math.max(1, Math.max.apply(null, pts.map(function(p){ return p[1]; })) * 1.15));
+    var svg = document.getElementById("l8-svg");
+    var f = frame(svg, {W: 820, H: 300, M: {l: 50, r: 24, t: 24, b: 34},
+      xmin: 1, xmax: 8, ymax: ymax,
+      yticks: [0, ymax / 4, ymax / 2, 3 * ymax / 4, ymax].map(function(v){ return Math.round(v * 10) / 10; }),
+      xticks: [1, 2, 3, 4, 5, 6, 8],
+      xfmt: function(v){ return v + "×"; }, yfmt: function(v){ return fmt(v, 1); },
+      yunit: "E[TTK] s"});
+    el("path", {d: pts.map(function(p, i){ return (i ? "L" : "M") + f.x(p[0]).toFixed(1) + " " + f.y(Math.min(p[1], ymax)).toFixed(1); }).join(" "),
+      fill: "none", "stroke-width": 2, style: "stroke:" + S1}, svg);
+    var best = pts.reduce(function(a, b){ return b[1] < a[1] ? b : a; });
+    pts.forEach(function(p){
+      el("circle", {cx: f.x(p[0]), cy: f.y(Math.min(p[1], ymax)), r: p === best ? 6 : 3.5,
+        style: "fill:" + (p === best ? S2 : S1) + ";stroke:var(--surface);stroke-width:2"}, svg);
+    });
+    var modo = best[0] === 1 ? "spray" : (best[0] <= 2 ? "burst" : "tap");
+    var lb = el("text", {x: f.x(best[0]), y: f.y(Math.min(best[1], ymax)) - 12,
+      "text-anchor": "middle", "class": "dl"}, svg);
+    lb.textContent = "ótimo: " + xm(best[0]) + "× (" + modo + ")";
+    var box = document.getElementById("l8-read"); box.textContent = "";
+    stat(box, "cadência ótima", xm(best[0]) + "×", Math.round(w.cyc * best[0] * 1000) + " ms entre tiros — " + modo);
+    stat(box, "E[TTK] no ótimo", fmt(best[1], 2) + " s", "");
+    stat(box, "E[TTK] no spray (1×)", fmt(pts[0][1], 2) + " s",
+      pts[0][1] > best[1] * 1.02 ? "+" + fmt((pts[0][1] / best[1] - 1) * 100, 0) + "% pior que o ótimo" : "spray já é ótimo");
+  }
+  [sel, dEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+
+(function lab9() {
+  var MULTS = [1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8];
+  var selA = fillSelect("l9-a", Object.keys(W), "sg");
+  var selB = fillSelect("l9-b", Object.keys(W), "ak");
+  var dEl = document.getElementById("l9-d");
+  function bestDist(w, d) {
+    var best = null;
+    MULTS.forEach(function(m){
+      if (w.cyc * m > 1.6 && m > 1) return;
+      var r = firstPassage(w, d, true, m, 0.17);
+      if (r && (!best || r.E < best.E)) { best = r; best.mult = m; }
+    });
+    return best;
+  }
+  function winProb(a, b) {
+    var tail = {}, tb = 0, i;
+    var bs = b.pmf.slice().sort(function(x, y){ return x[0] - y[0]; });
+    var as = a.pmf.slice().sort(function(x, y){ return x[0] - y[0]; });
+    var win = 0, j = 0, bCum = 0;
+    as.forEach(function(qa){
+      while (j < bs.length && bs[j][0] < qa[0] - 1e-9) { bCum += bs[j][1]; j++; }
+      var tie = 0, jj = j;
+      while (jj < bs.length && Math.abs(bs[jj][0] - qa[0]) < 1e-9) { tie += bs[jj][1]; jj++; }
+      var bLater = 1 - bCum - tie;
+      win += qa[1] * (bLater + 0.5 * tie);
+    });
+    win += (1 - a.PK) * 0;
+    return win;
+  }
+  function draw() {
+    var d = +dEl.value;
+    document.getElementById("l9-dv").textContent = d + " m";
+    var wa = W[selA.value], wb = W[selB.value];
+    legend("l9-leg", [{n: "A · " + wa.name, c: S1}, {n: "B · " + wb.name, c: S2}]);
+    var A = bestDist(wa, d), B = bestDist(wb, d);
+    var svg = document.getElementById("l9-svg");
+    var box = document.getElementById("l9-read"); box.textContent = "";
+    if (!A || !B) { svg.textContent = ""; stat(box, "fora de alcance", "—", ""); return; }
+    var xmax = Math.max(1.5, Math.min(8, Math.max(A.E, B.E) * 2));
+    var f = frame(svg, {W: 820, H: 300, M: {l: 50, r: 24, t: 24, b: 32},
+      xmin: 0, xmax: xmax, ymax: 1, yticks: [0, 0.5, 1],
+      xticks: [0, xmax / 4, xmax / 2, 3 * xmax / 4, xmax].map(function(v){ return Math.round(v * 10) / 10; }),
+      xfmt: function(v){ return fmt(v, 1); }, yfmt: function(v){ return fmt(v, 1); },
+      xunit: "s", yunit: "P norm."});
+    var pmax = 1e-9;
+    A.pmf.concat(B.pmf).forEach(function(q){ pmax = Math.max(pmax, q[1]); });
+    [[A, S1, -1], [B, S2, 1]].forEach(function(cfg){
+      var bw = 4;
+      cfg[0].pmf.forEach(function(q){
+        if (q[0] > xmax) return;
+        var h = q[1] / pmax * f.ih;
+        el("rect", {x: f.x(q[0]) + (cfg[2] < 0 ? -bw - 1 : 1), y: f.y(0) - h,
+          width: bw, height: h, rx: 2, style: "fill:" + cfg[1] + ";opacity:0.85"}, svg);
+      });
+    });
+    var pWin = winProb(A, B) + 0;
+    var pLose = winProb(B, A);
+    var pDraw = Math.max(0, 1 - pWin - pLose);
+    stat(box, "P(A vence)", fmt(pWin * 100, 1) + "%", wa.name + " (cadência " + xm(A.mult) + "×)");
+    stat(box, "P(B vence)", fmt(pLose * 100, 1) + "%", wb.name + " (cadência " + xm(B.mult) + "×)");
+    stat(box, "ninguém mata até 12 s", fmt(pDraw * 100, 1) + "%", "");
+    stat(box, "E[TTK] A / B", fmt(A.E, 2) + " / " + fmt(B.E, 2) + " s",
+      (A.E < B.E && pWin < pLose) ? "média melhor, duelo pior — cap. 9 em ação" :
+      (A.E > B.E && pWin > pLose) ? "média pior, duelo melhor — cap. 9 em ação" : "");
+  }
+  [selA, selB, dEl].forEach(function(e){ e.addEventListener("input", draw); });
+  document.getElementById("l9-p1").addEventListener("click", function(){
+    selA.value = "sg"; selB.value = "ak"; dEl.value = 12; draw();
+  });
+  document.getElementById("l9-p2").addEventListener("click", function(){
+    selA.value = "mag7"; selB.value = "ak"; dEl.value = 5; draw();
+  });
+  document.getElementById("l9-p3").addEventListener("click", function(){
+    selA.value = "awp"; selB.value = "ak"; dEl.value = 30; draw();
+  });
+  draw();
+})();
+
+(function lab8b() {
+  var DATA = {
+    ak:     {n: "AK-47",           mag: 30,   mv: 0,  av: 70, set: 1},
+    m4s:    {n: "M4A1-S",          mag: 25,   mv: 3,  av: 65, set: 1},
+    famas:  {n: "FAMAS",           mag: 20,   mv: 1,  av: 60, set: 1},
+    mp9:    {n: "MP9",             mag: 21,   mv: 1,  av: 70, set: 1},
+    negev:  {n: "Negev",           mag: 20,   mv: 2,  av: 0,  set: 1},
+    deagle: {n: "Desert Eagle",    mag: 48.2, mv: 18, av: 60, set: 0},
+    awp:    {n: "AWP (sem mira)",  mag: 78,   mv: 15, av: 20, set: 0}
+  };
+  var SHOTS = 12, TRIES = 5;
+  var sel = document.getElementById("l8b-w");
+  Object.keys(DATA).forEach(function(k){
+    var o = document.createElement("option");
+    o.value = k; o.textContent = DATA[k].n; sel.appendChild(o);
+  });
+  sel.value = "ak";
+  var cEl = document.getElementById("l8b-c");
+  var burstSeed = 1;
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function() {
+      s = (s + 0x6D2B79F5) >>> 0;
+      var t = Math.imul(s ^ (s >>> 15), 1 | s);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function seedOf(str) {
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+  function mkPath(w, seed) {
+    var r = rng(seed), pts = [[0, 0]], x = 0, y = 0;
+    for (var k = 0; k < SHOTS; k++) {
+      var m = w.mag + (r() * 2 - 1) * w.mv;
+      var ang = (90 + (r() * 2 - 1) * w.av / 2) * Math.PI / 180;
+      x += m * Math.cos(ang); y += m * Math.sin(ang);
+      pts.push([x, y]);
+    }
+    return pts;
+  }
+  function draw() {
+    var w = DATA[sel.value], c = +cEl.value / 100;
+    document.getElementById("l8b-cv").textContent = cEl.value + "%";
+    var paths = [];
+    for (var i = 0; i < TRIES; i++) {
+      paths.push(mkPath(w, w.set ? seedOf(sel.value) : seedOf(sel.value) + burstSeed * 97 + i));
+    }
+    var disp = paths.map(function(p) {
+      return p.map(function(q, k) {
+        if (w.set) return [q[0] * (1 - c), q[1] * (1 - c)];
+        return [q[0], q[1] - c * k * w.mag];
+      });
+    });
+    var ext = 1;
+    disp.forEach(function(p){ p.forEach(function(q){
+      ext = Math.max(ext, Math.abs(q[0]), Math.abs(q[1])); }); });
+    ext = Math.max(ext, w.mag * 2);
+    var svg = document.getElementById("l8b-svg");
+    svg.textContent = "";
+    svg.setAttribute("viewBox", "0 0 820 380");
+    var cx = 410, cy = 330, S = Math.min(150 / ext * 2, 280 / ext);
+    el("line", {x1: cx - 170, x2: cx + 170, y1: cy, y2: cy, "class": "gl"}, svg);
+    el("line", {x1: cx, x2: cx, y1: cy - 300, y2: cy + 24, "class": "gl"}, svg);
+    el("circle", {cx: cx, cy: cy, r: 4, style: "fill:var(--muted)"}, svg);
+    var lb0 = el("text", {x: cx + 10, y: cy + 16}, svg);
+    lb0.textContent = "mira original";
+    disp.forEach(function(p, i) {
+      var d = p.map(function(q, j){
+        return (j ? "L" : "M") + (cx + q[0] * S).toFixed(1) + " " + (cy - q[1] * S).toFixed(1);
+      }).join(" ");
+      el("path", {d: d, fill: "none", "stroke-width": w.set ? 2 : 1.6,
+        style: "stroke:var(--s1);opacity:" + (w.set ? 0.9 : 0.55)}, svg);
+      p.forEach(function(q, j) {
+        if (j === 0) return;
+        el("circle", {cx: cx + q[0] * S, cy: cy - q[1] * S, r: 3.4,
+          style: "fill:var(--s1);opacity:" + (w.set ? 0.9 : 0.55)
+          + ";stroke:var(--surface);stroke-width:1.5"}, svg);
+      });
+      if (w.set) return;
+    });
+    var box = document.getElementById("l8b-read"); box.textContent = "";
+    stat(box, "chute por tiro", fmt(w.mag, 1), "± " + fmt(w.mv, 0) + " magnitude · ± " + fmt(w.av / 2, 0) + "° ângulo");
+    stat(box, "padrão", w.set ? "fixo (tabela)" : "aleatório por tiro",
+      w.set ? "as 5 rajadas coincidem" : "5 rajadas, 5 caminhos");
+    stat(box, "resíduo com c = 100%", w.set ? "zero" : "os desvios do caminho médio",
+      w.set ? "spray control completo é possível" : "só a média é subtraível");
+  }
+  sel.addEventListener("input", draw);
+  cEl.addEventListener("input", draw);
+  document.getElementById("l8b-re").addEventListener("click", function() {
+    burstSeed++; draw();
+  });
+  draw();
+})();
+
+(function lab5c() {
+  var sel = fillSelect("l5c-w", ["awp", "ssg", "m4s", "deagle", "ak", "glock", "mp9"], "ak");
+  var dEl = document.getElementById("l5c-d");
+  function draw() {
+    var w = W[sel.value], d = +dEl.value;
+    var R = +document.querySelector("input[name=l5c-aim]:checked").value;
+    document.getElementById("l5c-dv").textContent = d + " m";
+    var I = w.base;
+    var rcm = I * d / 10;
+    var Rcm = R * 100;
+    var dstar = 1000 * R / I;
+    var p = rcm <= Rcm ? 1 : (Rcm / rcm) * (Rcm / rcm);
+    var svg = document.getElementById("l5c-svg");
+    svg.textContent = "";
+    svg.setAttribute("viewBox", "0 0 820 500");
+    var x0 = 70, xw = 700, mid = 100, VS = 1.3;
+    var x = function(dd){ return x0 + dd / 50 * xw; };
+    var t1 = el("text", {x: x0 - 54, y: 16}, svg);
+    t1.textContent = "vista lateral — o cone de " + w.name + " (vertical exagerada)";
+    el("line", {x1: x0, x2: x0 + xw, y1: mid, y2: mid, "class": "gl", "stroke-dasharray": "5 4"}, svg);
+    var h50 = I * 5 * VS;
+    el("line", {x1: x0, x2: x0 + xw, y1: mid, y2: mid - h50, style: "stroke:var(--s1)", "stroke-width": 1.5}, svg);
+    el("line", {x1: x0, x2: x0 + xw, y1: mid, y2: mid + h50, style: "stroke:var(--s1)", "stroke-width": 1.5}, svg);
+    el("circle", {cx: x0, cy: mid, r: 4, style: "fill:var(--muted)"}, svg);
+    var t2 = el("text", {x: x0 - 54, y: mid + 4}, svg);
+    t2.textContent = "arma";
+    [10, 20, 30, 40, 50].forEach(function(dd) {
+      var tt = el("text", {x: x(dd), y: mid + h50 + 22, "text-anchor": "middle"}, svg);
+      tt.textContent = dd + " m";
+    });
+    var hd = rcm * VS;
+    el("line", {x1: x(d), x2: x(d), y1: mid - hd, y2: mid + hd, style: "stroke:var(--s1)", "stroke-width": 2.5}, svg);
+    var lr = el("text", {x: x(d), y: mid - hd - 8, "text-anchor": "middle", "class": "dl"}, svg);
+    lr.textContent = "r = " + fmt(rcm, 1) + " cm";
+    if (dstar <= 50) {
+      var hs = Rcm * VS;
+      el("line", {x1: x(dstar), x2: x(dstar), y1: mid - hs - 14, y2: mid + hs + 14, "class": "ax", "stroke-dasharray": "4 4"}, svg);
+      var ld = el("text", {x: x(dstar), y: mid + hs + 30, "text-anchor": "middle", "class": "dl"}, svg);
+      ld.textContent = "d* = " + fmt(dstar, 0) + " m";
+    }
+    var cy = 340, cx = 410, S = 2.2;
+    var t3 = el("text", {x: x0 - 54, y: cy - Math.max(rcm, Rcm) * S - 26}, svg);
+    t3.textContent = "vista do alvo — o disco de dispersão sobre o alvo, na distância escolhida";
+    el("line", {x1: cx - 130, x2: cx + 130, y1: cy, y2: cy, "class": "gl"}, svg);
+    el("line", {x1: cx, x2: cx, y1: cy - 130, y2: cy + 130, "class": "gl"}, svg);
+    el("circle", {cx: cx, cy: cy, r: Rcm * S, fill: "none", style: "stroke:var(--s2)", "stroke-width": 2}, svg);
+    el("circle", {cx: cx, cy: cy, r: Math.max(rcm * S, 2), fill: "none", style: "stroke:var(--s1)", "stroke-width": 2, "stroke-dasharray": "5 4"}, svg);
+    var la = el("text", {x: cx + Rcm * S + 10, y: cy + 4}, svg);
+    la.textContent = "alvo R = " + fmt(Rcm, 0) + " cm";
+    var lp = el("text", {x: cx, y: cy + Math.max(rcm, Rcm) * S + 26, "text-anchor": "middle", "class": "dl"}, svg);
+    lp.textContent = rcm <= Rcm
+      ? "o disco cabe no alvo: p = 100%"
+      : "p = (" + fmt(Rcm, 0) + "/" + fmt(rcm, 1) + ")\u00b2 \u2248 " + fmt(p * 100, 0) + "%";
+    var box = document.getElementById("l5c-read"); box.textContent = "";
+    stat(box, "abertura do cone", fmt(I, 2) + " mrad", "\u2248 " + fmt(I * 0.0573, 2) + "\u00b0 \u00b7 " + fmt(I, 2) + " mm por metro");
+    stat(box, "raio do disco a " + d + " m", fmt(rcm, 1) + " cm", "r = I\u00b7d/1000");
+    stat(box, "probabilidade de acerto", fmt(p * 100, 0) + "%", "min(1, (R/r)\u00b2)");
+    stat(box, "dist\u00e2ncia cr\u00edtica d*", fmt(dstar, 0) + " m", "onde o disco alcan\u00e7a a borda do alvo");
+  }
+  [sel, dEl].forEach(function(e){ e.addEventListener("input", draw); });
+  document.querySelectorAll("input[name=l5c-aim]").forEach(function(e){ e.addEventListener("change", draw); });
+  draw();
+})();
+
+(function lab13() {
+  var FL = {
+    ak:     {fL: 0.4,  fS: 0.55},
+    m4s:    {fL: 0.4,  fS: 0.4},
+    negev:  {fL: 0.4,  fS: 0.55},
+    deagle: {fL: 0.4,  fS: 0.55},
+    glock:  {fL: 0.5,  fS: 0.65},
+    awp:    {fL: 0.35, fS: 0.4}
+  };
+  var VMAX = 6.35, TAU = 0.7, REACT = 0.25, TRIALS = 1200;
+  var sel = fillSelect("l13-w", Object.keys(FL), "ak");
+  var dEl = document.getElementById("l13-d"), lEl = document.getElementById("l13-l"),
+      pEl = document.getElementById("l13-p");
+  legend("l13-leg", [{n: "com tagging", c: "var(--s1)"},
+                     {n: "sem tagging (f = 1) — contrafactual", c: "var(--s2)"}]);
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function() {
+      s = (s + 0x6D2B79F5) >>> 0;
+      var t = Math.imul(s ^ (s >>> 15), 1 | s);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function advance(x, v, dt) {
+    var nx = x + VMAX * dt - (VMAX - v) * TAU * (1 - Math.exp(-dt / TAU));
+    var nv = VMAX - (VMAX - v) * Math.exp(-dt / TAU);
+    return [nx, nv];
+  }
+  function crossTime(x, v, L) {
+    var lo = 0, hi = (L - x) / (VMAX * 0.3) + 1;
+    for (var i = 0; i < 20; i++) {
+      var mid = (lo + hi) / 2;
+      (advance(x, v, mid)[0] < L ? lo = mid : hi = mid);
+    }
+    return (lo + hi) / 2;
+  }
+  function sim(w, fl, dShoot, L, p, tagging, seed) {
+    var dmg = dmgAt(w, dShoot, true);
+    var r = rng(seed), surv = 0, hitsTot = 0, timeTot = 0;
+    for (var i = 0; i < TRIALS; i++) {
+      var hp = 100, v = VMAX, x = 0, t = 0, next = REACT, hits = 0, alive = true;
+      for (var guard = 0; guard < 500; guard++) {
+        var a = advance(x, v, next - t);
+        if (a[0] >= L) { timeTot += t + crossTime(x, v, L); break; }
+        x = a[0]; v = a[1]; t = next; next += w.cyc;
+        if (r() < p) {
+          hits++; hp -= dmg;
+          if (hp <= 0) { alive = false; break; }
+          if (tagging) v *= (hits === 1 ? fl.fL : fl.fS);
+        }
+      }
+      hitsTot += hits;
+      if (alive) surv++;
+    }
+    return {ps: surv / TRIALS, hits: hitsTot / TRIALS, time: surv ? timeTot / surv : 0};
+  }
+  function draw() {
+    var key = sel.value, w = W[key], fl = FL[key];
+    var dShoot = +dEl.value, L = +lEl.value, p = +pEl.value / 100;
+    document.getElementById("l13-dv").textContent = dShoot + " m";
+    document.getElementById("l13-lv").textContent = fmt(L, 1) + " m";
+    document.getElementById("l13-pv").textContent = pEl.value + "%";
+    var Ls = [], both = [[], []];
+    for (var g = 1; g <= 15; g += 0.75) Ls.push(g);
+    Ls.forEach(function(g, gi) {
+      both[0].push(sim(w, fl, dShoot, g, p, true, 7001 + gi).ps);
+      both[1].push(sim(w, fl, dShoot, g, p, false, 7001 + gi).ps);
+    });
+    var svg = document.getElementById("l13-svg");
+    var f = frame(svg, {W: 820, H: 300, M: {l: 50, r: 24, t: 30, b: 34},
+      xmin: 0, xmax: 15, ymax: 1, yticks: [0, 0.25, 0.5, 0.75, 1],
+      xticks: [0, 3, 6, 9, 12, 15],
+      xfmt: String, yfmt: function(v){ return fmt(v, 2); },
+      xunit: "m de vão", yunit: "P(atravessar vivo)"});
+    [["var(--s1)", both[0]], ["var(--s2)", both[1]]].forEach(function(cfg) {
+      el("path", {d: Ls.map(function(g, i){
+        return (i ? "L" : "M") + f.x(g).toFixed(1) + " " + f.y(cfg[1][i]).toFixed(1);
+      }).join(" "), fill: "none", "stroke-width": 2,
+        "stroke-linejoin": "round", style: "stroke:" + cfg[0]}, svg);
+    });
+    el("line", {x1: f.x(L), x2: f.x(L), y1: f.y(0), y2: f.y(1),
+      "class": "ax", "stroke-dasharray": "4 4"}, svg);
+    var tag = sim(w, fl, dShoot, L, p, true, 991);
+    var free = sim(w, fl, dShoot, L, p, false, 991);
+    var box = document.getElementById("l13-read"); box.textContent = "";
+    stat(box, "P(atravessar) com tagging", fmt(tag.ps * 100, 0) + "%", "");
+    stat(box, "P(atravessar) sem tagging", fmt(free.ps * 100, 0) + "%",
+      "o mecanismo custa " + fmt((free.ps - tag.ps) * 100, 0) + " pontos");
+    stat(box, "E[acertos] com / sem", fmt(tag.hits, 1) + " / " + fmt(free.hits, 1),
+      "mesmo p por tiro — auto-excitação");
+    stat(box, "tempo de travessia", fmt(tag.time, 2) + " s",
+      "livre seria " + fmt(L / VMAX, 2) + " s");
+  }
+  [sel, dEl, lEl, pEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+
+(function lab12() {
+  var CAP = 12, BINS = 24;
+  var sel = fillSelect("l12-w", ["glock", "deagle", "mp9", "famas", "ak", "m4s", "sg", "ssg", "awp"], "ak");
+  var dEl = document.getElementById("l12-d"), sEl = document.getElementById("l12-s");
+  legend("l12-leg", [{n: "flick persistente na rajada", c: "var(--s1)"},
+                     {n: "erro re-sorteado a cada tiro", c: "var(--s2)"}]);
+  function rayBins(sigmaM) {
+    if (sigmaM < 1e-9) return [{rho: 0, wt: 1}];
+    var out = [], top = 4 * sigmaM, F = function(x){ return 1 - Math.exp(-x * x / (2 * sigmaM * sigmaM)); };
+    var total = F(top);
+    for (var i = 0; i < BINS; i++) {
+      var a = top * i / BINS, b = top * (i + 1) / BINS;
+      out.push({rho: (a + b) / 2, wt: (F(b) - F(a)) / total});
+    }
+    return out;
+  }
+  function pksAt(w, d, R, rho) {
+    var out = [], I = w.base;
+    for (var k = 0; k < w.mag; k++) {
+      var r = Math.max(I * d / 1000, 1e-4);
+      out.push(Math.min(1, lensArea(R, r, rho) / (Math.PI * r * r)));
+      I = w.base + (I - w.base + w.fire) * w.lam;
+    }
+    return out;
+  }
+  function dp(w, N, pks, sch) {
+    var v = new Array(N).fill(0); v[0] = 1;
+    var pmf = [], E = 0, PK = 0, P1 = 0;
+    for (var j = 0; j < sch.times.length; j++) {
+      var p = pks[sch.idx[j]], kill = v[N - 1] * p;
+      if (kill > 1e-12) pmf.push([sch.times[j], kill]);
+      E += kill * sch.times[j]; PK += kill;
+      if (sch.times[j] <= 1) P1 += kill;
+      for (var h = N - 1; h >= 1; h--) v[h] = v[h] * (1 - p) + v[h - 1] * p;
+      v[0] *= (1 - p);
+    }
+    E += (1 - PK) * CAP;
+    return {pmf: pmf, E: E, PK: PK, P1: P1};
+  }
+  function evalMode(w, d, aim, sigma, persistent) {
+    var R = aim === "cabeca" ? 0.10 : 0.17;
+    var dmg = dmgAt(w, d, true) * (aim === "cabeca" ? w.hs : 1);
+    if (dmg < 0.5) return null;
+    var N = Math.ceil(100 / dmg);
+    var sch = schedule(w, 1, CAP);
+    var bins = rayBins(sigma * d / 1000);
+    if (persistent) {
+      var agg = {}, E = 0, PK = 0, P1 = 0;
+      bins.forEach(function(bn) {
+        var r = dp(w, N, pksAt(w, d, R, bn.rho), sch);
+        E += bn.wt * r.E; PK += bn.wt * r.PK; P1 += bn.wt * r.P1;
+        r.pmf.forEach(function(q) {
+          var key = q[0].toFixed(4);
+          agg[key] = (agg[key] || 0) + bn.wt * q[1];
+        });
+      });
+      var pmf = Object.keys(agg).map(function(k){ return [parseFloat(k), agg[k]]; })
+        .sort(function(a, b){ return a[0] - b[0]; });
+      return {pmf: pmf, E: E, PK: PK, P1: P1, p1: null, N: N};
+    }
+    var pbar = null;
+    bins.forEach(function(bn) {
+      var pk = pksAt(w, d, R, bn.rho);
+      if (!pbar) pbar = pk.map(function(v){ return bn.wt * v; });
+      else pk.forEach(function(v, i){ pbar[i] += bn.wt * v; });
+    });
+    var r = dp(w, N, pbar, sch);
+    return {pmf: r.pmf, E: r.E, PK: r.PK, P1: r.P1, p1: pbar[0], N: N};
+  }
+  function crossover(w, d) {
+    function g(sig) {
+      var h = evalMode(w, d, "cabeca", sig, true), c = evalMode(w, d, "peito", sig, true);
+      if (!h || !c) return null;
+      return h.E - c.E;
+    }
+    var g0 = g(0), g10 = g(10);
+    if (g0 === null || g10 === null) return null;
+    if (g0 >= 0) return {kind: "peito"};
+    if (g10 <= 0) return {kind: "cabeca"};
+    var lo = 0, hi = 10;
+    for (var i = 0; i < 14; i++) {
+      var mid = (lo + hi) / 2;
+      (g(mid) < 0 ? lo = mid : hi = mid);
+    }
+    return {kind: "cross", sig: (lo + hi) / 2};
+  }
+  function draw() {
+    var w = W[sel.value], d = +dEl.value, sigma = +sEl.value;
+    var aim = document.querySelector("input[name=l12-aim]:checked").value;
+    document.getElementById("l12-dv").textContent = d + " m";
+    document.getElementById("l12-sv").textContent = fmt(sigma, 1) + " mrad";
+    var P = evalMode(w, d, aim, sigma, true);
+    var I = evalMode(w, d, aim, sigma, false);
+    var svg = document.getElementById("l12-svg");
+    var box = document.getElementById("l12-read"); box.textContent = "";
+    if (!P || !I) { svg.textContent = ""; stat(box, "fora de alcance", "—", ""); return; }
+    var xmax = Math.max(1.5, Math.min(10, Math.max(P.E, I.E) * 2.2));
+    var f = frame(svg, {W: 820, H: 300, M: {l: 50, r: 24, t: 30, b: 32},
+      xmin: 0, xmax: xmax, ymax: 1, yticks: [0, 0.5, 1],
+      xticks: [0, xmax / 4, xmax / 2, 3 * xmax / 4, xmax].map(function(v){ return Math.round(v * 10) / 10; }),
+      xfmt: function(v){ return fmt(v, 1); }, yfmt: function(v){ return fmt(v, 1); },
+      xunit: "s", yunit: "P norm."});
+    var pmax = 1e-9;
+    P.pmf.concat(I.pmf).forEach(function(q){ pmax = Math.max(pmax, q[1]); });
+    [[P, "var(--s1)", -1], [I, "var(--s2)", 1]].forEach(function(cfg) {
+      var bw = 4;
+      cfg[0].pmf.forEach(function(q) {
+        if (q[0] > xmax) return;
+        var h = q[1] / pmax * f.ih;
+        el("rect", {x: f.x(q[0]) + (cfg[2] < 0 ? -bw - 1 : 1), y: f.y(0) - h,
+          width: bw, height: h, rx: 2, style: "fill:" + cfg[1] + ";opacity:0.85"}, svg);
+      });
+    });
+    stat(box, "E[TTK] persistente", P.PK < 0.005 ? ">12 s" : fmt(P.E, 2) + " s",
+      "mata em " + fmt(P.PK * 100, 0) + "% até 12 s");
+    stat(box, "E[TTK] re-sorteado", I.PK < 0.005 ? ">12 s" : fmt(I.E, 2) + " s",
+      "mata em " + fmt(I.PK * 100, 0) + "% até 12 s");
+    stat(box, "p do 1º tiro (marginal)", fmt(I.p1 * 100, 0) + "%", "idêntico nos dois modos");
+    var cx = crossover(w, d);
+    if (cx) {
+      stat(box, "melhor alvo para este σ",
+        cx.kind === "cross" ? (sigma < cx.sig ? "cabeça" : "peito") : (cx.kind === "cabeca" ? "cabeça" : "peito"),
+        cx.kind === "cross" ? "σ* de crossover ≈ " + fmt(cx.sig, 1) + " mrad" : "em todo σ ≤ 10 mrad");
+    }
+  }
+  [sel, dEl, sEl].forEach(function(e){ e.addEventListener("input", draw); });
+  document.querySelectorAll("input[name=l12-aim]").forEach(function(e){ e.addEventListener("change", draw); });
+  draw();
+})();
+
+(function lab11() {
+  var STEP = 500, NM = 33, NB = 5, WININC = 3500;
+  var SPEND = {eco: 0, force: 2000, full: 5000};
+  var ACTS = ["eco", "force", "full"];
+  var COLORS = {eco: "var(--s1)", force: "var(--s2)", full: "var(--s3)"};
+  var NAMES = {eco: "eco", force: "force", full: "full-buy"};
+  legend("l11-leg", [
+    {n: "eco — não gasta", c: "var(--s1)"},
+    {n: "force — $2.000", c: "var(--s2)"},
+    {n: "full-buy — $5.000", c: "var(--s3)"}
+  ], true);
+  var tEl = document.getElementById("l11-t");
+  var pfEl = document.getElementById("l11-pf");
+  var peEl = document.getElementById("l11-pe");
+  var sel = {m: 8, b: 1};
+  function lossInc(b) { return 1500 + 500 * b; }
+  function idx(m, b) { return b * NM + m; }
+  function solve(T, P) {
+    var V = new Float64Array(NM * NB), pol = null, Qs = null;
+    for (var t = 1; t <= T; t++) {
+      var Vn = new Float64Array(NM * NB);
+      pol = new Array(NM * NB); Qs = new Array(NM * NB);
+      for (var b = 0; b < NB; b++) for (var m = 0; m < NM; m++) {
+        var money = m * STEP, best = -1, bestA = null, qs = {};
+        for (var ai = 0; ai < 3; ai++) {
+          var a = ACTS[ai];
+          if (money < SPEND[a]) continue;
+          var bW = Math.max(b - 1, 0), bL = Math.min(b + 1, NB - 1);
+          var mW = Math.min((money - SPEND[a] + WININC) / STEP, NM - 1);
+          var mL = Math.min((money - SPEND[a] + lossInc(bL)) / STEP, NM - 1);
+          var q = P[a] * (1 + V[idx(mW, bW)]) + (1 - P[a]) * V[idx(mL, bL)];
+          qs[a] = q;
+          if (q > best + 1e-12) { best = q; bestA = a; }
+        }
+        Vn[idx(m, b)] = best; pol[idx(m, b)] = bestA; Qs[idx(m, b)] = qs;
+      }
+      V = Vn;
+    }
+    return {V: V, pol: pol, Qs: Qs};
+  }
+  function draw() {
+    var T = +tEl.value, pf = +pfEl.value / 100, pe = +peEl.value / 100;
+    document.getElementById("l11-tv").textContent = String(T);
+    document.getElementById("l11-pfv").textContent = pfEl.value + "%";
+    document.getElementById("l11-pev").textContent = peEl.value + "%";
+    var sol = solve(T, {eco: pe, force: pf, full: 0.5});
+    var svg = document.getElementById("l11-svg");
+    svg.textContent = "";
+    svg.setAttribute("viewBox", "0 0 820 236");
+    var x0 = 68, y0 = 22, cw = 22, rh = 34;
+    var yt = el("text", {x: x0, y: 12}, svg);
+    yt.textContent = "bônus da próxima derrota ↓ · dinheiro por jogador →";
+    for (var b = NB - 1; b >= 0; b--) {
+      var row = NB - 1 - b;
+      var lb = el("text", {x: x0 - 8, y: y0 + row * rh + rh / 2 + 4,
+        "text-anchor": "end"}, svg);
+      lb.textContent = "$" + lossInc(b).toLocaleString("pt-BR");
+      for (var m = 0; m < NM; m++) {
+        var a = sol.pol[idx(m, b)];
+        var r = el("rect", {x: x0 + m * cw + 1, y: y0 + row * rh + 1,
+          width: cw - 2, height: rh - 2, rx: 2,
+          style: "fill:" + COLORS[a] + ";opacity:0.9;cursor:pointer"}, svg);
+        if (m === sel.m && b === sel.b) {
+          el("rect", {x: x0 + m * cw, y: y0 + row * rh,
+            width: cw, height: rh, rx: 3, fill: "none",
+            style: "stroke:var(--ink);stroke-width:1.5"}, svg);
+        }
+        (function(mm, bb) {
+          r.addEventListener("click", function() { sel = {m: mm, b: bb}; draw(); });
+        })(m, b);
+        var tt = document.createElementNS("http://www.w3.org/2000/svg", "title");
+        tt.textContent = "$" + (m * STEP).toLocaleString("pt-BR") + " · bônus $"
+          + lossInc(b).toLocaleString("pt-BR") + " → " + NAMES[a];
+        r.appendChild(tt);
+      }
+    }
+    for (var mt = 0; mt <= 32; mt += 4) {
+      var xt = el("text", {x: x0 + mt * cw + cw / 2 - 1, y: y0 + NB * rh + 16,
+        "text-anchor": "middle"}, svg);
+      xt.textContent = mt === 0 ? "$0" : "$" + (mt / 2) + "k";
+    }
+    var box = document.getElementById("l11-read"); box.textContent = "";
+    var money = sel.m * STEP;
+    var qs = sol.Qs[idx(sel.m, sel.b)];
+    stat(box, "estado selecionado",
+      "$" + money.toLocaleString("pt-BR"),
+      "bônus $" + lossInc(sel.b).toLocaleString("pt-BR") + " · " + T + " rounds restantes");
+    stat(box, "ação ótima", NAMES[sol.pol[idx(sel.m, sel.b)]], "");
+    stat(box, "V — rounds esperados", fmt(sol.V[idx(sel.m, sel.b)], 2),
+      "dos " + T + " restantes");
+    stat(box, "Q: eco / force / full",
+      (qs.eco !== undefined ? fmt(qs.eco, 2) : "—") + " / "
+      + (qs.force !== undefined ? fmt(qs.force, 2) : "—") + " / "
+      + (qs.full !== undefined ? fmt(qs.full, 2) : "—"), "");
+  }
+  [tEl, pfEl, peEl].forEach(function(e){ e.addEventListener("input", draw); });
+  draw();
+})();
+</script>

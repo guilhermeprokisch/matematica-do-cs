@@ -1,0 +1,681 @@
+engine_name,display_name,distance_m,i_have_kevlar,p_win_vs_ak
+ak47,AK-47,2.5,True,0.5
+ak47,AK-47,2.5,False,0.0
+ak47,AK-47,5.0,True,0.5
+ak47,AK-47,5.0,False,0.0
+ak47,AK-47,7.5,True,0.5
+ak47,AK-47,7.5,False,0.0
+ak47,AK-47,10.0,True,0.5
+ak47,AK-47,10.0,False,0.0
+ak47,AK-47,12.5,True,0.4997
+ak47,AK-47,12.5,False,0.0
+ak47,AK-47,15.0,True,0.4983
+ak47,AK-47,15.0,False,0.0945
+ak47,AK-47,20.0,True,0.5016
+ak47,AK-47,20.0,False,0.1802
+ak47,AK-47,25.0,True,0.49570000000000003
+ak47,AK-47,25.0,False,0.2126
+ak47,AK-47,30.0,True,0.4992
+ak47,AK-47,30.0,False,0.2817
+ak47,AK-47,40.0,True,0.5006
+ak47,AK-47,40.0,False,0.31629999999999997
+aug,AUG,2.5,True,0.5
+aug,AUG,2.5,False,0.0
+aug,AUG,5.0,True,0.5
+aug,AUG,5.0,False,0.0
+aug,AUG,7.5,True,0.0
+aug,AUG,7.5,False,0.0
+aug,AUG,10.0,True,0.0
+aug,AUG,10.0,False,0.0
+aug,AUG,12.5,True,0.0775
+aug,AUG,12.5,False,0.0
+aug,AUG,15.0,True,0.3003
+aug,AUG,15.0,False,0.0452
+aug,AUG,20.0,True,0.6053000000000001
+aug,AUG,20.0,False,0.221
+aug,AUG,25.0,True,0.6769
+aug,AUG,25.0,False,0.2753
+aug,AUG,30.0,True,0.7575
+aug,AUG,30.0,False,0.4507
+aug,AUG,40.0,True,0.8795999999999999
+aug,AUG,40.0,False,0.678
+awp,AWP,2.5,True,1.0
+awp,AWP,2.5,False,0.0
+awp,AWP,5.0,True,1.0
+awp,AWP,5.0,False,0.0
+awp,AWP,7.5,True,1.0
+awp,AWP,7.5,False,0.0
+awp,AWP,10.0,True,1.0
+awp,AWP,10.0,False,0.0
+awp,AWP,12.5,True,1.0
+awp,AWP,12.5,False,0.0
+awp,AWP,15.0,True,1.0
+awp,AWP,15.0,False,0.2232
+awp,AWP,20.0,True,1.0
+awp,AWP,20.0,False,1.0
+awp,AWP,25.0,True,1.0
+awp,AWP,25.0,False,1.0
+awp,AWP,30.0,True,1.0
+awp,AWP,30.0,False,1.0
+awp,AWP,40.0,True,1.0
+awp,AWP,40.0,False,1.0
+bizon,PP-Bizon,2.5,True,0.0
+bizon,PP-Bizon,2.5,False,0.0
+bizon,PP-Bizon,5.0,True,0.0
+bizon,PP-Bizon,5.0,False,0.0
+bizon,PP-Bizon,7.5,True,0.0
+bizon,PP-Bizon,7.5,False,0.0
+bizon,PP-Bizon,10.0,True,0.0
+bizon,PP-Bizon,10.0,False,0.0
+bizon,PP-Bizon,12.5,True,0.002
+bizon,PP-Bizon,12.5,False,0.0
+bizon,PP-Bizon,15.0,True,0.021500000000000002
+bizon,PP-Bizon,15.0,False,0.0012
+bizon,PP-Bizon,20.0,True,0.0097
+bizon,PP-Bizon,20.0,False,0.0023
+bizon,PP-Bizon,25.0,True,0.0046
+bizon,PP-Bizon,25.0,False,0.0014
+bizon,PP-Bizon,30.0,True,0.0086
+bizon,PP-Bizon,30.0,False,0.0016
+bizon,PP-Bizon,40.0,True,0.0166
+bizon,PP-Bizon,40.0,False,0.0028
+cz75a,CZ75-Auto,2.5,True,0.0
+cz75a,CZ75-Auto,2.5,False,0.0
+cz75a,CZ75-Auto,5.0,True,0.0
+cz75a,CZ75-Auto,5.0,False,0.0
+cz75a,CZ75-Auto,7.5,True,0.0
+cz75a,CZ75-Auto,7.5,False,0.0
+cz75a,CZ75-Auto,10.0,True,0.0
+cz75a,CZ75-Auto,10.0,False,0.0
+cz75a,CZ75-Auto,12.5,True,0.0002
+cz75a,CZ75-Auto,12.5,False,0.0
+cz75a,CZ75-Auto,15.0,True,0.0014
+cz75a,CZ75-Auto,15.0,False,0.0
+cz75a,CZ75-Auto,20.0,True,0.0004
+cz75a,CZ75-Auto,20.0,False,0.00030000000000000003
+cz75a,CZ75-Auto,25.0,True,0.0024
+cz75a,CZ75-Auto,25.0,False,0.0
+cz75a,CZ75-Auto,30.0,True,0.0008
+cz75a,CZ75-Auto,30.0,False,0.0002
+cz75a,CZ75-Auto,40.0,True,0.0152
+cz75a,CZ75-Auto,40.0,False,0.0029
+deagle,Desert Eagle,2.5,True,0.0
+deagle,Desert Eagle,2.5,False,0.0
+deagle,Desert Eagle,5.0,True,0.0
+deagle,Desert Eagle,5.0,False,0.0
+deagle,Desert Eagle,7.5,True,0.0
+deagle,Desert Eagle,7.5,False,0.0
+deagle,Desert Eagle,10.0,True,0.0
+deagle,Desert Eagle,10.0,False,0.0
+deagle,Desert Eagle,12.5,True,0.0
+deagle,Desert Eagle,12.5,False,0.0
+deagle,Desert Eagle,15.0,True,0.0022
+deagle,Desert Eagle,15.0,False,0.0001
+deagle,Desert Eagle,20.0,True,0.014599999999999998
+deagle,Desert Eagle,20.0,False,0.0028
+deagle,Desert Eagle,25.0,True,0.0424
+deagle,Desert Eagle,25.0,False,0.0063
+deagle,Desert Eagle,30.0,True,0.23120000000000002
+deagle,Desert Eagle,30.0,False,0.0845
+deagle,Desert Eagle,40.0,True,0.1776
+deagle,Desert Eagle,40.0,False,0.0819
+elite,Dual Berettas,2.5,True,0.0
+elite,Dual Berettas,2.5,False,0.0
+elite,Dual Berettas,5.0,True,0.0
+elite,Dual Berettas,5.0,False,0.0
+elite,Dual Berettas,7.5,True,0.0
+elite,Dual Berettas,7.5,False,0.0
+elite,Dual Berettas,10.0,True,0.0
+elite,Dual Berettas,10.0,False,0.0
+elite,Dual Berettas,12.5,True,0.0008
+elite,Dual Berettas,12.5,False,0.0
+elite,Dual Berettas,15.0,True,0.0026
+elite,Dual Berettas,15.0,False,0.0
+elite,Dual Berettas,20.0,True,0.0024
+elite,Dual Berettas,20.0,False,0.0002
+elite,Dual Berettas,25.0,True,0.0004
+elite,Dual Berettas,25.0,False,0.0004
+elite,Dual Berettas,30.0,True,0.0052
+elite,Dual Berettas,30.0,False,0.0006
+elite,Dual Berettas,40.0,True,0.0171
+elite,Dual Berettas,40.0,False,0.0034000000000000002
+famas,FAMAS,2.5,True,0.0
+famas,FAMAS,2.5,False,0.0
+famas,FAMAS,5.0,True,0.0
+famas,FAMAS,5.0,False,0.0
+famas,FAMAS,7.5,True,0.0
+famas,FAMAS,7.5,False,0.0
+famas,FAMAS,10.0,True,0.0
+famas,FAMAS,10.0,False,0.0
+famas,FAMAS,12.5,True,0.1116
+famas,FAMAS,12.5,False,0.0
+famas,FAMAS,15.0,True,0.3556
+famas,FAMAS,15.0,False,0.0596
+famas,FAMAS,20.0,True,0.1106
+famas,FAMAS,20.0,False,0.0244
+famas,FAMAS,25.0,True,0.0846
+famas,FAMAS,25.0,False,0.020700000000000003
+famas,FAMAS,30.0,True,0.1431
+famas,FAMAS,30.0,False,0.0503
+famas,FAMAS,40.0,True,0.14909999999999998
+famas,FAMAS,40.0,False,0.068
+fiveseven,Five-SeveN,2.5,True,0.0
+fiveseven,Five-SeveN,2.5,False,0.0
+fiveseven,Five-SeveN,5.0,True,0.0
+fiveseven,Five-SeveN,5.0,False,0.0
+fiveseven,Five-SeveN,7.5,True,0.0
+fiveseven,Five-SeveN,7.5,False,0.0
+fiveseven,Five-SeveN,10.0,True,0.0
+fiveseven,Five-SeveN,10.0,False,0.0
+fiveseven,Five-SeveN,12.5,True,0.0002
+fiveseven,Five-SeveN,12.5,False,0.0
+fiveseven,Five-SeveN,15.0,True,0.0012
+fiveseven,Five-SeveN,15.0,False,0.0
+fiveseven,Five-SeveN,20.0,True,0.0008
+fiveseven,Five-SeveN,20.0,False,0.0004
+fiveseven,Five-SeveN,25.0,True,0.0002
+fiveseven,Five-SeveN,25.0,False,0.0002
+fiveseven,Five-SeveN,30.0,True,0.0022
+fiveseven,Five-SeveN,30.0,False,0.0006
+fiveseven,Five-SeveN,40.0,True,0.0168
+fiveseven,Five-SeveN,40.0,False,0.0026
+g3sg1,G3SG1,2.5,True,0.0
+g3sg1,G3SG1,2.5,False,0.0
+g3sg1,G3SG1,5.0,True,0.0
+g3sg1,G3SG1,5.0,False,0.0
+g3sg1,G3SG1,7.5,True,0.0
+g3sg1,G3SG1,7.5,False,0.0
+g3sg1,G3SG1,10.0,True,0.0
+g3sg1,G3SG1,10.0,False,0.0
+g3sg1,G3SG1,12.5,True,0.0132
+g3sg1,G3SG1,12.5,False,0.0
+g3sg1,G3SG1,15.0,True,0.2018
+g3sg1,G3SG1,15.0,False,0.0292
+g3sg1,G3SG1,20.0,True,1.0
+g3sg1,G3SG1,20.0,False,0.4834
+g3sg1,G3SG1,25.0,True,1.0
+g3sg1,G3SG1,25.0,False,1.0
+g3sg1,G3SG1,30.0,True,1.0
+g3sg1,G3SG1,30.0,False,1.0
+g3sg1,G3SG1,40.0,True,1.0
+g3sg1,G3SG1,40.0,False,1.0
+galilar,Galil AR,2.5,True,0.0
+galilar,Galil AR,2.5,False,0.0
+galilar,Galil AR,5.0,True,0.0
+galilar,Galil AR,5.0,False,0.0
+galilar,Galil AR,7.5,True,0.0
+galilar,Galil AR,7.5,False,0.0
+galilar,Galil AR,10.0,True,0.0
+galilar,Galil AR,10.0,False,0.0
+galilar,Galil AR,12.5,True,0.0636
+galilar,Galil AR,12.5,False,0.0
+galilar,Galil AR,15.0,True,0.167
+galilar,Galil AR,15.0,False,0.0268
+galilar,Galil AR,20.0,True,0.1176
+galilar,Galil AR,20.0,False,0.0292
+galilar,Galil AR,25.0,True,0.12
+galilar,Galil AR,25.0,False,0.0402
+galilar,Galil AR,30.0,True,0.1157
+galilar,Galil AR,30.0,False,0.0436
+galilar,Galil AR,40.0,True,0.1537
+galilar,Galil AR,40.0,False,0.0732
+glock,Glock-18,2.5,True,0.0
+glock,Glock-18,2.5,False,0.0
+glock,Glock-18,5.0,True,0.0
+glock,Glock-18,5.0,False,0.0
+glock,Glock-18,7.5,True,0.0
+glock,Glock-18,7.5,False,0.0
+glock,Glock-18,10.0,True,0.0
+glock,Glock-18,10.0,False,0.0
+glock,Glock-18,12.5,True,0.0
+glock,Glock-18,12.5,False,0.0
+glock,Glock-18,15.0,True,0.0
+glock,Glock-18,15.0,False,0.0
+glock,Glock-18,20.0,True,0.0
+glock,Glock-18,20.0,False,0.0002
+glock,Glock-18,25.0,True,0.0
+glock,Glock-18,25.0,False,0.0002
+glock,Glock-18,30.0,True,0.0008
+glock,Glock-18,30.0,False,0.0
+glock,Glock-18,40.0,True,0.0218
+glock,Glock-18,40.0,False,0.004200000000000001
+hkp2000,P2000,2.5,True,0.0
+hkp2000,P2000,2.5,False,0.0
+hkp2000,P2000,5.0,True,0.0
+hkp2000,P2000,5.0,False,0.0
+hkp2000,P2000,7.5,True,0.0
+hkp2000,P2000,7.5,False,0.0
+hkp2000,P2000,10.0,True,0.0
+hkp2000,P2000,10.0,False,0.0
+hkp2000,P2000,12.5,True,0.0
+hkp2000,P2000,12.5,False,0.0
+hkp2000,P2000,15.0,True,0.0008
+hkp2000,P2000,15.0,False,0.0
+hkp2000,P2000,20.0,True,0.0002
+hkp2000,P2000,20.0,False,0.0002
+hkp2000,P2000,25.0,True,0.0114
+hkp2000,P2000,25.0,False,0.0022
+hkp2000,P2000,30.0,True,0.0372
+hkp2000,P2000,30.0,False,0.01
+hkp2000,P2000,40.0,True,0.1046
+hkp2000,P2000,40.0,False,0.0385
+m249,M249,2.5,True,1.0
+m249,M249,2.5,False,0.0
+m249,M249,5.0,True,1.0
+m249,M249,5.0,False,0.0
+m249,M249,7.5,True,1.0
+m249,M249,7.5,False,0.0
+m249,M249,10.0,True,0.0
+m249,M249,10.0,False,0.0
+m249,M249,12.5,True,0.0958
+m249,M249,12.5,False,0.0
+m249,M249,15.0,True,0.3001
+m249,M249,15.0,False,0.0473
+m249,M249,20.0,True,0.3106
+m249,M249,20.0,False,0.1126
+m249,M249,25.0,True,0.2198
+m249,M249,25.0,False,0.082
+m249,M249,30.0,True,0.2132
+m249,M249,30.0,False,0.0998
+m249,M249,40.0,True,0.23570000000000002
+m249,M249,40.0,False,0.1241
+m4a1,M4A4,2.5,True,0.0
+m4a1,M4A4,2.5,False,0.0
+m4a1,M4A4,5.0,True,0.0
+m4a1,M4A4,5.0,False,0.0
+m4a1,M4A4,7.5,True,0.0
+m4a1,M4A4,7.5,False,0.0
+m4a1,M4A4,10.0,True,0.0
+m4a1,M4A4,10.0,False,0.0
+m4a1,M4A4,12.5,True,0.121
+m4a1,M4A4,12.5,False,0.0
+m4a1,M4A4,15.0,True,0.3984
+m4a1,M4A4,15.0,False,0.0652
+m4a1,M4A4,20.0,True,0.5792
+m4a1,M4A4,20.0,False,0.1904
+m4a1,M4A4,25.0,True,0.6742
+m4a1,M4A4,25.0,False,0.273
+m4a1,M4A4,30.0,True,0.7096
+m4a1,M4A4,30.0,False,0.4168
+m4a1,M4A4,40.0,True,0.7004
+m4a1,M4A4,40.0,False,0.4758
+m4a1_silencer,M4A1-S,2.5,True,0.5
+m4a1_silencer,M4A1-S,2.5,False,0.0
+m4a1_silencer,M4A1-S,5.0,True,0.5
+m4a1_silencer,M4A1-S,5.0,False,0.0
+m4a1_silencer,M4A1-S,7.5,True,0.5
+m4a1_silencer,M4A1-S,7.5,False,0.0
+m4a1_silencer,M4A1-S,10.0,True,0.5
+m4a1_silencer,M4A1-S,10.0,False,0.0
+m4a1_silencer,M4A1-S,12.5,True,0.5625
+m4a1_silencer,M4A1-S,12.5,False,0.0
+m4a1_silencer,M4A1-S,15.0,True,0.37060000000000004
+m4a1_silencer,M4A1-S,15.0,False,0.0582
+m4a1_silencer,M4A1-S,20.0,True,0.6542
+m4a1_silencer,M4A1-S,20.0,False,0.2471
+m4a1_silencer,M4A1-S,25.0,True,0.7838999999999999
+m4a1_silencer,M4A1-S,25.0,False,0.3951
+m4a1_silencer,M4A1-S,30.0,True,0.814
+m4a1_silencer,M4A1-S,30.0,False,0.5244
+m4a1_silencer,M4A1-S,40.0,True,0.8203
+m4a1_silencer,M4A1-S,40.0,False,0.6088
+mac10,MAC-10,2.5,True,0.0
+mac10,MAC-10,2.5,False,0.0
+mac10,MAC-10,5.0,True,0.0
+mac10,MAC-10,5.0,False,0.0
+mac10,MAC-10,7.5,True,0.0
+mac10,MAC-10,7.5,False,0.0
+mac10,MAC-10,10.0,True,0.0
+mac10,MAC-10,10.0,False,0.0
+mac10,MAC-10,12.5,True,0.0008
+mac10,MAC-10,12.5,False,0.0
+mac10,MAC-10,15.0,True,0.004
+mac10,MAC-10,15.0,False,0.0002
+mac10,MAC-10,20.0,True,0.0
+mac10,MAC-10,20.0,False,0.0
+mac10,MAC-10,25.0,True,0.0002
+mac10,MAC-10,25.0,False,0.0
+mac10,MAC-10,30.0,True,0.0
+mac10,MAC-10,30.0,False,0.0
+mac10,MAC-10,40.0,True,0.0151
+mac10,MAC-10,40.0,False,0.0024
+mag7,MAG-7,2.5,True,1.0
+mag7,MAG-7,2.5,False,1.0
+mag7,MAG-7,5.0,True,0.3044
+mag7,MAG-7,5.0,False,0.3044
+mag7,MAG-7,7.5,True,0.0004
+mag7,MAG-7,7.5,False,0.0004
+mag7,MAG-7,10.0,True,0.0
+mag7,MAG-7,10.0,False,0.0
+mag7,MAG-7,12.5,True,0.0
+mag7,MAG-7,12.5,False,0.0
+mag7,MAG-7,15.0,True,0.0
+mag7,MAG-7,15.0,False,0.0
+mag7,MAG-7,20.0,True,0.0
+mag7,MAG-7,20.0,False,0.0
+mag7,MAG-7,25.0,True,0.0
+mag7,MAG-7,25.0,False,0.0
+mag7,MAG-7,30.0,True,0.0
+mag7,MAG-7,30.0,False,0.0
+mag7,MAG-7,40.0,True,0.015
+mag7,MAG-7,40.0,False,0.0024
+mp5sd,MP5-SD,2.5,True,0.0
+mp5sd,MP5-SD,2.5,False,0.0
+mp5sd,MP5-SD,5.0,True,0.0
+mp5sd,MP5-SD,5.0,False,0.0
+mp5sd,MP5-SD,7.5,True,0.0
+mp5sd,MP5-SD,7.5,False,0.0
+mp5sd,MP5-SD,10.0,True,0.0
+mp5sd,MP5-SD,10.0,False,0.0
+mp5sd,MP5-SD,12.5,True,0.035
+mp5sd,MP5-SD,12.5,False,0.0
+mp5sd,MP5-SD,15.0,True,0.1722
+mp5sd,MP5-SD,15.0,False,0.0218
+mp5sd,MP5-SD,20.0,True,0.1666
+mp5sd,MP5-SD,20.0,False,0.0401
+mp5sd,MP5-SD,25.0,True,0.082
+mp5sd,MP5-SD,25.0,False,0.0212
+mp5sd,MP5-SD,30.0,True,0.089
+mp5sd,MP5-SD,30.0,False,0.0364
+mp5sd,MP5-SD,40.0,True,0.0365
+mp5sd,MP5-SD,40.0,False,0.0112
+mp7,MP7,2.5,True,0.0
+mp7,MP7,2.5,False,0.0
+mp7,MP7,5.0,True,0.0
+mp7,MP7,5.0,False,0.0
+mp7,MP7,7.5,True,0.0
+mp7,MP7,7.5,False,0.0
+mp7,MP7,10.0,True,0.0
+mp7,MP7,10.0,False,0.0
+mp7,MP7,12.5,True,0.0348
+mp7,MP7,12.5,False,0.0
+mp7,MP7,15.0,True,0.1723
+mp7,MP7,15.0,False,0.0227
+mp7,MP7,20.0,True,0.25
+mp7,MP7,20.0,False,0.0735
+mp7,MP7,25.0,True,0.0804
+mp7,MP7,25.0,False,0.0206
+mp7,MP7,30.0,True,0.0946
+mp7,MP7,30.0,False,0.037
+mp7,MP7,40.0,True,0.0356
+mp7,MP7,40.0,False,0.0112
+mp9,MP9,2.5,True,0.0
+mp9,MP9,2.5,False,0.0
+mp9,MP9,5.0,True,0.0
+mp9,MP9,5.0,False,0.0
+mp9,MP9,7.5,True,0.0
+mp9,MP9,7.5,False,0.0
+mp9,MP9,10.0,True,0.0
+mp9,MP9,10.0,False,0.0
+mp9,MP9,12.5,True,0.036
+mp9,MP9,12.5,False,0.0
+mp9,MP9,15.0,True,0.18760000000000002
+mp9,MP9,15.0,False,0.0254
+mp9,MP9,20.0,True,0.31070000000000003
+mp9,MP9,20.0,False,0.09029999999999999
+mp9,MP9,25.0,True,0.1366
+mp9,MP9,25.0,False,0.0398
+mp9,MP9,30.0,True,0.1332
+mp9,MP9,30.0,False,0.0568
+mp9,MP9,40.0,True,0.0708
+mp9,MP9,40.0,False,0.0254
+negev,Negev,2.5,True,1.0
+negev,Negev,2.5,False,0.0
+negev,Negev,5.0,True,0.313
+negev,Negev,5.0,False,0.0
+negev,Negev,7.5,True,0.0
+negev,Negev,7.5,False,0.0
+negev,Negev,10.0,True,0.0
+negev,Negev,10.0,False,0.0
+negev,Negev,12.5,True,0.0004
+negev,Negev,12.5,False,0.0
+negev,Negev,15.0,True,0.0213
+negev,Negev,15.0,False,0.0012
+negev,Negev,20.0,True,0.0512
+negev,Negev,20.0,False,0.0096
+negev,Negev,25.0,True,0.105
+negev,Negev,25.0,False,0.0294
+negev,Negev,30.0,True,0.1908
+negev,Negev,30.0,False,0.0766
+negev,Negev,40.0,True,0.302
+negev,Negev,40.0,False,0.15669999999999998
+nova,Nova,2.5,True,1.0
+nova,Nova,2.5,False,1.0
+nova,Nova,5.0,True,0.055
+nova,Nova,5.0,False,0.055
+nova,Nova,7.5,True,0.0
+nova,Nova,7.5,False,0.0
+nova,Nova,10.0,True,0.0
+nova,Nova,10.0,False,0.0
+nova,Nova,12.5,True,0.0
+nova,Nova,12.5,False,0.0
+nova,Nova,15.0,True,0.0
+nova,Nova,15.0,False,0.0
+nova,Nova,20.0,True,0.0
+nova,Nova,20.0,False,0.0
+nova,Nova,25.0,True,0.0
+nova,Nova,25.0,False,0.0
+nova,Nova,30.0,True,0.0
+nova,Nova,30.0,False,0.0
+nova,Nova,40.0,True,0.015
+nova,Nova,40.0,False,0.0024
+p250,P250,2.5,True,0.0
+p250,P250,2.5,False,0.0
+p250,P250,5.0,True,0.0
+p250,P250,5.0,False,0.0
+p250,P250,7.5,True,0.0
+p250,P250,7.5,False,0.0
+p250,P250,10.0,True,0.0
+p250,P250,10.0,False,0.0
+p250,P250,12.5,True,0.0
+p250,P250,12.5,False,0.0
+p250,P250,15.0,True,0.0018
+p250,P250,15.0,False,0.0
+p250,P250,20.0,True,0.001
+p250,P250,20.0,False,0.0004
+p250,P250,25.0,True,0.0006
+p250,P250,25.0,False,0.0002
+p250,P250,30.0,True,0.0028
+p250,P250,30.0,False,0.0006
+p250,P250,40.0,True,0.0204
+p250,P250,40.0,False,0.0042
+p90,P90,2.5,True,0.0
+p90,P90,2.5,False,0.0
+p90,P90,5.0,True,0.0
+p90,P90,5.0,False,0.0
+p90,P90,7.5,True,0.0
+p90,P90,7.5,False,0.0
+p90,P90,10.0,True,0.0
+p90,P90,10.0,False,0.0
+p90,P90,12.5,True,0.0083
+p90,P90,12.5,False,0.0
+p90,P90,15.0,True,0.0437
+p90,P90,15.0,False,0.006500000000000001
+p90,P90,20.0,True,0.022
+p90,P90,20.0,False,0.0055000000000000005
+p90,P90,25.0,True,0.0104
+p90,P90,25.0,False,0.003
+p90,P90,30.0,True,0.0286
+p90,P90,30.0,False,0.0114
+p90,P90,40.0,True,0.0201
+p90,P90,40.0,False,0.0049
+revolver,R8 Revolver,2.5,True,0.0
+revolver,R8 Revolver,2.5,False,0.0
+revolver,R8 Revolver,5.0,True,0.0
+revolver,R8 Revolver,5.0,False,0.0
+revolver,R8 Revolver,7.5,True,0.0
+revolver,R8 Revolver,7.5,False,0.0
+revolver,R8 Revolver,10.0,True,0.0
+revolver,R8 Revolver,10.0,False,0.0
+revolver,R8 Revolver,12.5,True,0.0
+revolver,R8 Revolver,12.5,False,0.0
+revolver,R8 Revolver,15.0,True,0.0002
+revolver,R8 Revolver,15.0,False,0.0
+revolver,R8 Revolver,20.0,True,0.0002
+revolver,R8 Revolver,20.0,False,0.0
+revolver,R8 Revolver,25.0,True,0.0
+revolver,R8 Revolver,25.0,False,0.0
+revolver,R8 Revolver,30.0,True,0.0
+revolver,R8 Revolver,30.0,False,0.0
+revolver,R8 Revolver,40.0,True,0.015399999999999999
+revolver,R8 Revolver,40.0,False,0.0028
+sawedoff,Sawed-Off,2.5,True,1.0
+sawedoff,Sawed-Off,2.5,False,1.0
+sawedoff,Sawed-Off,5.0,True,0.0092
+sawedoff,Sawed-Off,5.0,False,0.0092
+sawedoff,Sawed-Off,7.5,True,0.0
+sawedoff,Sawed-Off,7.5,False,0.0
+sawedoff,Sawed-Off,10.0,True,0.0
+sawedoff,Sawed-Off,10.0,False,0.0
+sawedoff,Sawed-Off,12.5,True,0.0
+sawedoff,Sawed-Off,12.5,False,0.0
+sawedoff,Sawed-Off,15.0,True,0.0
+sawedoff,Sawed-Off,15.0,False,0.0
+sawedoff,Sawed-Off,20.0,True,0.0
+sawedoff,Sawed-Off,20.0,False,0.0
+sawedoff,Sawed-Off,25.0,True,0.0
+sawedoff,Sawed-Off,25.0,False,0.0
+sawedoff,Sawed-Off,30.0,True,0.0
+sawedoff,Sawed-Off,30.0,False,0.0
+sawedoff,Sawed-Off,40.0,True,0.015
+sawedoff,Sawed-Off,40.0,False,0.0024
+scar20,SCAR-20,2.5,True,0.0
+scar20,SCAR-20,2.5,False,0.0
+scar20,SCAR-20,5.0,True,0.0
+scar20,SCAR-20,5.0,False,0.0
+scar20,SCAR-20,7.5,True,0.0
+scar20,SCAR-20,7.5,False,0.0
+scar20,SCAR-20,10.0,True,0.0
+scar20,SCAR-20,10.0,False,0.0
+scar20,SCAR-20,12.5,True,0.0132
+scar20,SCAR-20,12.5,False,0.0
+scar20,SCAR-20,15.0,True,0.2018
+scar20,SCAR-20,15.0,False,0.0292
+scar20,SCAR-20,20.0,True,1.0
+scar20,SCAR-20,20.0,False,0.4834
+scar20,SCAR-20,25.0,True,1.0
+scar20,SCAR-20,25.0,False,1.0
+scar20,SCAR-20,30.0,True,1.0
+scar20,SCAR-20,30.0,False,1.0
+scar20,SCAR-20,40.0,True,1.0
+scar20,SCAR-20,40.0,False,1.0
+sg556,SG 553,2.5,True,0.0
+sg556,SG 553,2.5,False,0.0
+sg556,SG 553,5.0,True,0.0
+sg556,SG 553,5.0,False,0.0
+sg556,SG 553,7.5,True,0.0
+sg556,SG 553,7.5,False,0.0
+sg556,SG 553,10.0,True,0.0
+sg556,SG 553,10.0,False,0.0
+sg556,SG 553,12.5,True,0.1148
+sg556,SG 553,12.5,False,0.0
+sg556,SG 553,15.0,True,0.3702
+sg556,SG 553,15.0,False,0.0576
+sg556,SG 553,20.0,True,0.5836
+sg556,SG 553,20.0,False,0.1932
+sg556,SG 553,25.0,True,0.7014
+sg556,SG 553,25.0,False,0.29
+sg556,SG 553,30.0,True,0.8012
+sg556,SG 553,30.0,False,0.4972
+sg556,SG 553,40.0,True,0.9024
+sg556,SG 553,40.0,False,0.723
+ssg08,SSG 08,2.5,True,0.0
+ssg08,SSG 08,2.5,False,0.0
+ssg08,SSG 08,5.0,True,0.0
+ssg08,SSG 08,5.0,False,0.0
+ssg08,SSG 08,7.5,True,0.0
+ssg08,SSG 08,7.5,False,0.0
+ssg08,SSG 08,10.0,True,0.0
+ssg08,SSG 08,10.0,False,0.0
+ssg08,SSG 08,12.5,True,0.0
+ssg08,SSG 08,12.5,False,0.0
+ssg08,SSG 08,15.0,True,0.0058
+ssg08,SSG 08,15.0,False,0.0004
+ssg08,SSG 08,20.0,True,0.0766
+ssg08,SSG 08,20.0,False,0.0136
+ssg08,SSG 08,25.0,True,0.3118
+ssg08,SSG 08,25.0,False,0.0916
+ssg08,SSG 08,30.0,True,0.693
+ssg08,SSG 08,30.0,False,0.3848
+ssg08,SSG 08,40.0,True,0.9536
+ssg08,SSG 08,40.0,False,0.8046
+tec9,Tec-9,2.5,True,0.0
+tec9,Tec-9,2.5,False,0.0
+tec9,Tec-9,5.0,True,0.0
+tec9,Tec-9,5.0,False,0.0
+tec9,Tec-9,7.5,True,0.0
+tec9,Tec-9,7.5,False,0.0
+tec9,Tec-9,10.0,True,0.0
+tec9,Tec-9,10.0,False,0.0
+tec9,Tec-9,12.5,True,0.0002
+tec9,Tec-9,12.5,False,0.0
+tec9,Tec-9,15.0,True,0.0068
+tec9,Tec-9,15.0,False,0.0004
+tec9,Tec-9,20.0,True,0.018
+tec9,Tec-9,20.0,False,0.0038
+tec9,Tec-9,25.0,True,0.0374
+tec9,Tec-9,25.0,False,0.008
+tec9,Tec-9,30.0,True,0.0874
+tec9,Tec-9,30.0,False,0.0244
+tec9,Tec-9,40.0,True,0.0877
+tec9,Tec-9,40.0,False,0.032
+ump45,UMP-45,2.5,True,0.0
+ump45,UMP-45,2.5,False,0.0
+ump45,UMP-45,5.0,True,0.0
+ump45,UMP-45,5.0,False,0.0
+ump45,UMP-45,7.5,True,0.0
+ump45,UMP-45,7.5,False,0.0
+ump45,UMP-45,10.0,True,0.0
+ump45,UMP-45,10.0,False,0.0
+ump45,UMP-45,12.5,True,0.0106
+ump45,UMP-45,12.5,False,0.0
+ump45,UMP-45,15.0,True,0.0302
+ump45,UMP-45,15.0,False,0.0024
+ump45,UMP-45,20.0,True,0.0094
+ump45,UMP-45,20.0,False,0.0022
+ump45,UMP-45,25.0,True,0.0042
+ump45,UMP-45,25.0,False,0.0014
+ump45,UMP-45,30.0,True,0.0004
+ump45,UMP-45,30.0,False,0.0006
+ump45,UMP-45,40.0,True,0.015
+ump45,UMP-45,40.0,False,0.0024
+usp_silencer,USP-S,2.5,True,0.0
+usp_silencer,USP-S,2.5,False,0.0
+usp_silencer,USP-S,5.0,True,0.0
+usp_silencer,USP-S,5.0,False,0.0
+usp_silencer,USP-S,7.5,True,0.0
+usp_silencer,USP-S,7.5,False,0.0
+usp_silencer,USP-S,10.0,True,0.0
+usp_silencer,USP-S,10.0,False,0.0
+usp_silencer,USP-S,12.5,True,0.0
+usp_silencer,USP-S,12.5,False,0.0
+usp_silencer,USP-S,15.0,True,0.0012
+usp_silencer,USP-S,15.0,False,0.0
+usp_silencer,USP-S,20.0,True,0.0046
+usp_silencer,USP-S,20.0,False,0.0014
+usp_silencer,USP-S,25.0,True,0.0152
+usp_silencer,USP-S,25.0,False,0.0024
+usp_silencer,USP-S,30.0,True,0.0958
+usp_silencer,USP-S,30.0,False,0.0278
+usp_silencer,USP-S,40.0,True,0.26339999999999997
+usp_silencer,USP-S,40.0,False,0.1206
+xm1014,XM1014,2.5,True,0.0
+xm1014,XM1014,2.5,False,0.0
+xm1014,XM1014,5.0,True,0.0
+xm1014,XM1014,5.0,False,0.0
+xm1014,XM1014,7.5,True,0.0
+xm1014,XM1014,7.5,False,0.0
+xm1014,XM1014,10.0,True,0.0
+xm1014,XM1014,10.0,False,0.0
+xm1014,XM1014,12.5,True,0.0
+xm1014,XM1014,12.5,False,0.0
+xm1014,XM1014,15.0,True,0.0
+xm1014,XM1014,15.0,False,0.0
+xm1014,XM1014,20.0,True,0.0
+xm1014,XM1014,20.0,False,0.0
+xm1014,XM1014,25.0,True,0.0
+xm1014,XM1014,25.0,False,0.0
+xm1014,XM1014,30.0,True,0.0
+xm1014,XM1014,30.0,False,0.0
+xm1014,XM1014,40.0,True,0.015
+xm1014,XM1014,40.0,False,0.0024
