@@ -150,8 +150,9 @@
     curva reversa aparece tracejada saindo da mira: é o caminho exato que a
     sua mão vai percorrer, o padrão de cabeça para baixo. Depois, segure o
     gatilho até o fim do pente e mantenha o ponto amarelo colado na mira —
-    ele anda por essa curva no ritmo dos tiros, e o rastro à frente mostra
-    as próximas curvas para você antecipar. Leia as bolinhas a cada rajada: acima do alvo, puxe mais
+    ele anda por essa curva no ritmo dos tiros. A curva inteira permanece
+    visível durante a rajada — o trecho que ainda falta fica mais brilhante
+    — porque decorar o desenho completo é parte do treino. Leia as bolinhas a cada rajada: acima do alvo, puxe mais
     cedo e mais rápido; abaixo, você puxou demais. O c do painel diz quanto
     do padrão você removeu — jogadores treinados vivem acima de 85%.
   </p>
@@ -373,21 +374,25 @@ function render(now) {
     if (j <= 0) return [0, 0];
     return state.pat[Math.min(j, state.pat.length) - 1];
   }
-  if (guideOn && state.locked && !state.firing) {
+  function drawReverse(ax, ay, alpha, width) {
     ctx.beginPath();
-    ctx.moveTo(CX, CY);
+    ctx.moveTo(CX - ax, CY - ay);
     for (var gi = 1; gi <= state.pat.length; gi++) {
       var q0 = punchAt(gi);
-      ctx.lineTo(CX - q0[0], CY + q0[1]);
+      ctx.lineTo(CX - q0[0] - ax, CY + q0[1] - ay);
     }
     ctx.setLineDash([3, 6]);
-    ctx.strokeStyle = "rgba(240,192,74,0.35)";
-    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = "rgba(240,192,74," + alpha + ")";
+    ctx.lineWidth = width || 1.5;
     ctx.stroke();
     ctx.setLineDash([]);
   }
+  if (guideOn && state.locked && !state.firing) {
+    drawReverse(0, 0, 0.4);
+  }
   if (guideOn && state.firing) {
     var wg = DATA[sel.value];
+    drawReverse(state.aim.x, state.aim.y, 0.28);
     var elapsed = (now - state.burstT0) / 1000;
     var kf = Math.min(elapsed / wg.cyc, wg.mag - 1);
     var k0 = Math.floor(kf) + 1, frac = kf - Math.floor(kf);
@@ -396,13 +401,13 @@ function render(now) {
     var dotX = CX - gx - state.aim.x, dotY = CY + gy - state.aim.y;
     ctx.beginPath();
     ctx.moveTo(dotX, dotY);
-    for (var gj = k0; gj <= Math.min(k0 + 6, wg.mag); gj++) {
+    for (var gj = k0; gj <= wg.mag; gj++) {
       var qq = punchAt(gj);
       ctx.lineTo(CX - qq[0] - state.aim.x, CY + qq[1] - state.aim.y);
     }
     ctx.setLineDash([3, 5]);
-    ctx.strokeStyle = "rgba(240,192,74,0.45)";
-    ctx.lineWidth = 1.6;
+    ctx.strokeStyle = "rgba(240,192,74,0.75)";
+    ctx.lineWidth = 1.8;
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.beginPath(); ctx.arc(dotX, dotY, 6.5, 0, 7);
