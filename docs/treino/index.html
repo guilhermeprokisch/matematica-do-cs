@@ -488,7 +488,7 @@ sel.addEventListener("input", function() {
   document.getElementById("wsprite").src = "../sprites/" + SPRITE[sel.value] + ".png";
   state.pat = pattern(sel.value);
   state.impacts = [];
-  setText("h-w", DATA[sel.value].mag + " tiros · " + Math.round(DATA[sel.value].cyc * 1000) + " ms");
+  setText("h-w", DATA[sel.value].mag + " tiros · " + Math.round(DATA[sel.value].cyc * 1000) + " ms · padrão estilizado");
   var best = 0;
   try { best = +localStorage.getItem(bestKey()) || 0; } catch (e) {}
   setText("h-b", best ? fmtC(best) : "—");
@@ -502,7 +502,7 @@ document.getElementById("clearbest").addEventListener("click", function() {
   setText("h-b", "—"); setText("h-m", "—"); setText("h-c", "—");
   drawSpark();
 });
-setText("h-w", DATA.ak.mag + " tiros · 100 ms");
+setText("h-w", DATA.ak.mag + " tiros · 100 ms · padrão estilizado");
 (function initBest() {
   var best = 0;
   try { best = +localStorage.getItem(bestKey()) || 0; } catch (e) {}
