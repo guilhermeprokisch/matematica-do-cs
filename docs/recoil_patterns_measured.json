@@ -1,0 +1,20 @@
+{
+  "_contrato": "Padrões de recuo MEDIDOS in-engine. Enquanto 'patterns' estiver vazio, a Academia usa o padrão estilizado e diz isso no HUD. NÃO preencher com estimativa, reimplementação de PRNG ou dado de terceiro sem citar a fonte: este arquivo existe para carregar medição com procedência.",
+  "_como_medir": [
+    "No servidor: css_recoil_capture on",
+    "Um humano segura o mouse PARADO (sem compensar) e dispara o pente inteiro; 3 a 4 rajadas por arma.",
+    "O plugin grava por tiro: origem, ângulos de visão e ponto de impacto, separando rajadas por intervalo.",
+    "Para cada índice de tiro k, calcular a MEDIANA do deslocamento angular em relação ao ângulo do 1º tiro (pitch, yaw) e o desvio-padrão.",
+    "Preencher 'patterns' abaixo e commitar junto com n_rajadas, build e data."
+  ],
+  "_formato": {
+    "chave": "nome de engine, igual a weapons.csv e aos sprites (ak47, m4a1_silencer, ...)",
+    "offsets": "lista por índice de tiro: [yaw_graus, pitch_graus] acumulados em relação ao 1º tiro; o 1º tiro é sempre [0, 0]; yaw positivo = direita, pitch positivo = para cima",
+    "desvio": "opcional, mesma ordem: [sd_yaw, sd_pitch] por tiro — permite desenhar a incerteza",
+    "n_rajadas": "quantas rajadas entraram na mediana"
+  },
+  "build": null,
+  "medido_por": null,
+  "data": null,
+  "patterns": {}
+}

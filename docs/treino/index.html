@@ -116,6 +116,7 @@
     <span><label for="sens">sensibilidade </label>
       <input type="range" id="sens" min="0.4" max="3" step="0.1" value="1">
       <span class="rv" id="sensv">1,0×</span></span>
+    <span><label for="psrc">padrão </label><select id="psrc"><option value="est">estilizado (parâmetros)</option><option value="med" disabled>medido in-engine</option></select></span>
     <span><label><input type="checkbox" id="ghost" checked> mostrar o padrão bruto</label></span>
     <span><label><input type="checkbox" id="guide" checked> modo guia (siga o ponto)</label></span>
     <span><label><input type="checkbox" id="noise"> ruído de dispersão (cap. 5)</label></span>
@@ -162,11 +163,13 @@
     Honestidade de modelagem, como no livro: o padrão de cada arma aqui é
     <strong>estilizado</strong> — gerado da magnitude e das variâncias da
     planilha com semente fixa, então é idêntico em toda rajada e aprendível,
-    mas não é a tabela real do jogo — ainda: os parâmetros e as sementes
-    reais da build 1.41.7.2 já estão extraídos no repositório
-    (data/weapons_cs2_vdata.json), e quando o gerador da Valve for
-    reimplementado e validado, esta academia passará a treinar o
-    gabarito verdadeiro. Por ora, o app treina o gesto (a subtração
+    mas não é a tabela real do jogo — e é por isso que a curva daqui não
+    coincide com a do workshop de treino. O caminho para fechar essa
+    lacuna está aberto e é medição, não engenharia reversa: o seletor
+    "padrão" acima liga a opção <em>medido in-engine</em> assim que
+    <code>recoil_patterns_measured.json</code> for preenchido com
+    sprays gravados nesta build (mediana por índice de tiro, com
+    procedência). Enquanto isso, o app treina o gesto (a subtração
     suave e contínua), não o gabarito decorado; para decorar o desenho exato
     de cada arma, use os mapas de treino dentro do CS2. A escala do recuo na
     tela e o ruído opcional de dispersão são calibrações ilustrativas. O c é
@@ -220,6 +223,31 @@ function pattern(key) {
   return pts;
 }
 
+var MEASURED = null;
+var GRAUS_PARA_PX = 26;
+var ENGINE = {ak: "ak47", m4s: "m4a1_silencer", famas: "famas",
+  galil: "galilar", sg: "sg556", mp9: "mp9", negev: "negev"};
+
+function measuredPattern(key) {
+  if (!MEASURED || !MEASURED.patterns) return null;
+  var p = MEASURED.patterns[ENGINE[key]];
+  if (!p || !p.offsets || p.offsets.length < 8) return null;
+  return p.offsets.slice(1).map(function(o) {
+    return [o[0] * GRAUS_PARA_PX, o[1] * GRAUS_PARA_PX];
+  });
+}
+function currentPattern(key) {
+  if (document.getElementById("psrc").value === "med") {
+    var m = measuredPattern(key);
+    if (m) return m;
+  }
+  return pattern(key);
+}
+function patternLabel(key) {
+  return (document.getElementById("psrc").value === "med" && measuredPattern(key))
+    ? "padrão medido" : "padrão estilizado";
+}
+
 var sel = document.getElementById("wsel");
 Object.keys(DATA).forEach(function(k) {
   var o = document.createElement("option");
@@ -233,6 +261,7 @@ var overlay = document.getElementById("overlay");
 var sensEl = document.getElementById("sens");
 var state = {
   pat: pattern("ak"),
+  patSrc: "est",
   aim: {x: 0, y: 0},
   firing: false, shot: 0, lastShot: 0,
   impacts: [], burstMoves: [], locked: false,
@@ -486,9 +515,9 @@ var SPRITE = {ak: "ak47", m4s: "m4a1_silencer", famas: "famas",
   galil: "galilar", sg: "sg556", mp9: "mp9", negev: "negev"};
 sel.addEventListener("input", function() {
   document.getElementById("wsprite").src = "../sprites/" + SPRITE[sel.value] + ".png";
-  state.pat = pattern(sel.value);
+  state.pat = currentPattern(sel.value);
   state.impacts = [];
-  setText("h-w", DATA[sel.value].mag + " tiros · " + Math.round(DATA[sel.value].cyc * 1000) + " ms · padrão estilizado");
+  setText("h-w", DATA[sel.value].mag + " tiros · " + Math.round(DATA[sel.value].cyc * 1000) + " ms · " + patternLabel(sel.value));
   var best = 0;
   try { best = +localStorage.getItem(bestKey()) || 0; } catch (e) {}
   setText("h-b", best ? fmtC(best) : "—");
@@ -502,6 +531,25 @@ document.getElementById("clearbest").addEventListener("click", function() {
   setText("h-b", "—"); setText("h-m", "—"); setText("h-c", "—");
   drawSpark();
 });
+document.getElementById("psrc").addEventListener("input", function() {
+  state.pat = currentPattern(sel.value);
+  state.impacts = [];
+  setText("h-w", DATA[sel.value].mag + " tiros · "
+    + Math.round(DATA[sel.value].cyc * 1000) + " ms · " + patternLabel(sel.value));
+});
+fetch("../recoil_patterns_measured.json").then(function(r) {
+  return r.ok ? r.json() : null;
+}).then(function(j) {
+  if (!j || !j.patterns || !Object.keys(j.patterns).length) return;
+  MEASURED = j;
+  var opt = document.querySelector('#psrc option[value="med"]');
+  opt.disabled = false;
+  opt.textContent = "medido in-engine" + (j.build ? " (build " + j.build + ")" : "");
+  document.getElementById("psrc").value = "med";
+  state.pat = currentPattern(sel.value);
+  setText("h-w", DATA[sel.value].mag + " tiros · "
+    + Math.round(DATA[sel.value].cyc * 1000) + " ms · " + patternLabel(sel.value));
+}).catch(function() {});
 setText("h-w", DATA.ak.mag + " tiros · 100 ms · padrão estilizado");
 (function initBest() {
   var best = 0;
