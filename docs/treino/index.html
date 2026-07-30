@@ -75,7 +75,7 @@
     position: absolute; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 8px;
     background: rgba(13,13,13,0.55); color: #e8e6df; text-align: center;
-    font-size: 14px; padding: 20px;
+    font-size: 14px; padding: 20px; cursor: pointer;
   }
   #overlay .big { font-size: 17px; font-weight: 600; }
   #overlay kbd {
@@ -355,13 +355,26 @@ function render(now) {
   requestAnimationFrame(render);
 }
 
-cv.addEventListener("click", function() {
-  if (!state.locked) cv.requestPointerLock();
+document.getElementById("range-wrap").addEventListener("click", function() {
+  if (state.locked) return;
+  if (!cv.requestPointerLock) {
+    overlay.querySelector(".big").textContent =
+      "Este navegador não suporta travar o mouse — use um desktop com mouse.";
+    return;
+  }
+  try {
+    var p = cv.requestPointerLock();
+    if (p && p.catch) p.catch(function() {});
+  } catch (e) {}
 });
 document.addEventListener("pointerlockchange", function() {
   state.locked = document.pointerLockElement === cv;
   overlay.style.display = state.locked ? "none" : "flex";
   if (!state.locked && state.firing) endBurst();
+});
+document.addEventListener("pointerlockerror", function() {
+  overlay.querySelector(".big").textContent =
+    "O navegador recusou o trave do mouse — clique de novo (ou saia de tela cheia).";
 });
 document.addEventListener("mousemove", function(e) {
   if (!state.locked) return;
