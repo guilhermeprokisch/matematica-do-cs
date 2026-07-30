@@ -111,6 +111,7 @@
   </p>
 
   <div class="ctr">
+    <span><img id="wsprite" src="../sprites/ak47.png" alt="" style="height:42px;vertical-align:middle;margin-right:4px"></span>
     <span><label for="wsel">arma </label><select id="wsel"></select></span>
     <span><label for="sens">sensibilidade </label>
       <input type="range" id="sens" min="0.4" max="3" step="0.1" value="1">
@@ -161,7 +162,11 @@
     Honestidade de modelagem, como no livro: o padrão de cada arma aqui é
     <strong>estilizado</strong> — gerado da magnitude e das variâncias da
     planilha com semente fixa, então é idêntico em toda rajada e aprendível,
-    mas não é a tabela real do jogo. Este app treina o gesto (a subtração
+    mas não é a tabela real do jogo — ainda: os parâmetros e as sementes
+    reais da build 1.41.7.2 já estão extraídos no repositório
+    (data/weapons_cs2_vdata.json), e quando o gerador da Valve for
+    reimplementado e validado, esta academia passará a treinar o
+    gabarito verdadeiro. Por ora, o app treina o gesto (a subtração
     suave e contínua), não o gabarito decorado; para decorar o desenho exato
     de cada arma, use os mapas de treino dentro do CS2. A escala do recuo na
     tela e o ruído opcional de dispersão são calibrações ilustrativas. O c é
@@ -477,7 +482,10 @@ document.addEventListener("keydown", function(e) {
 sensEl.addEventListener("input", function() {
   setText("sensv", (+sensEl.value).toFixed(1).replace(".", ",") + "×");
 });
+var SPRITE = {ak: "ak47", m4s: "m4a1_silencer", famas: "famas",
+  galil: "galilar", sg: "sg556", mp9: "mp9", negev: "negev"};
 sel.addEventListener("input", function() {
+  document.getElementById("wsprite").src = "../sprites/" + SPRITE[sel.value] + ".png";
   state.pat = pattern(sel.value);
   state.impacts = [];
   setText("h-w", DATA[sel.value].mag + " tiros · " + Math.round(DATA[sel.value].cyc * 1000) + " ms");
