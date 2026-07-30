@@ -1,0 +1,413 @@
+<meta charset="utf-8">
+<title>Academia de recuo — a matemática do CS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7; --surface: #fcfcfb;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #eb6834; --accent: #2a78d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface: #1a1a19;
+      --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --s1: #3987e5; --s2: #d95926; --accent: #3987e5;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --accent: #3987e5;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --page: #f9f9f7; --surface: #fcfcfb;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #eb6834; --accent: #2a78d6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 34px 20px 70px; }
+  .eyebrow {
+    font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  h1 { font-size: clamp(24px, 4vw, 30px); margin: 8px 0 6px; letter-spacing: -0.015em; }
+  .lede { color: var(--ink-2); max-width: 68ch; margin: 0 0 18px; }
+  .lede a, footer a { color: var(--ink-2); }
+  .ctr {
+    display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: center;
+    margin: 14px 0; font-size: 13px; color: var(--ink-2);
+  }
+  select {
+    font-size: 13px; padding: 4px 8px; border: 1px solid var(--baseline);
+    border-radius: 8px; background: var(--surface); color: var(--ink);
+  }
+  input[type=range] { accent-color: var(--accent); width: 130px; }
+  input[type=checkbox] { accent-color: var(--accent); }
+  .rv { font: 500 13px/1 ui-monospace, Menlo, monospace; color: var(--ink); }
+  button.ghostbtn {
+    font: 500 12px/1 ui-monospace, Menlo, monospace; color: var(--ink-2);
+    background: transparent; border: 1px solid var(--baseline);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer;
+  }
+  button.ghostbtn:hover { border-color: var(--accent); color: var(--ink); }
+  #range-wrap {
+    position: relative; border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border); background: #141413;
+  }
+  canvas { display: block; width: 100%; height: auto; cursor: crosshair; }
+  #overlay {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+    background: rgba(13,13,13,0.55); color: #e8e6df; text-align: center;
+    font-size: 14px; padding: 20px;
+  }
+  #overlay .big { font-size: 17px; font-weight: 600; }
+  #overlay kbd {
+    font: 500 12px ui-monospace, Menlo, monospace; border: 1px solid #555;
+    border-radius: 5px; padding: 1px 6px; background: #222;
+  }
+  .hud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 13px; min-width: 128px;
+  }
+  .stat .l { font-size: 11.5px; color: var(--muted); }
+  .stat .v { font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .stat .s { font-size: 11.5px; color: var(--muted); }
+  #spark { margin-top: 14px; }
+  .note {
+    border-left: 2px solid var(--accent); padding: 2px 0 2px 14px;
+    color: var(--ink-2); font-size: 13px; max-width: 70ch; margin-top: 20px;
+  }
+  footer { margin-top: 40px; color: var(--muted); font-size: 12.5px; }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">a matemática do counter-strike · ferramenta</div>
+  <h1>Academia de recuo</h1>
+  <p class="lede">
+    O capítulo 8 do <a href="../">livro</a> mostrou que o spray dos rifles é
+    uma tabela fixa e que "spray control" é a habilidade de subtraí-la em
+    tempo real: desvio = (1&thinsp;−&thinsp;<i>c</i>)·R(k). Este app mede o
+    seu <i>c</i>. Segure o gatilho, arraste o mouse contra o padrão e
+    mantenha os impactos no alvo — cada rajada devolve a fração do recuo que
+    você removeu.
+  </p>
+
+  <div class="ctr">
+    <span><label for="wsel">arma </label><select id="wsel"></select></span>
+    <span><label for="sens">sensibilidade </label>
+      <input type="range" id="sens" min="0.4" max="3" step="0.1" value="1">
+      <span class="rv" id="sensv">1,0×</span></span>
+    <span><label><input type="checkbox" id="ghost" checked> mostrar o padrão bruto</label></span>
+    <span><label><input type="checkbox" id="noise"> ruído de dispersão (cap. 5)</label></span>
+    <span><button class="ghostbtn" id="clearbest">zerar recordes</button></span>
+  </div>
+
+  <div id="range-wrap">
+    <canvas id="cv" width="960" height="540"></canvas>
+    <div id="overlay">
+      <div class="big">Clique para travar o mouse</div>
+      <div>Segure o <kbd>botão esquerdo</kbd> para spraiar · solte para avaliar a rajada</div>
+      <div><kbd>R</kbd> limpa a parede · <kbd>Esc</kbd> libera o mouse</div>
+    </div>
+  </div>
+
+  <div class="hud">
+    <div class="stat"><div class="l">c desta rajada</div><div class="v" id="h-c">—</div><div class="s" id="h-cs">segure e arraste contra o padrão</div></div>
+    <div class="stat"><div class="l">média das últimas 10</div><div class="v" id="h-m">—</div><div class="s">rajadas de 8+ tiros</div></div>
+    <div class="stat"><div class="l">recorde nesta arma</div><div class="v" id="h-b">—</div><div class="s" id="h-bs"></div></div>
+    <div class="stat"><div class="l">tiros da rajada</div><div class="v" id="h-n">0</div><div class="s" id="h-w"></div></div>
+  </div>
+
+  <svg id="spark" width="100%" height="46" viewBox="0 0 960 46" aria-label="histórico do c nas últimas rajadas"></svg>
+
+  <p class="note">
+    Honestidade de modelagem, como no livro: o padrão de cada arma aqui é
+    <strong>estilizado</strong> — gerado da magnitude e das variâncias da
+    planilha com semente fixa, então é idêntico em toda rajada e aprendível,
+    mas não é a tabela real do jogo. Este app treina o gesto (a subtração
+    suave e contínua), não o gabarito decorado; para decorar o desenho exato
+    de cada arma, use os mapas de treino dentro do CS2. A escala do recuo na
+    tela e o ruído opcional de dispersão são calibrações ilustrativas. O c é
+    estimado por rajada como 1 − (erro médio dos impactos ÷ recuo bruto
+    médio), com rajadas de pelo menos 8 tiros.
+  </p>
+
+  <footer>
+    Parte do projeto <a href="https://github.com/guilhermeprokisch/matematica-do-cs">matematica-do-cs</a>
+    · dados: planilha de BlackRetina &amp; SlothSquadron (domínio público)
+    · <a href="../">voltar ao livro</a>
+  </footer>
+</div>
+
+<script>
+"use strict";
+var DATA = {
+  ak:    {name: "AK-47",   mag: 30,  cyc: 0.100, rMag: 30,   mv: 0,  av: 70},
+  m4s:   {name: "M4A1-S",  mag: 20,  cyc: 0.100, rMag: 25,   mv: 3,  av: 65},
+  famas: {name: "FAMAS",   mag: 25,  cyc: 0.090, rMag: 20,   mv: 1,  av: 60},
+  galil: {name: "Galil AR", mag: 35, cyc: 0.090, rMag: 21,   mv: 1,  av: 70},
+  sg:    {name: "SG 553",  mag: 30,  cyc: 0.110, rMag: 28,   mv: 2,  av: 60},
+  mp9:   {name: "MP9",     mag: 30,  cyc: 0.070, rMag: 21,   mv: 1,  av: 70},
+  negev: {name: "Negev",   mag: 60,  cyc: 0.075, rMag: 20,   mv: 2,  av: 0}
+};
+var S_REC = 0.38;
+var W = 960, H = 540, CX = W / 2, CY = H * 0.62;
+
+function rng(seed) {
+  var s = seed >>> 0;
+  return function() {
+    s = (s + 0x6D2B79F5) >>> 0;
+    var t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function seedOf(str) {
+  var h = 2166136261;
+  for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function pattern(key) {
+  var w = DATA[key], r = rng(seedOf(key)), pts = [], x = 0, y = 0;
+  for (var k = 0; k < w.mag; k++) {
+    var m = w.rMag + (r() * 2 - 1) * w.mv;
+    var ang = (90 + (r() * 2 - 1) * w.av / 2) * Math.PI / 180;
+    x += m * Math.cos(ang); y += m * Math.sin(ang);
+    pts.push([x * S_REC, y * S_REC]);
+  }
+  return pts;
+}
+
+var sel = document.getElementById("wsel");
+Object.keys(DATA).forEach(function(k) {
+  var o = document.createElement("option");
+  o.value = k; o.textContent = DATA[k].name;
+  sel.appendChild(o);
+});
+sel.value = "ak";
+
+var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+var overlay = document.getElementById("overlay");
+var sensEl = document.getElementById("sens");
+var state = {
+  pat: pattern("ak"),
+  aim: {x: 0, y: 0},
+  firing: false, shot: 0, lastShot: 0,
+  impacts: [], burstMoves: [], locked: false,
+  noiseRng: rng(12345),
+  history: []
+};
+try { state.history = JSON.parse(localStorage.getItem("recuo-hist") || "[]"); } catch (e) {}
+
+function bestKey() { return "recuo-best-" + sel.value; }
+function fmtC(c) { return (c * 100).toFixed(0) + "%"; }
+function setText(id, t) { document.getElementById(id).textContent = t; }
+
+function endBurst() {
+  var n = state.shot;
+  state.firing = false;
+  if (n >= 8) {
+    var errSum = 0, rawSum = 0;
+    for (var i = 0; i < n; i++) {
+      errSum += state.impacts[state.impacts.length - n + i].err;
+      rawSum += Math.hypot(state.pat[i][0], state.pat[i][1]);
+    }
+    var c = Math.max(0, Math.min(1, 1 - (errSum / n) / (rawSum / n)));
+    state.history.push(c);
+    if (state.history.length > 60) state.history.shift();
+    try { localStorage.setItem("recuo-hist", JSON.stringify(state.history)); } catch (e) {}
+    setText("h-c", fmtC(c));
+    setText("h-cs", c > 0.85 ? "spray control de verdade" :
+      c > 0.65 ? "bom — suavize o fim da rajada" :
+      c > 0.4 ? "razoável — puxe mais cedo" : "puxe para baixo desde o 2º tiro");
+    var best = 0;
+    try { best = +localStorage.getItem(bestKey()) || 0; } catch (e) {}
+    if (c > best) {
+      best = c;
+      try { localStorage.setItem(bestKey(), String(best)); } catch (e) {}
+    }
+    setText("h-b", fmtC(best));
+    var last10 = state.history.slice(-10);
+    setText("h-m", fmtC(last10.reduce(function(a, b){ return a + b; }, 0) / last10.length));
+    drawSpark();
+  } else if (n > 0) {
+    setText("h-c", "—");
+    setText("h-cs", "rajadas de 8+ tiros contam");
+  }
+  state.shot = 0;
+  setTimeout(function() { state.aim.x = 0; state.aim.y = 0; }, 350);
+}
+
+function drawSpark() {
+  var svg = document.getElementById("spark");
+  svg.textContent = "";
+  var hs = state.history.slice(-40);
+  if (!hs.length) return;
+  var ns = "http://www.w3.org/2000/svg";
+  var base = document.createElementNS(ns, "line");
+  base.setAttribute("x1", 0); base.setAttribute("x2", 960);
+  base.setAttribute("y1", 44); base.setAttribute("y2", 44);
+  base.setAttribute("stroke", "var(--grid)");
+  svg.appendChild(base);
+  hs.forEach(function(c, i) {
+    var r = document.createElementNS(ns, "rect");
+    var h = Math.max(2, c * 40);
+    r.setAttribute("x", i * 24 + 2); r.setAttribute("y", 44 - h);
+    r.setAttribute("width", 18); r.setAttribute("height", h);
+    r.setAttribute("rx", 2);
+    r.setAttribute("fill", c > 0.65 ? "var(--s1)" : "var(--s2)");
+    r.setAttribute("opacity", i === hs.length - 1 ? "1" : "0.55");
+    svg.appendChild(r);
+  });
+}
+
+function fire(now) {
+  var w = DATA[sel.value];
+  if (state.shot >= w.mag) return;
+  var rec = state.pat[state.shot];
+  var nx = 0, ny = 0;
+  if (document.getElementById("noise").checked) {
+    var rr = 9 * Math.sqrt(state.noiseRng());
+    var th = state.noiseRng() * 2 * Math.PI;
+    nx = rr * Math.cos(th); ny = rr * Math.sin(th);
+  }
+  var wx = state.aim.x + rec[0] + nx;
+  var wy = state.aim.y - rec[1] + ny;
+  state.impacts.push({x: wx, y: wy, err: Math.hypot(wx, wy)});
+  if (state.impacts.length > 220) state.impacts.shift();
+  state.shot++;
+  state.lastShot = now;
+  setText("h-n", String(state.shot));
+}
+
+function render(now) {
+  var w = DATA[sel.value];
+  if (state.firing && state.shot < w.mag && now - state.lastShot >= w.cyc * 1000) fire(now);
+  if (state.firing && state.shot >= w.mag) endBurst();
+
+  ctx.fillStyle = "#141413";
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = "#222220";
+  ctx.lineWidth = 1;
+  var ox = -state.aim.x, oy = -state.aim.y;
+  ctx.beginPath();
+  for (var gx = (ox % 60 + 60) % 60; gx < W; gx += 60) { ctx.moveTo(gx, 0); ctx.lineTo(gx, H); }
+  for (var gy = (oy % 60 + 60) % 60; gy < H; gy += 60) { ctx.moveTo(0, gy); ctx.lineTo(W, gy); }
+  ctx.stroke();
+
+  var tx = CX + ox, ty = CY + oy;
+  [46, 30, 15].forEach(function(rr, i) {
+    ctx.beginPath();
+    ctx.arc(tx, ty, rr, 0, 7);
+    ctx.strokeStyle = i === 2 ? "#d95926" : "#4a4a46";
+    ctx.lineWidth = i === 2 ? 2 : 1.2;
+    ctx.stroke();
+  });
+  ctx.beginPath(); ctx.arc(tx, ty, 3, 0, 7);
+  ctx.fillStyle = "#d95926"; ctx.fill();
+
+  if (document.getElementById("ghost").checked) {
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    for (var i = 0; i < state.pat.length; i++) {
+      ctx.lineTo(tx + state.pat[i][0], ty - state.pat[i][1]);
+    }
+    ctx.setLineDash([4, 5]);
+    ctx.strokeStyle = "#6b6a64";
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  state.impacts.forEach(function(p) {
+    ctx.beginPath();
+    ctx.arc(CX + ox + p.x, CY + oy + p.y, 3.4, 0, 7);
+    ctx.fillStyle = p.err < 34 ? "#3987e5" : "#e66767";
+    ctx.fill();
+  });
+
+  ctx.strokeStyle = "#57c76a"; ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(CX - 11, CY); ctx.lineTo(CX - 3, CY);
+  ctx.moveTo(CX + 3, CY); ctx.lineTo(CX + 11, CY);
+  ctx.moveTo(CX, CY - 11); ctx.lineTo(CX, CY - 3);
+  ctx.moveTo(CX, CY + 3); ctx.lineTo(CX, CY + 11);
+  ctx.stroke();
+
+  requestAnimationFrame(render);
+}
+
+cv.addEventListener("click", function() {
+  if (!state.locked) cv.requestPointerLock();
+});
+document.addEventListener("pointerlockchange", function() {
+  state.locked = document.pointerLockElement === cv;
+  overlay.style.display = state.locked ? "none" : "flex";
+  if (!state.locked && state.firing) endBurst();
+});
+document.addEventListener("mousemove", function(e) {
+  if (!state.locked) return;
+  var s = +sensEl.value;
+  state.aim.x += e.movementX * s;
+  state.aim.y += e.movementY * s;
+});
+document.addEventListener("mousedown", function(e) {
+  if (!state.locked || e.button !== 0) return;
+  state.impacts = [];
+  state.aim.x = 0; state.aim.y = 0;
+  state.firing = true; state.shot = 0;
+  state.lastShot = performance.now() - 999;
+});
+document.addEventListener("mouseup", function(e) {
+  if (state.locked && e.button === 0 && state.firing) endBurst();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key === "r" || e.key === "R") { state.impacts = []; setText("h-n", "0"); }
+});
+sensEl.addEventListener("input", function() {
+  setText("sensv", (+sensEl.value).toFixed(1).replace(".", ",") + "×");
+});
+sel.addEventListener("input", function() {
+  state.pat = pattern(sel.value);
+  state.impacts = [];
+  setText("h-w", DATA[sel.value].mag + " tiros · " + Math.round(DATA[sel.value].cyc * 1000) + " ms");
+  var best = 0;
+  try { best = +localStorage.getItem(bestKey()) || 0; } catch (e) {}
+  setText("h-b", best ? fmtC(best) : "—");
+});
+document.getElementById("clearbest").addEventListener("click", function() {
+  try {
+    Object.keys(DATA).forEach(function(k){ localStorage.removeItem("recuo-best-" + k); });
+    localStorage.removeItem("recuo-hist");
+  } catch (e) {}
+  state.history = [];
+  setText("h-b", "—"); setText("h-m", "—"); setText("h-c", "—");
+  drawSpark();
+});
+setText("h-w", DATA.ak.mag + " tiros · 100 ms");
+(function initBest() {
+  var best = 0;
+  try { best = +localStorage.getItem(bestKey()) || 0; } catch (e) {}
+  setText("h-b", best ? fmtC(best) : "—");
+})();
+drawSpark();
+requestAnimationFrame(render);
+</script>
