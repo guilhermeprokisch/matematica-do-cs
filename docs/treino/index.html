@@ -116,7 +116,7 @@
       <input type="range" id="sens" min="0.4" max="3" step="0.1" value="1">
       <span class="rv" id="sensv">1,0×</span></span>
     <span><label><input type="checkbox" id="ghost" checked> mostrar o padrão bruto</label></span>
-    <span><label><input type="checkbox" id="guide" checked> modo guia (seta de correção)</label></span>
+    <span><label><input type="checkbox" id="guide" checked> modo guia (siga o ponto)</label></span>
     <span><label><input type="checkbox" id="noise"> ruído de dispersão (cap. 5)</label></span>
     <span><button class="ghostbtn" id="clearbest">zerar recordes</button></span>
   </div>
@@ -127,8 +127,9 @@
       <div class="big">Clique para travar o mouse</div>
       <div>O recuo empurra a mira para <strong>cima</strong>. Segure o
         <kbd>botão esquerdo</kbd> e, enquanto atira, <strong>arraste o mouse
-        para baixo</strong>, liso e contínuo — cancele a subida e mantenha as
-        bolinhas no alvo.</div>
+        para baixo</strong>, liso e contínuo. Com o modo guia, o trabalho é
+        um só: <strong>mantenha o ponto amarelo colado na mira</strong> — ele
+        percorre a curva reversa do padrão, no ritmo certo.</div>
       <div><kbd>R</kbd> limpa a parede · <kbd>Esc</kbd> libera o mouse</div>
     </div>
   </div>
@@ -145,9 +146,12 @@
   <p class="note" style="border-left-color: var(--baseline);">
     Como treinar: primeiro, com o "padrão bruto" ligado, dispare uma rajada
     <em>sem mexer o mouse</em> e veja o desenho que a arma faz sozinha —
-    esse é o R(k) do capítulo 8. Depois, segure o gatilho até o fim do
-    pente e puxe o mouse para baixo na mesma cadência da subida, seguindo o
-    zigue-zague. Leia as bolinhas a cada rajada: acima do alvo, puxe mais
+    esse é o R(k) do capítulo 8. Com o mouse travado e antes de atirar, a
+    curva reversa aparece tracejada saindo da mira: é o caminho exato que a
+    sua mão vai percorrer, o padrão de cabeça para baixo. Depois, segure o
+    gatilho até o fim do pente e mantenha o ponto amarelo colado na mira —
+    ele anda por essa curva no ritmo dos tiros, e o rastro à frente mostra
+    as próximas curvas para você antecipar. Leia as bolinhas a cada rajada: acima do alvo, puxe mais
     cedo e mais rápido; abaixo, você puxou demais. O c do painel diz quanto
     do padrão você removeu — jogadores treinados vivem acima de 85%.
   </p>
@@ -242,7 +246,8 @@ function endBurst() {
     var errSum = 0, rawSum = 0;
     for (var i = 0; i < n; i++) {
       errSum += state.impacts[state.impacts.length - n + i].err;
-      rawSum += Math.hypot(state.pat[i][0], state.pat[i][1]);
+      var pr = i === 0 ? [0, 0] : state.pat[i - 1];
+      rawSum += Math.hypot(pr[0], pr[1]);
     }
     var c = Math.max(0, Math.min(1, 1 - (errSum / n) / (rawSum / n)));
     state.history.push(c);
@@ -301,7 +306,7 @@ function drawSpark() {
 function fire(now) {
   var w = DATA[sel.value];
   if (state.shot >= w.mag) return;
-  var rec = state.pat[state.shot];
+  var rec = state.shot === 0 ? [0, 0] : state.pat[state.shot - 1];
   var nx = 0, ny = 0;
   if (document.getElementById("noise").checked) {
     var rr = 9 * Math.sqrt(state.noiseRng());
@@ -363,29 +368,49 @@ function render(now) {
     ctx.fill();
   });
 
-  if (document.getElementById("guide").checked && state.firing && state.impacts.length) {
-    var last = state.impacts[state.impacts.length - 1];
-    var mag = Math.hypot(last.x, last.y);
-    if (mag > 14) {
-      var ux = -last.x / mag, uy = -last.y / mag;
-      var alen = Math.min(70, 14 + mag * 0.45);
-      var ax0 = CX + ux * 18, ay0 = CY + uy * 18;
-      var ax1 = CX + ux * (18 + alen), ay1 = CY + uy * (18 + alen);
-      ctx.strokeStyle = "#f0c04a"; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.moveTo(ax0, ay0); ctx.lineTo(ax1, ay1); ctx.stroke();
-      var ang = Math.atan2(ay1 - ay0, ax1 - ax0);
-      ctx.beginPath();
-      ctx.moveTo(ax1, ay1);
-      ctx.lineTo(ax1 - 11 * Math.cos(ang - 0.45), ay1 - 11 * Math.sin(ang - 0.45));
-      ctx.lineTo(ax1 - 11 * Math.cos(ang + 0.45), ay1 - 11 * Math.sin(ang + 0.45));
-      ctx.closePath(); ctx.fillStyle = "#f0c04a"; ctx.fill();
-      ctx.fillStyle = "#f0c04a";
-      ctx.font = "600 13px ui-monospace, Menlo, monospace";
-      ctx.textAlign = "center";
-      ctx.fillText(uy > 0.5 ? "puxe para baixo" : "corrija para cá", ax1 + ux * 14, ay1 + uy * 14 + 5);
+  var guideOn = document.getElementById("guide").checked;
+  function punchAt(j) {
+    if (j <= 0) return [0, 0];
+    return state.pat[Math.min(j, state.pat.length) - 1];
+  }
+  if (guideOn && state.locked && !state.firing) {
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    for (var gi = 1; gi <= state.pat.length; gi++) {
+      var q0 = punchAt(gi);
+      ctx.lineTo(CX - q0[0], CY + q0[1]);
     }
-    if (state.shot > 0 && state.shot <= state.pat.length) {
-      var gp = state.pat[state.shot - 1];
+    ctx.setLineDash([3, 6]);
+    ctx.strokeStyle = "rgba(240,192,74,0.35)";
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  if (guideOn && state.firing) {
+    var wg = DATA[sel.value];
+    var elapsed = (now - state.burstT0) / 1000;
+    var kf = Math.min(elapsed / wg.cyc, wg.mag - 1);
+    var k0 = Math.floor(kf) + 1, frac = kf - Math.floor(kf);
+    var pa = punchAt(k0 - 1), pb = punchAt(k0);
+    var gx = pa[0] + (pb[0] - pa[0]) * frac, gy = pa[1] + (pb[1] - pa[1]) * frac;
+    var dotX = CX - gx - state.aim.x, dotY = CY + gy - state.aim.y;
+    ctx.beginPath();
+    ctx.moveTo(dotX, dotY);
+    for (var gj = k0; gj <= Math.min(k0 + 6, wg.mag); gj++) {
+      var qq = punchAt(gj);
+      ctx.lineTo(CX - qq[0] - state.aim.x, CY + qq[1] - state.aim.y);
+    }
+    ctx.setLineDash([3, 5]);
+    ctx.strokeStyle = "rgba(240,192,74,0.45)";
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(dotX, dotY, 6.5, 0, 7);
+    ctx.strokeStyle = "#f0c04a"; ctx.lineWidth = 2.4; ctx.stroke();
+    ctx.beginPath(); ctx.arc(dotX, dotY, 2, 0, 7);
+    ctx.fillStyle = "#f0c04a"; ctx.fill();
+    if (state.shot >= 1) {
+      var gp = punchAt(state.shot);
       ctx.beginPath();
       ctx.arc(CX + ox + gp[0], CY + oy - gp[1], 5, 0, 7);
       ctx.strokeStyle = "#8a8880"; ctx.lineWidth = 1.4; ctx.stroke();
@@ -435,6 +460,7 @@ document.addEventListener("mousedown", function(e) {
   state.impacts = [];
   state.aim.x = 0; state.aim.y = 0;
   state.firing = true; state.shot = 0;
+  state.burstT0 = performance.now();
   state.lastShot = performance.now() - 999;
 });
 document.addEventListener("mouseup", function(e) {
